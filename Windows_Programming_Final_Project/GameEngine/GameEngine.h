@@ -3,8 +3,8 @@ class GameEngine
 {
 
 
-
-	sex
+public:
+	int test;
 
 };
 
