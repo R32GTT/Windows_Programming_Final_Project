@@ -7,5 +7,6 @@ public:
 	int test;
 	int local;
 	int stat;
+	int knockout;
 };
 
