@@ -5,6 +5,7 @@ class GameEngine
 
 public:
 	int test;
-	int local
+	int local;
+	int stat;
 };
 
