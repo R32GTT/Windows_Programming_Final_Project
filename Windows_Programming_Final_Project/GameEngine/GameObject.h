@@ -1,14 +1,15 @@
 #pragma once
 
-enum class ObjectType {
-	NONE,
-	ELEMENT,
-
-};
-
 class GameObject
 {
-	
+public:
+
+	enum {
+		NONE,
+		ENTITY,
+		SOLIDOBJECT,
+	};
+
 
 };
 

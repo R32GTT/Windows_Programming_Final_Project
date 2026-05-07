@@ -5,6 +5,7 @@ struct WinStuff
 {
 	bool running = true;
 	Input input;
+
 };
 
 WinStuff windowsStuff;

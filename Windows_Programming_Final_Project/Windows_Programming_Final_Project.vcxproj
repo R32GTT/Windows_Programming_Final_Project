@@ -130,14 +130,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="GameEngine\GameEngine.cpp" />
     <ClCompile Include="GameEngine\GameObject.cpp" />
-    <ClCompile Include="Input.cpp" />
-    <ClCompile Include="WinMain.cpp" />
+    <ClCompile Include="GameEngine\Input.cpp" />
+    <ClCompile Include="GameEngine\WinMain.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GameEngine\GameEngine.h" />
     <ClInclude Include="GameEngine\GameObject.h" />
-    <ClInclude Include="Input.h" />
-    <ClInclude Include="pch\pch.h" />
+    <ClInclude Include="GameEngine\Input.h" />
+    <ClInclude Include="GameEngine\pch.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
