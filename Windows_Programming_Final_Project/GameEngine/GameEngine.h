@@ -8,5 +8,6 @@ public:
 	int local;
 	int stat;
 	int knockout;
+	int pleasework;
 };
 
