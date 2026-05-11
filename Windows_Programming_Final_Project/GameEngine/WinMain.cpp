@@ -1,4 +1,3 @@
-#include "pch/pch.h"
 #include "Input.h"
 
 struct WinStuff
