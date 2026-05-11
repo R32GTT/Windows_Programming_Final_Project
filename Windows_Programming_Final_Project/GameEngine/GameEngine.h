@@ -4,10 +4,6 @@ class GameEngine
 
 
 public:
-	int test;
-	int local;
-	int stat;
-	int knockout;
-	int pleasework;
+
 };
 

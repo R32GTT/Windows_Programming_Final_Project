@@ -1,15 +1,22 @@
 #pragma once
+#include "Utility/Vec2.h"
 
 class GameObject
 {
 public:
 
 	enum {
-		NONE,
-		ENTITY,
-		SOLIDOBJECT,
+		NONE = 0,
+		PLAYER,
+		ENEMY,
+		WEAPON,
 	};
 
+	
+	Vec2<float> direction{};
+	float speed{};
+	float x{}, y{};
+	
 
 };
 
