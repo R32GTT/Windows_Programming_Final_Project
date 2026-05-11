@@ -5,7 +5,7 @@ class GameObject
 {
 public:
 
-	enum {
+	enum class OBJECTTYPE{
 		NONE = 0,
 		PLAYER,
 		ENEMY,
@@ -13,10 +13,11 @@ public:
 	};
 
 	
-	Vec2<float> direction{};
+	Vec2<float> posDir{};
 	float speed{};
-	float x{}, y{};
-	
+	bool is_Unconsious = false;
+	bool is_Dead = false;
+	OBJECTTYPE type = OBJECTTYPE::NONE;
 
 };
 
