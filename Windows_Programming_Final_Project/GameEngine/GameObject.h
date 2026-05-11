@@ -10,6 +10,6 @@ public:
 		SOLIDOBJECT,
 	};
 
-
+	
 };
 
