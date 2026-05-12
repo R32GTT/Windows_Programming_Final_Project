@@ -16,7 +16,8 @@ template<typename T>
 Vec2<T> Vec2<T>::Normalized()
 {
 	T length_sq = (x * x) + (y * y);
-	if (length == 0) return Vec2(0, 0);
+	if (length < 0.00000000001f)
+		return Vec2<T>{0, 0};
 
 
 	T length = std::sqrt(length_sq);
