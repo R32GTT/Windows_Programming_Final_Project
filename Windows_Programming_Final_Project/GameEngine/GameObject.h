@@ -7,10 +7,9 @@ public:
 
 	enum class OBJECTTYPE{
 		NONE = 0,
-		PLAYER = 1,
-		ENEMY = 2,
-		WEAPON = 3,
-		WALL = 4
+		PLAYER,
+		ENEMY,
+		WEAPON,
 	};
 
 	
