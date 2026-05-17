@@ -7,10 +7,13 @@ public:
 
 	enum class OBJECTTYPE{
 		NONE = 0,
-		PLAYER,
-		ENEMY,
-		WEAPON,
+		PLAYER = 1,
+		ENEMY = 2,
+		WEAPON = 3,
+		WALL
 	};
+
+
 
 	
 	Vec2<float> posDir{};
