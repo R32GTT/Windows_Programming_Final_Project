@@ -8,12 +8,16 @@ public:
 	~GameEngine();
 
 	void Init(HWND hWnd);
+	void Update();
+	void Render();
 
 
-	HWND memhWnd;
-	HDC memDC;
-	HBITMAP memHBITMAP;
+	RECT rect;
+	HWND memhWnd{};
+	HDC memDC{};
 
-
+	// 더블 버퍼링용
+	HDC memDCDB{};
+	HBITMAP memHBITMAP{};
 };
 
