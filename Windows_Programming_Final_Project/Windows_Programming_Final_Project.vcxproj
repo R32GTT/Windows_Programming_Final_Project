@@ -132,24 +132,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="GameEngine\Objects\Enemy.cpp" />
     <ClCompile Include="GameEngine\GameEngine.cpp" />
     <ClCompile Include="GameEngine\GameObject.cpp" />
     <ClCompile Include="GameEngine\Utility\Vec2.cpp" />
     <ClCompile Include="GameEngine\InputManager.cpp" />
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="GameEngine\TimeManager.cpp" />
-    <ClCompile Include="GameEngine\Objects\Player.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GameEngine\Objects\Enemy.h" />
     <ClInclude Include="GameEngine\GameEngine.h" />
     <ClInclude Include="GameEngine\GameObject.h" />
     <ClInclude Include="GameEngine\Utility\Vec2.h" />
     <ClInclude Include="GameEngine\InputManager.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="GameEngine\TimeManager.h" />
-    <ClInclude Include="GameEngine\Objects\Player.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
