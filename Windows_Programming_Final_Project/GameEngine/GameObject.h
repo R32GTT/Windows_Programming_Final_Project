@@ -15,7 +15,7 @@ public:
 
 
 
-	
+
 	Vec2<float> posDir{};
 	float speed{};
 	bool is_Unconsious = false;
@@ -24,3 +24,28 @@ public:
 
 };
 
+class Player : GameObject {
+
+private:
+
+
+public:
+
+};
+
+class Enemy : GameObject {
+
+private:
+
+public:
+
+
+};
+
+class ITEM : GameObject {
+
+private:
+
+public:
+
+};
