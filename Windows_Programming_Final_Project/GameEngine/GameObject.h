@@ -63,13 +63,25 @@ public:
 
 };
 
-class ITEM : public GameObject {
+//I need to change this....
+//bool is_Hit = false;
+//Change ITEM class to Weapon Class
+
+class Weapon : public GameObject {
 
 private:
 	//무기가 총인지 빠루인지 구분
+	//처음에는 주먹만 있어서 true로 설정
 	bool is_Gun = false;
-	bool is_Stick = false;
-	bool Basic_Fist = true;
+	bool is_MEELE = false;
+	bool is_Fist = true;
+
+	//근거리 무기 리치 변수
+	int leach_MEELE;
+	//근거리 무기 공격속도 변수
+	int Speed_MEELE;
+
+
 
 public:
 
