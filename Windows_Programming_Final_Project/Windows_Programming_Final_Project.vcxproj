@@ -134,6 +134,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="GameEngine\FileManageer.cpp" />
     <ClCompile Include="GameEngine\GameEngine.cpp" />
     <ClCompile Include="GameEngine\GameObject.cpp" />
     <ClCompile Include="GameEngine\Utility\Vec2.cpp" />
@@ -146,6 +147,7 @@
     <ClCompile Include="GameEngine\TimeManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GameEngine\FileManageer.h" />
     <ClInclude Include="GameEngine\GameEngine.h" />
     <ClInclude Include="GameEngine\GameObject.h" />
     <ClInclude Include="GameEngine\Utility\Vec2.h" />
