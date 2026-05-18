@@ -38,7 +38,7 @@ private:
 public:
 
 	//플레이어 이동 공격 아이템 획득 함수
-	//void Move();
+	void Move();
 	//void Attack();
 	//void GetItem();
 	
