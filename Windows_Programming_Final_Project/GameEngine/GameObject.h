@@ -28,7 +28,6 @@ class Player : GameObject {
 
 private:
 
-
 public:
 
 };
