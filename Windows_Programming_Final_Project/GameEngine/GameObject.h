@@ -31,7 +31,7 @@ public:
 	OBJECTTYPE type = OBJECTTYPE::NONE;
 };
 
-class Player : GameObject {
+class Player : public GameObject {
 
 private:
 
@@ -45,7 +45,7 @@ public:
 
 };
 
-class Enemy : GameObject {
+class Enemy : public GameObject {
 
 private:
 
@@ -59,7 +59,7 @@ public:
 
 };
 
-class ITEM : GameObject {
+class ITEM : public GameObject {
 
 private:
 	//무기가 총인지 빠루인지 구분
