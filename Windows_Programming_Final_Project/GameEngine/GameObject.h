@@ -14,6 +14,9 @@ public:
 		WALL
 	};
 
+	GameObject();
+	virtual ~GameObject();
+
 	void Init();
 	void Update();
 	void Render(HDC);
@@ -25,7 +28,6 @@ public:
 	bool is_Unconsious = false;
 	bool is_Dead = false;
 	OBJECTTYPE type = OBJECTTYPE::NONE;
-
 };
 
 class Player : GameObject {

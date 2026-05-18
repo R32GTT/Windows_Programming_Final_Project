@@ -136,6 +136,7 @@
     <ClCompile Include="GameEngine\GameObject.cpp" />
     <ClCompile Include="GameEngine\Utility\Vec2.cpp" />
     <ClCompile Include="GameEngine\InputManager.cpp" />
+    <ClCompile Include="GameEngine\GameWindow.cpp" />
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="GameEngine\TimeManager.cpp" />
   </ItemGroup>
@@ -144,6 +145,7 @@
     <ClInclude Include="GameEngine\GameObject.h" />
     <ClInclude Include="GameEngine\Utility\Vec2.h" />
     <ClInclude Include="GameEngine\InputManager.h" />
+    <ClInclude Include="GameEngine\GameWindow.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="GameEngine\TimeManager.h" />
   </ItemGroup>
