@@ -32,21 +32,21 @@ public:
 	OBJECTTYPE type = OBJECTTYPE::NONE;
 };
 
-class Player : GameObject {
+class Player : public GameObject {
 
 private:
 
 public:
 
 	//플레이어 이동 공격 아이템 획득 함수
-	//void Move();
+	void Move();
 	//void Attack();
 	//void GetItem();
 	
 
 };
 
-class Enemy : GameObject {
+class Enemy : public GameObject {
 
 private:
 
@@ -60,7 +60,7 @@ public:
 
 };
 
-class ITEM : GameObject {
+class ITEM : public GameObject {
 
 private:
 	//무기가 총인지 빠루인지 구분
