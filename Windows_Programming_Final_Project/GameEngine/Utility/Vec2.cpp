@@ -1,5 +1,15 @@
 #include "Vec2.h"
 template<typename T>
+float Vec2<T>::LengthSq()
+{
+	return x * x + y * y;
+}
+template<typename T>
+float Vec2<T>::Length()
+{
+	return std::sqrt(LengthSq());
+}
+template<typename T>
 Vec2<T> Vec2<T>::Abs()
 {
 	if constexpr (std::is_floating_point_v<T>)
@@ -15,13 +25,13 @@ Vec2<T> Vec2<T>::Abs()
 template<typename T>
 Vec2<T> Vec2<T>::Normalized()
 {
-	T length_sq = (x * x) + (y * y);
-	if (length < 0.00000000001f)
+	auto length_sq = LengthSq();
+	if (length_sq < 0.00000001f)
 		return Vec2<T>{0, 0};
 
 
-	T length = std::sqrt(length_sq);
-	return Vec2{ x / length,y / length };
+	T length = Length();
+	return Vec2<T>{ static_cast<T>(x / length), static_cast<T>(y / length) };
 }
 
 template<typename T>
@@ -33,12 +43,32 @@ Vec2<T> Vec2<T>::Reflect(const Vec2& normal)
 template<typename T>
 float Vec2<T>::Angle()
 {
-	return 0.0f;
+	return std::atan2((float)y, (float)x);
 }
 
 template<typename T>
 float Vec2<T>::Dot(Vec2& other)
 {
 	return ((x * other.x) + (y * other.y));
+}
+
+template<typename T>
+float Vec2<T>::Cross(Vec2& other)
+{
+	return x * other.y - y * other.x;
+}
+
+template<typename T>
+bool Vec2<T>::Is_Equal_Approx(Vec2& other)
+{
+	const float EP{ 0.00001f };
+	
+	return (std::abs<float>(x - other.x) < EP && std::abs<float>(y - other.y) < EP);
+}
+
+template<typename T>
+bool Vec2<T>::is_Normalized()
+{
+	return (x + y == 1.0f);
 }
 
