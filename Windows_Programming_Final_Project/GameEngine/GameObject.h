@@ -45,7 +45,12 @@ public:
 	//void Move();
 	//void Attack();
 	//void GetItem();
-	
+
+	//둘이 달라야 하나??? 죽음
+	//죽음 체크하는 함수(플레이어 버전 추가)
+	bool CheckDead_P() {
+		return is_Dead = true;
+	}
 
 };
 
@@ -63,6 +68,10 @@ public:
 	//void EmAttack();
 	//void EmSight();
 
+	//죽음 체크하는 함수(적 버전 추가)
+	bool CheckDead_E() {
+		return is_Dead = true;
+	}
 
 };
 
@@ -104,17 +113,17 @@ public:
 
 	//주먹 체크함수
 	bool GetFist() {
-		return is_Fist;
+		return is_Fist = true;
 	}
 
 	//근접무기 체크함수
 	bool GetMEE() {
-		return is_MEELE;
+		return is_MEELE = true;
 	}
 
 	//원거리무기 체크함수
 	bool GetGun() {
-		return is_Gun;
+		return is_Gun = true;
 	}
 
 
