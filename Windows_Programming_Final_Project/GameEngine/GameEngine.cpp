@@ -1,7 +1,25 @@
+#include "pch.h"
 #include "GameEngine.h"
 
-void GameEngine::Init(HWND hWnd)
-{
-	memhWnd = hWnd;
 
+GameEngine::GameEngine()
+{
+}
+
+GameEngine::~GameEngine()
+{
+}
+
+void GameEngine::Init(HINSTANCE hInst)
+{
+	
+
+}
+
+void GameEngine::Update()
+{
+}
+
+void GameEngine::Render()
+{
 }

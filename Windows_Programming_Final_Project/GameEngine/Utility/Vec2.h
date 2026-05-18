@@ -8,7 +8,7 @@ class Vec2
 public:
 	Vec2() {};
 	Vec2(T _x, T _y) :x(_x), y(_y) {};
-	Vec2(Vec2& base) { x = base.x, y = base.y };
+	Vec2(Vec2& base) { x = base.x; y = base.y; };
 	Vec2(POINT pt) { x = (float)pt.x; y = (float)pt.y; };
 
 	float LengthSq();

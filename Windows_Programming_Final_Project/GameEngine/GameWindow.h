@@ -1,5 +1,3 @@
 #pragma once
-class GameWindow
-{
-};
-
+#include "pch.h"
+#include "../resource.h"

@@ -1,6 +1,7 @@
 #pragma once
+#include "pch.h"
 #include "Utility/Vec2.h"
-#include "../pch.h"
+
 
 class GameObject
 {

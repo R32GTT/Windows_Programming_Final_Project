@@ -1,5 +1,5 @@
 #pragma once
-#include "../pch.h"
+#include "pch.h"
 class GameEngine
 {
 public:
@@ -7,7 +7,7 @@ public:
 	GameEngine();
 	~GameEngine();
 
-	void Init(HWND hWnd);
+	void Init(HINSTANCE hInst);
 	void Update();
 	void Render();
 

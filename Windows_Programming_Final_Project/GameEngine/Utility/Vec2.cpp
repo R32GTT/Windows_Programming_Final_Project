@@ -1,4 +1,6 @@
+﻿#include "pch.h"
 #include "Vec2.h"
+
 template<typename T>
 float Vec2<T>::LengthSq()
 {
@@ -14,11 +16,11 @@ Vec2<T> Vec2<T>::Abs()
 {
 	if constexpr (std::is_floating_point_v<T>)
 	{
-		return Vec2<T>(std::abs<float>(x), std::abs<float>(y));
+		return Vec2<T>(std::abs(x), std::abs(y));
 	}
 	else
 	{
-		return Vec2<T>(std::abs<int>(x), std; :abs<int>(y));
+		return Vec2<T>(std::abs(x), std::abs(y));
 	}
 }
 
@@ -37,7 +39,7 @@ Vec2<T> Vec2<T>::Normalized()
 template<typename T>
 Vec2<T> Vec2<T>::Reflect(const Vec2& normal)
 {
-	return (*this) - (normal * (2.0f * this->Dot(normal));
+	return (*this) - (normal * (2.0f * this->Dot(normal)));
 }
 
 template<typename T>
@@ -63,7 +65,7 @@ bool Vec2<T>::Is_Equal_Approx(Vec2& other)
 {
 	const float EP{ 0.00001f };
 	
-	return (std::abs<float>(x - other.x) < EP && std::abs<float>(y - other.y) < EP);
+	return (std::abs(x - other.x) < EP && std::abs(y - other.y) < EP);
 }
 
 template<typename T>

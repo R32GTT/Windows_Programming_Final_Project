@@ -1,5 +1,5 @@
 #pragma once
-#include "../pch.h"
+#include "pch.h"
 
 enum class KeyType
 {
@@ -63,6 +63,6 @@ private:
 
 private:
 	HWND _hwnd = 0;
-	std::vector<KeyState> _states;
-	POINT _mousePos;
+	std::vector<KeyState> _states{};
+	POINT _mousePos{};
 };
