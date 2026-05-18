@@ -29,8 +29,6 @@ public:
 	Vec2<float> pos{};
 	Vec2<float> dir{};
 	float speed{};
-	bool is_Unconsious = false;
-	bool is_Dead = false;
 	int layer{};
 	OBJECTTYPE type = OBJECTTYPE::NONE;
 };
@@ -38,6 +36,8 @@ public:
 class Player : public GameObject {
 
 private:
+	//죽음 유무 Player로 이동함
+	bool is_Dead = false;
 
 public:
 
@@ -52,6 +52,9 @@ public:
 class Enemy : public GameObject {
 
 private:
+	//기절과 죽음 유무 Enemy로 이동함
+	bool is_Unconsious = false;
+	bool is_Dead = false;
 
 public:
 
