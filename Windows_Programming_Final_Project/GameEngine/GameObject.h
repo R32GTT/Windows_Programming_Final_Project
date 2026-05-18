@@ -66,6 +66,7 @@ private:
 	//무기가 총인지 빠루인지 구분
 	bool is_Gun = false;
 	bool is_Stick = false;
+	bool Basic_Fist = true;
 
 public:
 
