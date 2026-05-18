@@ -1,32 +1,51 @@
 #pragma once
 #include "Utility/Vec2.h"
 
-
 class GameObject
 {
 public:
 
-	GameObject();
-	~GameObject();
-
-
-	
-
-	enum TYPE {
+	enum class OBJECTTYPE{
 		NONE = 0,
-		PLAYER,
-		ENEMY,
-		WEAPON,
-		PROJECTILE,
+		PLAYER = 1,
+		ENEMY = 2,
+		WEAPON = 3,
 		WALL
 	};
-	
-	Vec2<float> pos{};
-	Vec2<float> dir{};
+
+
+
+
+	Vec2<float> posDir{};
 	float speed{};
 	bool is_Unconsious = false;
 	bool is_Dead = false;
-	TYPE type = TYPE::NONE;
+	OBJECTTYPE type = OBJECTTYPE::NONE;
 
 };
 
+class Player : GameObject {
+
+private:
+
+
+public:
+
+};
+
+class Enemy : GameObject {
+
+private:
+
+public:
+
+
+};
+
+class ITEM : GameObject {
+
+private:
+
+public:
+
+};
