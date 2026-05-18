@@ -25,7 +25,6 @@ public:
 	virtual void Update();
 	virtual void Render(HDC);
 
-
 	Vec2<float> pos{};
 	Vec2<float> dir{};
 	float speed{};
@@ -42,7 +41,8 @@ private:
 public:
 
 	//플레이어 이동 공격 아이템 획득 함수
-	void Move();
+	//Move()함수의 매개변수와 
+	//void Move();
 	//void Attack();
 	//void GetItem();
 	
@@ -75,6 +75,9 @@ class Weapon : public GameObject {
 private:
 	//무기가 총인지 빠루인지 구분
 	//처음에는 주먹만 있어서 true로 설정
+
+	//그러면 enum으로 관리할까???
+	//enum방식은 후에 의논해봅세
 	bool is_Gun = false;
 	bool is_MEELE = false;
 	bool is_Fist = true;
@@ -93,6 +96,27 @@ private:
 
 
 public:
+
+	//무기 체크 함수
+	//주먹용 체크
+	//근거리 체크
+	//원거리 체크
+
+	//주먹 체크함수
+	bool GetFist() {
+		return is_Fist;
+	}
+
+	//근접무기 체크함수
+	bool GetMEE() {
+		return is_MEELE;
+	}
+
+	//원거리무기 체크함수
+	bool GetGun() {
+		return is_Gun;
+	}
+
 
 
 
