@@ -13,7 +13,9 @@ public:
 		ENEMY = 2,
 		WEAPON = 3,
 		PROJECTILE,
-		WALL
+		DECO,
+		WALL,
+		FLOOR
 	};
 
 	GameObject();
@@ -29,6 +31,7 @@ public:
 	float speed{};
 	bool is_Unconsious = false;
 	bool is_Dead = false;
+	int layer{};
 	OBJECTTYPE type = OBJECTTYPE::NONE;
 };
 
