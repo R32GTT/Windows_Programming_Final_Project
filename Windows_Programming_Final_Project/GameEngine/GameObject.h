@@ -11,15 +11,16 @@ public:
 		PLAYER = 1,
 		ENEMY = 2,
 		WEAPON = 3,
+		PROJECTILE,
 		WALL
 	};
 
 	GameObject();
 	virtual ~GameObject();
 
-	void Init();
-	void Update();
-	void Render(HDC);
+	virtual void Init();
+	virtual void Update();
+	virtual void Render(HDC);
 
 
 	Vec2<float> pos{};
