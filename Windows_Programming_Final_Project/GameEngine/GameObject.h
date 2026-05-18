@@ -34,6 +34,12 @@ private:
 
 public:
 
+	//플레이어 이동 공격 아이템 획득 함수
+	//void Move();
+	//void Attack();
+	//void GetItem();
+	
+
 };
 
 class Enemy : GameObject {
@@ -41,6 +47,11 @@ class Enemy : GameObject {
 private:
 
 public:
+
+	//적 이동 적 공격 적 시야 함수
+	//void EmMove();
+	//void EmAttack();
+	//void EmSight();
 
 
 };
@@ -50,5 +61,7 @@ class ITEM : GameObject {
 private:
 
 public:
+
+
 
 };
