@@ -77,10 +77,16 @@ private:
 	bool is_Fist = true;
 
 	//근거리 무기 리치 변수
-	int leach_MEELE;
+	int leach_MEELE = 0;
 	//근거리 무기 공격속도 변수
-	int Speed_MEELE;
+	int Speed_MEELE = 0;
 
+	//원거리 무기용 변수 추가
+	//탄약용 변수
+	int ammo = 0;
+
+	//총 공격속도 변수
+	int Speed_Gun = 0; 
 
 
 public:
