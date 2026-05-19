@@ -199,7 +199,7 @@ private:
 	unsigned __int64 projectile_Life = 0; // 투사체 수명 정하는 것. 근접공격은 공격 프레임 동안만 스폰하게, 총알은 어딘가에 충돌할때까지.
 	float projecttile_Speed = 0.0f;
 	int projectile_Count = 1; // 나중에 샷건 만든다면 이거 쓸거.
-	float projectile_Deviation = 0.0f; // 근접 쓸땐 0이지만, 원거리 무기는 탄퍼짐이 있어야 하니...
+	float projectile_Deviation = 0.0f; // 근접 쓸땐 0이지만, 원거리 무기는 탄퍼짐이 있어야 하니... 라디안 값임(ATAN 쓰니)
 
 
 	//근거리 무기 리치 변수
