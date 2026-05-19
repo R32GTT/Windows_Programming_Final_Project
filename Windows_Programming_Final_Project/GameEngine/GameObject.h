@@ -124,6 +124,7 @@ public:
 	
 };
 
+//바닥 클래스 수정
 class Floor : public GameObject {
 private:
 	D2D1_RECT_F floorCoords{};
@@ -136,7 +137,8 @@ public:
 
 	Floor(POINT start, POINT end)
 	{
-
+		layer = 1;
+		type = OBJECTTYPE::FLOOR;
 	}
 };
 
@@ -157,7 +159,7 @@ public:
 	DECO(POINT start, POINT end) {
 
 		layer = 2;
-
+		type = OBJECTTYPE::DECO;
 	}
 };
 
