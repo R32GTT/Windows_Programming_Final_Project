@@ -45,6 +45,9 @@ private:
 	//무기 유무 변수 추가
 	bool is_Item = false;
 
+	//적 처형 변수 추가
+	bool is_ExeCute = false;
+
 public:
 
 	//플레이어 이동 공격 아이템 획득 함수
@@ -63,6 +66,11 @@ public:
 	//플레이어 무기 획득 함수 추가
 	bool GetItem() {
 		return (is_Item);
+	}
+
+	//플레이어 적 처형 함수 추가
+	bool Execute() {
+		return (is_ExeCute);
 	}
 
 };
