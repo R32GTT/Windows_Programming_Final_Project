@@ -82,6 +82,11 @@ private:
 	bool is_Unconsious = false;
 	bool is_Dead = false;
 
+	//적 시야 변수 추가
+	//시야를 float로 할까 아니면 int로 할 까???
+	//후에 논의 필요
+	float sight = 0;
+
 public:
 
 	//적 이동 적 공격 적 시야 함수
@@ -157,11 +162,7 @@ public:
 class Weapon : public GameObject {
 
 private:
-	//무기가 총인지 빠루인지 구분
-	//처음에는 주먹만 있어서 true로 설정
-
-	//그러면 enum으로 관리할까???
-	//enum방식은 후에 의논해봅세
+	
 	//제안서 내용 토대로 샷건에서 소총으로 교체
 	//주석 SHOTGUN 처리 -> RIFLE(소총)으로 교체
 
