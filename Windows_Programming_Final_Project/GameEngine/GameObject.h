@@ -31,6 +31,8 @@ public:
 	Vec2<float> dir{};
 	float speed{};
 	int layer{};
+	// sprite 타입도 넣어놔야 할듯.
+	// DX2D 쓰려면 HBITMAP 넣어두는건 제쳐두고...
 	OBJECTTYPE type = OBJECTTYPE::NONE;
 };
 
@@ -81,18 +83,27 @@ public:
 
 
 class Wall : public GameObject {
-
 private:
 	D2D1_RECT_F wallCoords{};
 	bool is_Transparent{ FALSE };
-	
 
 public:
-	Wall() { Wall::layer = 4; };
-	~Wall();
-
+	Wall() {
+		layer = 5;
+		type = OBJECTTYPE::WALL;
+	}
 };
 
+class Floor : public GameObject {
+private:
+	D2D1_RECT_F floorCoords{};
+
+public:
+	Floor(){
+		layer = 1;
+		type = OBJECTTYPE::FLOOR;
+	}
+};
 
 //I need to change this....
 //bool is_Hit = false;
