@@ -42,6 +42,9 @@ private:
 	//죽음 유무 Player로 이동함
 	bool is_Dead = false;
 
+	//무기 유무 변수 추가
+	bool is_Item = false;
+
 public:
 
 	//플레이어 이동 공격 아이템 획득 함수
@@ -55,6 +58,11 @@ public:
 	//죽음 체크하는 함수 virtual 선언 해서 바꿈. 이제 플레이어나 적이나 둘 다 동일한 함수로 체크함.
 	bool CheckDead() override { //살아있으면 FALSE, 죽었으면 TRUE
 		return (is_Dead);
+	}
+
+	//플레이어 무기 획득 함수 추가
+	bool GetItem() {
+		return (is_Item);
 	}
 
 };
@@ -125,8 +133,13 @@ class ENTITY : public GameObject {
 private:
 
 public:
+	ENTITY() {
 
+	}
 
+	ENTITY() {
+
+	}
 };
 
 //I need to change this....
@@ -156,8 +169,8 @@ private:
 		TOTAL_COUNT
 	};
 
-
-	bool is_Gun = false;
+	//Gun -> RIFLE로 수정함
+	bool is_RIFLE = false;
 	bool is_Meele = false;
 	bool is_Fist = true;
 
@@ -196,7 +209,7 @@ public:
 
 	//원거리무기 체크함수
 	bool GetGun() {
-		return (is_Gun);
+		return (is_RIFLE);
 	}
 
 
