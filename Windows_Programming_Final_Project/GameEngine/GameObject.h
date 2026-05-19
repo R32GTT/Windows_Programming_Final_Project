@@ -81,7 +81,6 @@ public:
 
 };
 
-
 class Wall : public GameObject {
 private:
 	D2D1_RECT_F wallCoords{};
@@ -92,6 +91,16 @@ public:
 		layer = 5;
 		type = OBJECTTYPE::WALL;
 	}
+	
+	Wall(POINT start, POINT end)
+	{
+		layer = 5;
+		type = OBJECTTYPE::WALL;
+		wallCoords.left = start.x; wallCoords.top = start.y;
+		wallCoords.right = end.x; wallCoords.bottom = end.y;
+	}
+
+	
 };
 
 class Floor : public GameObject {
@@ -102,6 +111,11 @@ public:
 	Floor(){
 		layer = 1;
 		type = OBJECTTYPE::FLOOR;
+	}
+
+	Floor(POINT start, POINT end)
+	{
+
 	}
 };
 
@@ -117,21 +131,38 @@ private:
 
 	//그러면 enum으로 관리할까???
 	//enum방식은 후에 의논해봅세
+
+	enum WPTYPE {
+		NONE =0,
+		FIST,
+		//KNIFE, TODO Maybe someday...
+		CROWBAR,
+		//AXE,
+		//PISTOL,
+		SHOTGUN,
+		//RIFLE,
+		TOTAL_COUNT
+	};
+
+
 	bool is_Gun = false;
-	bool is_MEELE = false;
+	bool is_Meele = false;
 	bool is_Fist = true;
 
+	// 공용 변수들? 굳이 나눌 필요 없을거 같았음
+	unsigned __int64 attack_Speed = 0;
+	unsigned __int64 projectile_Life = 0; // 투사체 수명 정하는 것. 근접공격은 공격 프레임 동안만 스폰하게, 총알은 어딘가에 충돌할때까지.
+	float projecttile_Speed = 0.0f;
+
+
 	//근거리 무기 리치 변수
-	int leach_MEELE = 0;
-	//근거리 무기 공격속도 변수
-	int Speed_MEELE = 0;
+	int reach_Meele = 0;	
 
 	//원거리 무기용 변수 추가
 	//탄약용 변수
 	int ammo = 0;
 
-	//총 공격속도 변수
-	int Speed_Gun = 0; 
+	
 
 
 public:
@@ -147,8 +178,8 @@ public:
 	}
 
 	//근접무기 체크함수
-	bool GetMEELE() {
-		return (is_MEELE);
+	bool GetMeele() {
+		return (is_Meele);
 	}
 
 	//원거리무기 체크함수
