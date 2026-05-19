@@ -141,16 +141,19 @@ public:
 };
 
 //벽이 아닌 객체용 클래스
-class ENTITY : public GameObject {
+//ENTITY -> DECO
+//DECO를 못 봄 이걸로 수정함
+class DECO : public GameObject {
 
 private:
-
+	D2D1_RECT_F floorCoords{};
 public:
-	ENTITY() {
-
+	DECO() {
+		//layer = ?
+		//type =
 	}
 
-	ENTITY() {
+	DECO() {
 
 	}
 };
