@@ -24,6 +24,8 @@ public:
 	virtual void Init();
 	virtual void Update();
 	virtual void Render(HDC);
+	
+	virtual bool CheckDead();
 
 	Vec2<float> pos{};
 	Vec2<float> dir{};
@@ -48,8 +50,9 @@ public:
 
 	//둘이 달라야 하나??? 죽음
 	//죽음 체크하는 함수(플레이어 버전 추가)
-	bool CheckDead_P() {
-		return is_Dead = true;
+	//죽음 체크하는 함수 virtual 선언 해서 바꿈. 이제 플레이어나 적이나 둘 다 동일한 함수로 체크함.
+	bool CheckDead() override { //살아있으면 FALSE, 죽었으면 TRUE
+		return (is_Dead);
 	}
 
 };
@@ -69,11 +72,27 @@ public:
 	//void EmSight();
 
 	//죽음 체크하는 함수(적 버전 추가)
-	bool CheckDead_E() {
-		return is_Dead = true;
+	//플레이어랑 적이랑 다를 필요가 없어서 VIRTUAL 선언함
+	bool CheckDead() override { //살아있으면 FALSE, 죽었으면 TRUE
+		return (is_Dead);
 	}
 
 };
+
+
+class Wall : public GameObject {
+
+private:
+	D2D1_RECT_F wallCoords{};
+	bool is_Transparent{ FALSE };
+	
+
+public:
+	Wall() { Wall::layer = 4; };
+	~Wall();
+
+};
+
 
 //I need to change this....
 //bool is_Hit = false;
@@ -113,17 +132,17 @@ public:
 
 	//주먹 체크함수
 	bool GetFist() {
-		return is_Fist = true;
+		return (is_Fist);
 	}
 
 	//근접무기 체크함수
-	bool GetMEE() {
-		return is_MEELE = true;
+	bool GetMEELE() {
+		return (is_MEELE);
 	}
 
 	//원거리무기 체크함수
 	bool GetGun() {
-		return is_Gun = true;
+		return (is_Gun);
 	}
 
 
