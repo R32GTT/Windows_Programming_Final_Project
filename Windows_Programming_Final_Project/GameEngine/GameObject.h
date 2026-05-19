@@ -143,17 +143,20 @@ public:
 //벽이 아닌 객체용 클래스
 //ENTITY -> DECO
 //DECO를 못 봄 이걸로 수정함
+//DECO 클래스 layer는 2 type 설정
 class DECO : public GameObject {
 
 private:
 	D2D1_RECT_F floorCoords{};
 public:
 	DECO() {
-		//layer = ?
-		//type =
+		layer = 2;
+		type = OBJECTTYPE::DECO;
 	}
 
-	DECO() {
+	DECO(POINT start, POINT end) {
+
+		layer = 2;
 
 	}
 };
