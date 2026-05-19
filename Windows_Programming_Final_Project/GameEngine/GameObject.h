@@ -101,6 +101,18 @@ public:
 		return (is_Dead);
 	}
 
+	//적 기절을 체크하는 함수
+	//플레이어와 다르게 적은 기절이 있다
+	//기절이면 TRUE 사망이면 FALSE
+	bool CheckFaint() {
+		if (is_Unconsious == true) {
+			return (is_Unconsious);
+		}
+		else if (is_Unconsious != true) {
+			return (is_Dead);
+		}
+	}
+
 };
 
 class Wall : public GameObject {
