@@ -176,7 +176,6 @@ private:
 	
 	//제안서 내용 토대로 샷건에서 소총으로 교체
 	//주석 SHOTGUN 처리 -> RIFLE(소총)으로 교체
-
 	enum class WPTYPE {
 		NONE =0,
 		FIST,
@@ -193,6 +192,9 @@ private:
 	bool is_RIFLE = false;
 	bool is_Meele = false;
 	bool is_Fist = true;
+
+	//탄창 다 사용했는지 아닌지 유무판단
+	bool is_OUT = false;
 
 	// 공용 변수들? 굳이 나눌 필요 없을거 같았음
 	unsigned __int64 attack_Speed = 0;
@@ -218,6 +220,8 @@ public:
 	//주먹용 체크
 	//근거리 체크
 	//원거리 체크
+	//탄창 체크
+
 
 	//주먹 체크함수
 	bool GetFist() {
@@ -234,7 +238,10 @@ public:
 		return (is_RIFLE);
 	}
 
-
+	//탄창 빈 유무 체크함수
+	bool CheckAmo() {
+		return (is_OUT);
+	}
 
 
 };
