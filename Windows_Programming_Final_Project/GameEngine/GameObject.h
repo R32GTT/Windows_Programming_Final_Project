@@ -119,6 +119,16 @@ public:
 	}
 };
 
+//벽이 아닌 객체용 클래스
+class ENTITY : public GameObject {
+
+private:
+
+public:
+
+
+};
+
 //I need to change this....
 //bool is_Hit = false;
 //Change ITEM class to Weapon Class
@@ -131,6 +141,8 @@ private:
 
 	//그러면 enum으로 관리할까???
 	//enum방식은 후에 의논해봅세
+	//제안서 내용 토대로 샷건에서 소총으로 교체
+	//주석 SHOTGUN 처리 -> RIFLE(소총)으로 교체
 
 	enum WPTYPE {
 		NONE =0,
@@ -139,8 +151,8 @@ private:
 		CROWBAR,
 		//AXE,
 		//PISTOL,
-		SHOTGUN,
-		//RIFLE,
+		//SHOTGUN,
+		RIFLE,
 		TOTAL_COUNT
 	};
 
