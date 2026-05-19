@@ -28,7 +28,8 @@ public:
 	virtual bool CheckDead();
 
 	Vec2<float> pos{};
-	Vec2<float> dir{};
+	Vec2<float> facingDir{};
+	Vec2<float> movingDir{};
 	float speed{};
 	int layer{};
 	// sprite 타입도 넣어놔야 할듯.
@@ -174,7 +175,7 @@ private:
 	//제안서 내용 토대로 샷건에서 소총으로 교체
 	//주석 SHOTGUN 처리 -> RIFLE(소총)으로 교체
 
-	enum WPTYPE {
+	enum class WPTYPE {
 		NONE =0,
 		FIST,
 		//KNIFE, TODO Maybe someday...
@@ -195,6 +196,8 @@ private:
 	unsigned __int64 attack_Speed = 0;
 	unsigned __int64 projectile_Life = 0; // 투사체 수명 정하는 것. 근접공격은 공격 프레임 동안만 스폰하게, 총알은 어딘가에 충돌할때까지.
 	float projecttile_Speed = 0.0f;
+	int projectile_Count = 1; // 나중에 샷건 만든다면 이거 쓸거.
+	float projectile_Deviation = 0.0f; // 근접 쓸땐 0이지만, 원거리 무기는 탄퍼짐이 있어야 하니...
 
 
 	//근거리 무기 리치 변수
