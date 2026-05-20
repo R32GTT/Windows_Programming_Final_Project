@@ -97,7 +97,7 @@ private:
 	//적 시야 변수 추가
 	//시야를 float로 할까 아니면 int로 할 까???
 	//후에 논의 필요
-	float sight = 0;
+	
 
 public:
 
@@ -116,8 +116,11 @@ public:
 
 
 	}
+
+	//적 공격 적 시야 적 이동범위 함수 뼈대
 	//void EmAttack();
 	//void EmSight();
+	//void EnemyRange();
 
 	//죽음 체크하는 함수(적 버전 추가)
 	//플레이어랑 적이랑 다를 필요가 없어서 VIRTUAL 선언함
@@ -208,7 +211,6 @@ public:
 //I need to change this....
 //bool is_Hit = false;
 //Change ITEM class to Weapon Class
-
 class Weapon : public GameObject {
 
 private:
