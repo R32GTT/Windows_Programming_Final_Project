@@ -51,9 +51,21 @@ private:
 
 public:
 
-	//플레이어 이동 공격 아이템 획득 함수
-	void Move();
-	void Attack();
+	//플레이어 이동 함수
+	//이동 함수 보류
+	void Move() {
+
+		//pos.x 
+		//pos.y
+
+		//facingDir.x
+		//facingDir.y
+
+		//movingDir.x
+		//movingDir.y
+
+	}
+	//void Attack();
 	//void GetItem();
 
 	//둘이 달라야 하나??? 죽음
@@ -89,10 +101,23 @@ private:
 
 public:
 
-	//적 이동 적 공격 적 시야 함수
-	void EmMove();
-	void EmAttack();
-	void EmSight();
+	//적 이동 함수
+	//보류
+	void EmMove() {
+
+		//pos.x 
+		//pos.y
+
+		//facingDir.x
+		//facingDir.y
+
+		//movingDir.x
+		//movingDir.y
+
+
+	}
+	//void EmAttack();
+	//void EmSight();
 
 	//죽음 체크하는 함수(적 버전 추가)
 	//플레이어랑 적이랑 다를 필요가 없어서 VIRTUAL 선언함
