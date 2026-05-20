@@ -52,9 +52,8 @@ private:
 public:
 
 	//플레이어 이동 공격 아이템 획득 함수
-	//Move()함수의 매개변수와 
-	//void Move();
-	//void Attack();
+	void Move();
+	void Attack();
 	//void GetItem();
 
 	//둘이 달라야 하나??? 죽음
@@ -91,9 +90,9 @@ private:
 public:
 
 	//적 이동 적 공격 적 시야 함수
-	//void EmMove();
-	//void EmAttack();
-	//void EmSight();
+	void EmMove();
+	void EmAttack();
+	void EmSight();
 
 	//죽음 체크하는 함수(적 버전 추가)
 	//플레이어랑 적이랑 다를 필요가 없어서 VIRTUAL 선언함
@@ -162,10 +161,11 @@ public:
 //ENTITY -> DECO
 //DECO를 못 봄 이걸로 수정함
 //DECO 클래스 layer는 2 type 설정
+//DECO class POINT start end 수정
 class DECO : public GameObject {
 
 private:
-	D2D1_RECT_F floorCoords{};
+	D2D1_RECT_F decoCoords{};
 public:
 	DECO() {
 		layer = 2;
@@ -175,6 +175,8 @@ public:
 	DECO(POINT start, POINT end) {
 		layer = 2;
 		type = OBJECTTYPE::DECO;
+		decoCoords.left = start.x; decoCoords.top = start.y;
+		decoCoords.right = end.x; decoCoords.bottom = end.y;
 	}
 };
 
