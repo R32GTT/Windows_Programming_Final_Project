@@ -136,6 +136,9 @@
   <ItemGroup>
     <ClCompile Include="GameEngine\FileBase\FileBase.cpp" />
     <ClCompile Include="GameEngine\Camera.cpp" />
+    <ClCompile Include="GameEngine\FileBase\FileTypes\FlipBook.cpp" />
+    <ClCompile Include="GameEngine\FileBase\FileTypes\Sprite.cpp" />
+    <ClCompile Include="GameEngine\FileBase\FileTypes\Texture.cpp" />
     <ClCompile Include="GameEngine\FileManager.cpp" />
     <ClCompile Include="GameEngine\GameEngine.cpp" />
     <ClCompile Include="GameEngine\GameObject.cpp" />
@@ -153,6 +156,8 @@
     <ClInclude Include="GameEngine\FileBase\FileBase.h" />
     <ClInclude Include="GameEngine\Camera.h" />
     <ClInclude Include="Enums.h" />
+    <ClInclude Include="GameEngine\FileBase\FileTypes\FlipBook.h" />
+    <ClInclude Include="GameEngine\FileBase\FileTypes\Sprite.h" />
     <ClInclude Include="GameEngine\FileBase\FileTypes\Texture.h" />
     <ClInclude Include="GameEngine\FileManager.h" />
     <ClInclude Include="GameEngine\GameEngine.h" />

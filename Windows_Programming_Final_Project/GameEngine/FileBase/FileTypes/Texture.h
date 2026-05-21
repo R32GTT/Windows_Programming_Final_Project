@@ -2,7 +2,7 @@
 #include "pch.h"
 #include "../FileBase.h"
 
-class Texture
+class Texture : public FileBase
 {
 public:
 	Texture();
@@ -12,6 +12,10 @@ public:
 	HDC			GetDC();
 
 	void		SetSize(Vec2<int> size) { _size = size; };
+	Vec2<int>	GetSize() { return _size; };
+
+	void SetTransparent(unsigned int transparent) { _transparent = transparent; };
+	unsigned int GetTransparent() { return _transparent; };
 
 
 private:

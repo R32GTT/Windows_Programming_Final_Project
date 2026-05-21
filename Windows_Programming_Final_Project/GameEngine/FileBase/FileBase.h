@@ -1,6 +1,7 @@
 #pragma once
 class FileBase
 {
+public:
 	FileBase();
 	virtual ~FileBase();
 

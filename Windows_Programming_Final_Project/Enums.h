@@ -18,3 +18,11 @@ enum class OBJECTTYPE {
 	WALL,
 	FLOOR
 };
+
+enum class PlayerState
+{
+	IDLE,
+	MOVE,
+	EXECUTE,
+	DEAD
+};
