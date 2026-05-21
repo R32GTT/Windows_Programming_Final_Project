@@ -37,6 +37,9 @@ private:
 	//적 처형 변수 추가
 	bool is_ExeCute = false;
 
+	//무기 확인용 변수 추가
+	Weapon* weapon = nullptr;
+
 public:
 
 	//플레이어 이동 함수
@@ -62,6 +65,20 @@ public:
 	bool CheckDead() override { //살아있으면 FALSE, 죽었으면 TRUE
 		return (is_Dead);
 	}
+
+	//플레이어 무기유무 함수 수정하기
+	//HasWeapon에서 주먹 근거리 원거리 체크하고
+	bool HasWeapon() {
+		
+		//Weapon::What_Weapon
+
+	}
+
+	//무기를 버렸는지 유무확인
+	bool DropWeapon() {
+
+	}
+
 
 	//플레이어 무기 획득 함수 추가
 	bool GetItem() {
@@ -232,7 +249,7 @@ private:
 	//탄약용 변수
 	int ammo = 0;
 
-	
+
 
 
 public:
