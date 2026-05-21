@@ -2,7 +2,6 @@
 #include "pch.h"
 #include "Utility/Vec2.h"
 
-
 class GameObject
 {
 public:
@@ -93,11 +92,6 @@ private:
 	//기절과 죽음 유무 Enemy로 이동함
 	bool is_Unconsious = false;
 	bool is_Dead = false;
-
-	//적 시야 변수 추가
-	//시야를 float로 할까 아니면 int로 할 까???
-	//후에 논의 필요
-	
 
 public:
 
@@ -215,8 +209,6 @@ class Weapon : public GameObject {
 
 private:
 	
-	//제안서 내용 토대로 샷건에서 소총으로 교체
-	//주석 SHOTGUN 처리 -> RIFLE(소총)으로 교체
 	enum class WPTYPE {
 		NONE =0,
 		FIST,
@@ -229,7 +221,6 @@ private:
 		TOTAL_COUNT
 	};
 
-	//Gun -> RIFLE로 수정함
 	bool is_RIFLE = false;
 	bool is_Meele = false;
 	bool is_Fist = true;
@@ -258,25 +249,21 @@ private:
 public:
 
 	//무기 체크 함수
-	//주먹용 체크
-	//근거리 체크
-	//원거리 체크
-	//탄창 체크
+	//수정해서 하나로 합치기 
 
+	//어떤 무기인지 체크하는 함수(주먹인지 근접무기인지 원거리 무기인자)
+	bool What_Weapon() {
 
-	//주먹 체크함수
-	bool GetFist() {
-		return (is_Fist);
-	}
+		if (is_Fist) {
+			return (is_Fist);
+		}
+		else if (is_Meele) {
+			return (is_Meele);
+		}
+		else {
+			return (is_RIFLE);
+		}
 
-	//근접무기 체크함수
-	bool GetMeele() {
-		return (is_Meele);
-	}
-
-	//원거리무기 체크함수
-	bool GetGun() {
-		return (is_RIFLE);
 	}
 
 	//탄창 빈 유무 체크함수
