@@ -42,6 +42,9 @@
     <ClCompile Include="GameEngine\Camera.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="GameEngine\SceneManager.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameEngine\GameObject.h">
@@ -75,6 +78,12 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="GameEngine\Managers.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngine\SceneManager.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Enums.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

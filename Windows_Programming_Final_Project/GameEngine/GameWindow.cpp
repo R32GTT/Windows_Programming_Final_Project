@@ -21,7 +21,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         return FALSE;
 
     GameEngine GE;
-    GE.Init(hInstance);
+    GE.Init(g_hWnd);
 
 
     MSG msg{};
