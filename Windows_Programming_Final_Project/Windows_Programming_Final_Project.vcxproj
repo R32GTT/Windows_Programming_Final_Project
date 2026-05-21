@@ -152,6 +152,7 @@
     <ClInclude Include="GameEngine\FileManageer.h" />
     <ClInclude Include="GameEngine\GameEngine.h" />
     <ClInclude Include="GameEngine\GameObject.h" />
+    <ClInclude Include="GameEngine\Managers.h" />
     <ClInclude Include="GameEngine\Utility\Vec2.h" />
     <ClInclude Include="GameEngine\InputManager.h" />
     <ClInclude Include="GameEngine\GameWindow.h" />
