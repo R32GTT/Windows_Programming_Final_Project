@@ -134,8 +134,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="GameEngine\FileBase\FileBase.cpp" />
     <ClCompile Include="GameEngine\Camera.cpp" />
-    <ClCompile Include="GameEngine\FileManageer.cpp" />
+    <ClCompile Include="GameEngine\FileManager.cpp" />
     <ClCompile Include="GameEngine\GameEngine.cpp" />
     <ClCompile Include="GameEngine\GameObject.cpp" />
     <ClCompile Include="GameEngine\Utility\Vec2.cpp" />
@@ -149,9 +150,11 @@
     <ClCompile Include="GameEngine\SceneManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GameEngine\FileBase\FileBase.h" />
     <ClInclude Include="GameEngine\Camera.h" />
     <ClInclude Include="Enums.h" />
-    <ClInclude Include="GameEngine\FileManageer.h" />
+    <ClInclude Include="GameEngine\FileBase\FileTypes\Texture.h" />
+    <ClInclude Include="GameEngine\FileManager.h" />
     <ClInclude Include="GameEngine\GameEngine.h" />
     <ClInclude Include="GameEngine\GameObject.h" />
     <ClInclude Include="GameEngine\Managers.h" />

@@ -1,7 +1,7 @@
 #pragma once
 #include "pch.h"
 #include "../Enums.h"
-#include "Utility/Vec2.h"
+
 
 class GameObject
 {
