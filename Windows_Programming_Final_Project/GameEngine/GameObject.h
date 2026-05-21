@@ -37,8 +37,6 @@ private:
 	//적 처형 변수 추가
 	bool is_ExeCute = false;
 
-	//무기 확인용 변수 추가
-	Weapon* weapon = nullptr;
 
 public:
 
@@ -185,11 +183,7 @@ public:
 	}
 };
 
-//벽이 아닌 객체용 클래스
-//ENTITY -> DECO
-//DECO를 못 봄 이걸로 수정함
-//DECO 클래스 layer는 2 type 설정
-//DECO class POINT start end 수정
+
 class DECO : public GameObject {
 
 private:
@@ -257,7 +251,7 @@ public:
 	//무기 체크 함수
 	//수정해서 하나로 합치기 
 
-	//어떤 무기인지 체크하는 함수(주먹인지 근접무기인지 원거리 무기인자)
+	//어떤 무기인지 체크하는 함수(주먹인지 근접무기인지 원거리 무기인지)
 	bool What_Weapon() {
 
 		if (is_Fist) {
