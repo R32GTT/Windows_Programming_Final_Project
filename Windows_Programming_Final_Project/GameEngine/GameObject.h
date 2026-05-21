@@ -1,22 +1,11 @@
 #pragma once
 #include "pch.h"
+#include "../Enums.h"
 #include "Utility/Vec2.h"
-
 
 class GameObject
 {
 public:
-
-	enum OBJECTTYPE{
-		NONE = 0,
-		PLAYER = 1,
-		ENEMY = 2,
-		WEAPON = 3,
-		PROJECTILE,
-		DECO,
-		WALL,
-		FLOOR
-	};
 
 	GameObject();
 	virtual ~GameObject();
@@ -32,8 +21,7 @@ public:
 	Vec2<float> movingDir{};
 	float speed{};
 	int layer{};
-	// sprite 타입도 넣어놔야 할듯.
-	// DX2D 쓰려면 HBITMAP 넣어두는건 제쳐두고...
+	
 	OBJECTTYPE type = OBJECTTYPE::NONE;
 };
 

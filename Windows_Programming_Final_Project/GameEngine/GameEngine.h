@@ -7,7 +7,7 @@ public:
 	GameEngine();
 	~GameEngine();
 
-	void Init(HINSTANCE hInst);
+	void Init(HWND hWnd);
 	void Update();
 	void Render();
 
@@ -18,6 +18,6 @@ public:
 
 	// 더블 버퍼링용
 	HDC memDCDB{};
-	HBITMAP memHBITMAP{};
+	HBITMAP memHBITMAPDB{};
 };
 

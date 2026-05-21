@@ -12,13 +12,13 @@ void InputManager::Update()
 	BYTE asciiKeys[KEY_TYPE_COUNT] = {};
 	if (::GetKeyboardState(asciiKeys) == false)
 		return;
-
+	size_t currentVectorSize = _states.size();
 	for (unsigned int key = 0; key < KEY_TYPE_COUNT; key++)
 	{
 		if (asciiKeys[key] & 0x80)
 		{
 			KeyState& state = _states[key];
-
+			
 			if (state == KeyState::Press || state == KeyState::Down)
 				state = KeyState::Press;
 			else
