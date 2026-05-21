@@ -1,5 +1,6 @@
 #pragma once
 #include <cmath>
+#include <cassert>
 #include "pch.h"
 
 template <typename T>
@@ -21,7 +22,6 @@ public:
 	Vec2<T> Normalized();
 	Vec2<T> Reflect(const Vec2& other);
 
-	
 	float Angle();
 	float Dot(Vec2& other);
 	float Aspect() { return x / y; };
@@ -30,35 +30,45 @@ public:
 	bool Is_Equal_Approx(Vec2& other);
 	bool is_Normalized();
 
+	Vec2 operator+(const Vec2& rhs) const { return Vec2(x + rhs.x, y + rhs.y); };
+	Vec2 operator-(const Vec2& rhs) const { return Vec2(x - rhs.x, y - rhs.y); };
 
-	Vec2 operator+(Vec2 rhs) { return Vec2(x + rhs.x, y + rhs.y); };
-	Vec2 operator-(Vec2 rhs) { return Vec2(x - rhs.x, y - rhs.y); };
+	Vec2 operator/(const Vec2& rhs) const { return Vec2(x / rhs.x, y / rhs.y); }; //Vec2로 나누기
+	Vec2 operator/(T scalar) const { return Vec2(x / scalar, y / scalar); };
 
-	Vec2 operator/(Vec2 rhs) { return Vec2(x / rhs.x, y / rhs.y); }; //Vec2로 나누기
-	Vec2 operator/(float rhs) { return Vec2(x / rhs, y / rhs); };	 //Float scalar 나누기
-	Vec2 operator/(int rhs) { return Vec2(x / rhs, y / rhs); };		 //Int scalar 나누기
+	Vec2 operator*(const Vec2& rhs) const { return Vec2(x * rhs.x, y * rhs.y); }; //Vec2 끼리 곱
+	Vec2 operator*(T scalar) const { return Vec2(x * scalar, y * scalar); };
 
-	Vec2 operator*(Vec2 rhs) { return Vec2(x * rhs.x, y * rhs.y); }; //Vec2 끼리 곱
-	Vec2 operator*(float rhs) { return Vec2(x * rhs, y * rhs); };	 //Float scalar 곱
-	Vec2 operator*(int rhs) { return Vec2(x * rhs, y * rhs); };		 //Int scalar 곱
+	Vec2 operator=(const Vec2& rhs) const
+	{
+		x = rhs.x; y = rhs.y;
+		return *this;
+	};
 
-	bool operator<(Vec2 rhs) { return ((x < rhs.x) && (y < rhs.y)); };
-	bool operator<=(Vec2 rhs) { return ((x <= rhs.x) && (y <= rhs.y)); };
-	bool operator==(Vec2 rhs) { return ((x == rhs.x) && (y == rhs.y)); };
-	bool operator>=(Vec2 rhs) { return ((x >= rhs.x) && (y >= rhs.y)); };
-	bool operator>(Vec2 rhs) { return ((x > rhs.x) && (y > rhs.y)); };
-	T operator[](int index) { if (index > 1 || index < 0) return -1; if (index) return y; else return x; };
+	bool operator<(const Vec2& rhs) const
+	{
+		if (x != rhs.x) return x < rhs.x;
+		return y < rhs.y;
+	};
+	bool operator>(const Vec2& rhs) const { return rhs < *this; };
 
-	
+	bool operator<=(const Vec2 & rhs) const { return !(*this > rhs); };
+	bool operator>=(const Vec2 & rhs) const { return !(*this < rhs); };
 
+	T& operator[](int index)
+	{
+		assert(index >= 0 && index <= 1);
+		return (index == 0) ? x : y;
+	};
 
+	const T& operator[](int index) const
+	{
+		assert(index >= 0 && index <= 1);
+		return (index == 0) ? x : y;
+	};
 
-
+	bool operator==(const Vec2 & rhs) const { return (x == rhs.x && y == rhs.y); };
+	bool operator!=(const Vec2 & rhs) const { return !(*this == rhs); };
 
 	T x{}, y{};
-	
-
-
-};
-
-
+	};
