@@ -142,6 +142,7 @@
     <ClCompile Include="GameEngine\FileManager.cpp" />
     <ClCompile Include="GameEngine\GameEngine.cpp" />
     <ClCompile Include="GameEngine\GameObject.cpp" />
+    <ClCompile Include="GameEngine\Scene.cpp" />
     <ClCompile Include="GameEngine\Utility\Vec2.cpp" />
     <ClCompile Include="GameEngine\InputManager.cpp" />
     <ClCompile Include="GameEngine\GameWindow.cpp" />
@@ -163,6 +164,7 @@
     <ClInclude Include="GameEngine\GameEngine.h" />
     <ClInclude Include="GameEngine\GameObject.h" />
     <ClInclude Include="GameEngine\Managers.h" />
+    <ClInclude Include="GameEngine\Scene.h" />
     <ClInclude Include="GameEngine\Utility\Vec2.h" />
     <ClInclude Include="GameEngine\InputManager.h" />
     <ClInclude Include="GameEngine\GameWindow.h" />

@@ -16,11 +16,15 @@ public:
 	
 	virtual bool CheckDead();
 
+	Layers GetLayer() { return layer; };
+
+
 	Vec2<float> pos{};
 	Vec2<float> facingDir{};
 	Vec2<float> movingDir{};
 	float speed{};
-	int layer{};
+	
+	Layers layer = Layers::ACTORS;
 	
 	OBJECTTYPE type = OBJECTTYPE::NONE;
 };

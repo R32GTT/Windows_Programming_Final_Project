@@ -26,3 +26,12 @@ enum class PlayerState
 	EXECUTE,
 	DEAD
 };
+
+enum class Layers
+{
+	FLOOR,
+	ITEM,
+	ACTORS,
+	UI,
+	LAYER_COUNT
+};
