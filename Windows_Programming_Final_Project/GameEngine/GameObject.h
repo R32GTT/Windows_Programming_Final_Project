@@ -27,19 +27,19 @@ public:
 	Layers layer = Layers::ACTORS;
 	
 	OBJECTTYPE type = OBJECTTYPE::NONE;
+
+	//플레이어 상태를 위한 변수 추가
+	PlayerState status = PlayerState::IDLE;
 };
 
+//class Player 수정하기
+//기존의 죽음 유무 그리고 처형 변수 제거
 class Player : public GameObject {
 
 private:
-	//죽음 유무 Player로 이동함
-	bool is_Dead = false;
-
+	
 	//무기 유무 변수 추가
 	bool is_Item = false;
-
-	//적 처형 변수 추가
-	bool is_ExeCute = false;
 
 
 public:
@@ -64,9 +64,10 @@ public:
 	//둘이 달라야 하나??? 죽음
 	//죽음 체크하는 함수(플레이어 버전 추가)
 	//죽음 체크하는 함수 virtual 선언 해서 바꿈. 이제 플레이어나 적이나 둘 다 동일한 함수로 체크함.
-	bool CheckDead() override { //살아있으면 FALSE, 죽었으면 TRUE
-		return (is_Dead);
-	}
+	/*void CheckDead() override { //살아있으면 FALSE, 죽었으면 TRUE
+		status = PlayerState::DEAD;
+		//return status;
+	}*/
 
 	//플레이어 무기유무 함수 수정하기
 	//HasWeapon에서 주먹 근거리 원거리 체크하고
@@ -89,7 +90,7 @@ public:
 
 	//플레이어 적 처형 함수 추가
 	bool Execute() {
-		return (is_ExeCute);
+		//return (is_ExeCute);
 	}
 
 };
