@@ -151,13 +151,11 @@ private:
 
 public:
 	Wall() {
-		layer = 5;
 		type = OBJECTTYPE::WALL;
 	}
 	
 	Wall(POINT start, POINT end)
 	{
-		layer = 5;
 		type = OBJECTTYPE::WALL;
 		wallCoords.left = start.x; wallCoords.top = start.y;
 		wallCoords.right = end.x; wallCoords.bottom = end.y;
@@ -174,14 +172,12 @@ private:
 
 public:
 	Floor(){
-		layer = 1;
-		type = OBJECTTYPE::FLOOR;
+		layer = Layers::FLOOR;
 	}
 
 	Floor(POINT start, POINT end)
 	{
-		layer = 1;
-		type = OBJECTTYPE::FLOOR;
+		layer = Layers::FLOOR;
 		floorCoords.left = start.x; floorCoords.top = start.y;
 		floorCoords.right = end.x; floorCoords.bottom = end.y;
 	}
@@ -194,12 +190,10 @@ private:
 	D2D1_RECT_F decoCoords{};
 public:
 	DECO() {
-		layer = 2;
 		type = OBJECTTYPE::DECO;
 	}
 
 	DECO(POINT start, POINT end) {
-		layer = 2;
 		type = OBJECTTYPE::DECO;
 		decoCoords.left = start.x; decoCoords.top = start.y;
 		decoCoords.right = end.x; decoCoords.bottom = end.y;
