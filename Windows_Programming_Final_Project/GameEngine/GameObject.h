@@ -41,6 +41,8 @@ private:
 	//무기 유무 변수 추가
 	bool is_Item = false;
 
+	//무기 버림유무 변수 추가
+	bool is_drop = false;
 
 public:
 
@@ -76,11 +78,20 @@ public:
 	bool HasWeapon() {
 		
 		//Weapon::What_Weapon
+		//무기는 Weapon을 쓸까 아니면 ITEM을 사용할까???
 
 	}
 
 	//무기를 버렸는지 유무확인
 	bool DropWeapon() {
+
+		if (is_drop == true) {
+			return (is_drop);
+		}
+		else {
+			is_drop = false;
+			return (is_drop);
+		}
 
 	}
 
