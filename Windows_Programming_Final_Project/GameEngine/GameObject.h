@@ -48,6 +48,8 @@ public:
 	//이동 함수 보류
 	void Move() {
 
+		status = PlayerState::MOVE;
+
 		//pos.x 
 		//pos.y
 
@@ -82,6 +84,16 @@ public:
 
 	}
 
+	//플레이어가 죽었는지 확인할때
+	bool is_alive() {
+
+		//if(false)
+		status = PlayerState::DEAD;
+		//else
+		//alive true
+
+	}
+
 
 	//플레이어 무기 획득 함수 추가
 	bool GetItem() {
@@ -91,6 +103,7 @@ public:
 	//플레이어 적 처형 함수 추가
 	bool Execute() {
 		//return (is_ExeCute);
+		status = PlayerState::EXECUTE;
 	}
 
 };
