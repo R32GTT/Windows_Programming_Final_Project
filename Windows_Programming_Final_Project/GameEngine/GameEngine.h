@@ -11,7 +11,7 @@ public:
 	void Update();
 	void Render();
 
-
+private:
 	RECT rect;
 	HWND memhWnd{};
 	HDC memDC{};
@@ -19,5 +19,8 @@ public:
 	// 더블 버퍼링용
 	HDC memDCDB{};
 	HBITMAP memHBITMAPDB{};
+
+	float _accumulator = 0.f;
+	const float _FIXED_DT = 1.0f / 60.0f;
 };
 

@@ -4,15 +4,6 @@
 #include "Enums.h"
 
 class Player : public GameObject {
-
-private:
-
-	//무기 유무 변수 추가
-	bool is_Item = false;
-
-	//무기 버림유무 변수 추가
-	bool is_drop = false;
-
 public:
 
 	Player();
@@ -20,7 +11,7 @@ public:
 
 	virtual void Init() override;
 	virtual void Update() override;
-	virtual void Render(HDC hdc) override
+	virtual void Render(HDC hdc, float alpha) override
 	{
 		Ellipse(hdc, pos.x - 10, pos.y - 10, pos.x + 10, pos.y + 10);
 	}
@@ -103,5 +94,15 @@ public:
 		status = PlayerState::EXECUTE;
 		return (status);
 	}
+
+private:
+
+	//무기 유무 변수 추가
+	bool is_Item = false;
+
+	//무기 버림유무 변수 추가
+	bool is_drop = false;
+
+	PlayerState status = PlayerState::IDLE;
 
 };

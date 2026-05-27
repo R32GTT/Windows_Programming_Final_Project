@@ -33,15 +33,31 @@ void GameEngine::Init(HWND hWnd)
 
 void GameEngine::Update()
 {
-	GET_SINGLE(TimeManager)->Update();
-	GET_SINGLE(InputManager)->Update();
-	GET_SINGLE(SceneManager)->Update();
 
+	
+	GET_SINGLE(TimeManager)->Update();
+	float dt = GET_SINGLE(TimeManager)->GetDeltaTime();
+
+	if (dt > 0.25f)
+		dt = 0.25f;
+
+	_accumulator += dt;
+
+	while (_accumulator >= _FIXED_DT)
+	{
+
+		GET_SINGLE(InputManager)->Update();
+		GET_SINGLE(SceneManager)->Update();
+
+		_accumulator -= _FIXED_DT;
+	}
 
 }
 
 void GameEngine::Render()
 {
+	float alpha = _accumulator / _FIXED_DT;
+
 	GET_SINGLE(SceneManager)->Render(memDCDB);
 
 	unsigned int fps = GET_SINGLE(TimeManager)->GetFps();

@@ -49,3 +49,8 @@ void SceneManager::ChangeScene(SceneType sceneType)
 
 	newScene->Init();
 }
+
+void SceneManager::ChangeScene(SceneType sceneType, const std::wstring& mapFilePath)
+{
+	
+}

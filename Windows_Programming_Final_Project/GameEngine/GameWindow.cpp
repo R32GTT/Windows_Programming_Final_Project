@@ -25,7 +25,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 
     MSG msg{};
-    unsigned __int64  prevTick = 0;
 
     while (msg.message != WM_QUIT)
     {
@@ -36,14 +35,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         }
         else
         {
-            unsigned __int64 now = ::GetTickCount64();
-
-            {
                 GE.Update();
                 GE.Render();
-
-                prevTick = now;
-            }
         }
     }
 

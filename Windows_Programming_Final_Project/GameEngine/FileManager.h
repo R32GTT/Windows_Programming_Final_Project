@@ -30,6 +30,7 @@ public:
 	FlipBook* CreateFlipBook(const std::wstring& key);
 
 
+
 private:
 	HWND hWnd{};
 	fs::path filePath{};

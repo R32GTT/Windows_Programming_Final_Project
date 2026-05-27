@@ -9,32 +9,34 @@ public:
 
 	virtual void Init();
 	virtual void Update();
-	virtual void Render(HDC hdc);
-	
+	virtual void Render(HDC hdc, float alpha);
 	virtual bool CheckDead();
+
+	bool operator==(const GameObject& rhs) { return _id == rhs._id; };
+
+	Vec2<float> GetRenderPos(float alpha);
+
 
 	unsigned int GetID() const { return _id; };
 
 	void SetPos(Vec2<float> POS) { pos = POS; };
+	void SavePrevPos() { prevPos = pos; };
 
-	bool operator==(const GameObject& rhs) { return _id == rhs._id; };
 
 	Layers GetLayer() { return layer; };
 
-
+protected:
 	Vec2<float> pos{};
+	Vec2<float> prevPos{};
 	Vec2<float> facingDir{};
 	Vec2<float> movingDir{};
 	float speed{};
-	
+
 	static unsigned int _sNextId;
 
 	unsigned int _id{};
-	
-	Layers layer = Layers::ACTORS;
-	
-	OBJECTTYPE type = OBJECTTYPE::NONE;
 
-	//플레이어 상태를 위한 변수 추가
-	PlayerState status = PlayerState::IDLE;
+	Layers layer = Layers::ACTORS;
+
+	OBJECTTYPE type = OBJECTTYPE::NONE;
 };

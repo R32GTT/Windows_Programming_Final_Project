@@ -20,11 +20,18 @@ void GameObject::Update()
 {
 }
 
-void GameObject::Render(HDC)
+void GameObject::Render(HDC hdc, float alpha)
 {
 }
+
+
 
 bool GameObject::CheckDead()
 {
 	return false;
+}
+
+Vec2<float> GameObject::GetRenderPos(float alpha)
+{
+	return prevPos * (1.0f - alpha) + pos * alpha;
 }

@@ -14,6 +14,7 @@ public:
 	void Clear();
 
 	void ChangeScene(SceneType sceneType);
+	void ChangeScene(SceneType sceneType, const std::wstring& mapFilePath);
 	Scene* GetCurrentScene() { return _scene; };
 
 	Vec2<int> GetCameraPos() { return cameraPos; };
@@ -23,6 +24,6 @@ private:
 	Scene* _scene;
 	SceneType _sceneType = SceneType::NONE;
 
-	Vec2<int> cameraPos = { 400,300 };
+	Vec2<int> cameraPos{};
 };
 
