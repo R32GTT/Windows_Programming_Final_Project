@@ -151,6 +151,18 @@ public:
 
 	}
 
+	//일반적인지 덩치인지 구분하는 함수
+	EnemyType What_Enemy() {
+
+		if (_enemyType != EnemyType::NORMAL) {
+			_enemyType = EnemyType::ARMORED;
+			return (_enemyType);
+		}
+		else {
+			return (_enemyType);
+		}
+	}
+
 	//적 공격 적 시야 적 이동범위 함수 뼈대
 	//void EmAttack();
 	//void EmSight();
