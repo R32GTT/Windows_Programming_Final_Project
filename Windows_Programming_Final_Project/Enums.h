@@ -19,14 +19,13 @@ enum class OBJECTTYPE {
 	FLOOR
 };
 
-//ALIVE 하나 추가 됨
+
 enum class PlayerState
 {
 	IDLE,
 	MOVE,
 	EXECUTE,
 	DEAD,
-	ALIVE
 };
 
 enum class Layers

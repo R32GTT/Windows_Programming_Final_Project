@@ -106,7 +106,6 @@ public:
 	PlayerState is_alive() {
 
 		if (status != PlayerState::DEAD) {
-			status = PlayerState::ALIVE;
 			return (status);
 		}
 		else if (status == PlayerState::DEAD) {
