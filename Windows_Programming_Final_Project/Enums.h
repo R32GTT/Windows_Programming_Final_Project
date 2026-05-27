@@ -10,9 +10,9 @@ enum class SceneType
 
 enum class OBJECTTYPE {
 	NONE = 0,
-	PLAYER = 1,
-	ENEMY = 2,
-	WEAPON = 3,
+	PLAYER,
+	ENEMY,
+	WEAPON,
 	PROJECTILE,
 	DECO,
 	WALL,
@@ -26,6 +26,13 @@ enum class PlayerState
 	MOVE,
 	EXECUTE,
 	DEAD,
+};
+
+enum class EnemyType
+{
+	NORMAL = 0,
+	// Dog,
+	ARMORED
 };
 
 enum class Layers
