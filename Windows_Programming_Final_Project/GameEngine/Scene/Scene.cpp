@@ -42,6 +42,11 @@ void Scene::Render(HDC hdc)
 			object->Render(hdc);
 }
 
+GameObject* Scene::GetGameObjectByID(unsigned int ID)
+{
+	
+}
+
 void Scene::AddObject(GameObject* object)
 {
 	if (object == nullptr)

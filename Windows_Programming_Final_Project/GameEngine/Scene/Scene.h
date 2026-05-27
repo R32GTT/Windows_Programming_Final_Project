@@ -13,6 +13,14 @@ public:
 	virtual void Update() abstract;
 	virtual void Render(HDC hdc) abstract;
 
+	GameObject* GetGameObjectByID(unsigned int ID);
+
+	std::vector<GameObject*> GetGameObjectLayer(GameObject* object) {
+		return _objects[(int)object->layer];
+	}
+
+
+
 	void AddObject(GameObject* object);
 	void RemoveObject(GameObject* object);
 

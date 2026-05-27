@@ -1,8 +1,11 @@
 #include "pch.h"
 #include "GameObject.h"
 
+unsigned int GameObject::_sNextId = 1;
+
 GameObject::GameObject()
 {
+	_id = _sNextId++;
 }
 
 GameObject::~GameObject()
