@@ -41,12 +41,16 @@ private:
 	//무기 유무 변수 추가
 	bool is_Item = false;
 
+	//무기 버림유무 변수 추가
+	bool is_drop = false;
 
 public:
 
 	//플레이어 이동 함수
 	//이동 함수 보류
 	void Move() {
+
+		status = PlayerState::MOVE;
 
 		//pos.x 
 		//pos.y
@@ -74,11 +78,35 @@ public:
 	bool HasWeapon() {
 		
 		//Weapon::What_Weapon
+		//무기는 Weapon을 쓸까 아니면 ITEM을 사용할까???
 
 	}
 
 	//무기를 버렸는지 유무확인
 	bool DropWeapon() {
+
+		if (is_drop == true) {
+			return (is_drop);
+		}
+		else {
+			is_drop = false;
+			return (is_drop);
+		}
+
+	}
+
+	//플레이어가 가만히 있을때
+	bool is_still() {
+		status = PlayerState::IDLE;
+	}
+
+	//플레이어가 죽었는지 확인할때
+	bool is_alive() {
+
+		//if(false)
+		status = PlayerState::DEAD;
+		//else
+		//alive true
 
 	}
 
@@ -91,6 +119,7 @@ public:
 	//플레이어 적 처형 함수 추가
 	bool Execute() {
 		//return (is_ExeCute);
+		status = PlayerState::EXECUTE;
 	}
 
 };
@@ -224,6 +253,9 @@ private:
 	bool is_Meele = false;
 	bool is_Fist = true;
 
+	//총이 지금 발사되고 있는지 판단 변수
+	bool is_Shoot = false;
+
 	//탄창 다 사용했는지 아닌지 유무판단
 	bool is_OUT = false;
 
@@ -265,9 +297,25 @@ public:
 
 	}
 
+	//총이 발사되는 중임을 보는 함수
+	//탄창수에 따라 살짝 변경함
+	bool Shooting() {
+		if (ammo > 0) {
+			is_Shoot = true;
+			ammo--;
+			return (is_Shoot);
+		}
+	}
+
 	//탄창 빈 유무 체크함수
+	//다시 살짝 변경 함
+	//ammo가 0이 될때 is_Shoot을 false로 하고
+	//비었음을 리턴한다
 	bool CheckAmo() {
-		return (is_OUT);
+		if (ammo == 0) {
+			is_Shoot = false;
+			return (is_OUT);
+		}
 	}
 
 
