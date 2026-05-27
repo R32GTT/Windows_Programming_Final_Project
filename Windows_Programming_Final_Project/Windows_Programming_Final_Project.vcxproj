@@ -167,6 +167,7 @@
     <ClInclude Include="GameEngine\GameEngine.h" />
     <ClInclude Include="GameEngine\GameObject.h" />
     <ClInclude Include="GameEngine\Managers.h" />
+    <ClInclude Include="GameEngine\Objects\Player.h" />
     <ClInclude Include="GameEngine\Scene\DevScene.h" />
     <ClInclude Include="GameEngine\Scene\EditScene.h" />
     <ClInclude Include="GameEngine\Scene\Scene.h" />
