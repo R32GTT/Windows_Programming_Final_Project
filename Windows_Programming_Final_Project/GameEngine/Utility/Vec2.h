@@ -30,14 +30,14 @@ public:
 	bool Is_Equal_Approx(Vec2& other);
 	bool is_Normalized();
 
-	Vec2 operator+(const Vec2& rhs) { return Vec2(x + rhs.x, y + rhs.y); };
-	Vec2 operator-(const Vec2& rhs) { return Vec2(x - rhs.x, y - rhs.y); };
+	Vec2 operator+(const Vec2& rhs)const { return Vec2(x + rhs.x, y + rhs.y); };
+	Vec2 operator-(const Vec2& rhs)const  { return Vec2(x - rhs.x, y - rhs.y); };
 
-	Vec2 operator/(const Vec2& rhs) { return Vec2(x / rhs.x, y / rhs.y); }; //Vec2로 나누기
-	Vec2 operator/(T scalar) { return Vec2(x / scalar, y / scalar); };
+	Vec2 operator/(const Vec2& rhs)const { return Vec2(x / rhs.x, y / rhs.y); }; //Vec2로 나누기
+	Vec2 operator/(T scalar)const { return Vec2(x / scalar, y / scalar); };
 
-	Vec2 operator*(const Vec2& rhs) { return Vec2(x * rhs.x, y * rhs.y); }; //Vec2 끼리 곱
-	Vec2 operator*(T scalar) { return Vec2(x * scalar, y * scalar); };
+	Vec2 operator*(const Vec2& rhs)const { return Vec2(x * rhs.x, y * rhs.y); }; //Vec2 끼리 곱
+	Vec2 operator*(T scalar)const { return Vec2(x * scalar, y * scalar); };
 
 	Vec2 operator=(const Vec2& rhs)
 	{

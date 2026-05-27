@@ -108,7 +108,7 @@
       <LanguageStandard_C>stdclatest</LanguageStandard_C>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Scene;$(ProjectDir)Objects;$(ProjectDir)Utility;$(ProjectDir)GameEngine;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -126,7 +126,7 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Scene;$(ProjectDir)Objects;$(ProjectDir)Utility;$(ProjectDir)GameEngine;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -142,7 +142,8 @@
     <ClCompile Include="GameEngine\FileManager.cpp" />
     <ClCompile Include="GameEngine\GameEngine.cpp" />
     <ClCompile Include="GameEngine\GameObject.cpp" />
-    <ClCompile Include="GameEngine\Scene.cpp" />
+    <ClCompile Include="GameEngine\Scene\EditScene.cpp" />
+    <ClCompile Include="GameEngine\Scene\Scene.cpp" />
     <ClCompile Include="GameEngine\Utility\Vec2.cpp" />
     <ClCompile Include="GameEngine\InputManager.cpp" />
     <ClCompile Include="GameEngine\GameWindow.cpp" />
@@ -154,6 +155,7 @@
     <ClCompile Include="GameEngine\SceneManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GameEngine\CollisionManager.h" />
     <ClInclude Include="GameEngine\FileBase\FileBase.h" />
     <ClInclude Include="GameEngine\Camera.h" />
     <ClInclude Include="Enums.h" />
@@ -164,7 +166,8 @@
     <ClInclude Include="GameEngine\GameEngine.h" />
     <ClInclude Include="GameEngine\GameObject.h" />
     <ClInclude Include="GameEngine\Managers.h" />
-    <ClInclude Include="GameEngine\Scene.h" />
+    <ClInclude Include="GameEngine\Scene\EditScene.h" />
+    <ClInclude Include="GameEngine\Scene\Scene.h" />
     <ClInclude Include="GameEngine\Utility\Vec2.h" />
     <ClInclude Include="GameEngine\InputManager.h" />
     <ClInclude Include="GameEngine\GameWindow.h" />

@@ -4,6 +4,7 @@
 enum class KeyType
 {
 	LeftMouse = VK_LBUTTON,
+	MiddleMouse = VK_MBUTTON,
 	RightMouse = VK_RBUTTON,
 
 	Up = VK_UP,
@@ -14,6 +15,10 @@ enum class KeyType
 
 	KEY_1 = '1',
 	KEY_2 = '2',
+	KEY_3 = '3',
+	KEY_4 = '4',
+	KEY_5 = '5',
+	KEY_6 = '6',
 
 	W = 'W',
 	A = 'A',
