@@ -118,9 +118,10 @@ public:
 	}
 
 	//플레이어 적 처형 함수 추가
-	bool Execute() {
-		//return (is_ExeCute);
+	//플레이어 적 처형 함수 변형
+	PlayerState Execute() {
 		status = PlayerState::EXECUTE;
+		return (status);
 	}
 
 };
