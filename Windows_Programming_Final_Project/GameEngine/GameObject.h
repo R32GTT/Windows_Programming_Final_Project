@@ -53,7 +53,8 @@ public:
 
 	//플레이어 이동 함수
 	//이동 함수 보류
-	void Move() {
+	//이동 함수 PlayerState::MOVE 추가
+	PlayerState Move() {
 
 		status = PlayerState::MOVE;
 
@@ -66,9 +67,8 @@ public:
 		//movingDir.x
 		//movingDir.y
 
+		return (status);
 	}
-	//void Attack();
-	//void GetItem();
 
 	//둘이 달라야 하나??? 죽음
 	//죽음 체크하는 함수(플레이어 버전 추가)
@@ -119,16 +119,16 @@ public:
 
 	}
 
-
 	//플레이어 무기 획득 함수 추가
 	bool GetItem() {
 		return (is_Item);
 	}
 
 	//플레이어 적 처형 함수 추가
-	bool Execute() {
-		//return (is_ExeCute);
+	//플레이어 적 처형 함수 변형
+	PlayerState Execute() {
 		status = PlayerState::EXECUTE;
+		return (status);
 	}
 
 };
@@ -157,6 +157,20 @@ public:
 		//movingDir.y
 
 
+	}
+
+	//일반적인지 덩치인지 구분하는 함수
+	EnemyType What_Enemy() {
+
+		type = OBJECTTYPE::ENEMY;
+
+		if (_enemyType != EnemyType::NORMAL) {
+			_enemyType = EnemyType::ARMORED;
+			return (_enemyType);
+		}
+		else {
+			return (_enemyType);
+		}
 	}
 
 	//적 공격 적 시야 적 이동범위 함수 뼈대
@@ -282,10 +296,8 @@ private:
 
 	//원거리 무기용 변수 추가
 	//탄약용 변수
-	int ammo = 0;
-
-
-
+	//변수 변경 0 -> 26
+	int ammo = 26;
 
 public:
 
@@ -293,7 +305,10 @@ public:
 	//수정해서 하나로 합치기 
 
 	//어떤 무기인지 체크하는 함수(주먹인지 근접무기인지 원거리 무기인지)
+	//OBJECTTYPE를 이용하여 변경
 	bool What_Weapon() {
+
+		type = OBJECTTYPE::WEAPON;
 
 		if (is_Fist) {
 			return (is_Fist);
