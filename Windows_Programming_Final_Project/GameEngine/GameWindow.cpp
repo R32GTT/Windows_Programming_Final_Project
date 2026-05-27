@@ -78,7 +78,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
     RECT windowRect{ 0,0,WinSizeX,WinSizeY };
     ::AdjustWindowRect(&windowRect, WS_SYSMENU|WS_CAPTION|WS_OVERLAPPED, false);
 
-    HWND hWnd = CreateWindowW(L"WNPGFINAL", L"Client", WS_SYSMENU | WS_CAPTION | WS_OVERLAPPED,
+    HWND hWnd = CreateWindowW(L"WNPGFINAL", L"HL Clone", WS_SYSMENU | WS_CAPTION | WS_OVERLAPPED,
         CW_USEDEFAULT, 0, windowRect.right - windowRect.left, windowRect.bottom - windowRect.top, nullptr, nullptr, hInstance, nullptr);
     
     g_hWnd = hWnd;
