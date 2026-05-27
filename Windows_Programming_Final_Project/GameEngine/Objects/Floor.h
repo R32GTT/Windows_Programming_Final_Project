@@ -1,0 +1,30 @@
+#pragma once
+#include "pch.h"
+#include "GameObject.h"
+#include "Enums.h"
+
+class Floor : public GameObject {
+private:
+	D2D1_RECT_F floorCoords{};
+
+public:
+
+	Floor();
+	virtual ~Floor();
+
+	virtual void Init() override;
+	virtual void Update() override;
+	virtual void Render(HDC hdc) override;
+
+
+	Floor() {
+		layer = Layers::FLOOR;
+	}
+
+	Floor(POINT start, POINT end)
+	{
+		layer = Layers::FLOOR;
+		floorCoords.left = start.x; floorCoords.top = start.y;
+		floorCoords.right = end.x; floorCoords.bottom = end.y;
+	}
+};
