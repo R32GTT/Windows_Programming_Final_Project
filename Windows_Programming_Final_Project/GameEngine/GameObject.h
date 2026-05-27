@@ -154,6 +154,8 @@ public:
 	//일반적인지 덩치인지 구분하는 함수
 	EnemyType What_Enemy() {
 
+		type = OBJECTTYPE::ENEMY;
+
 		if (_enemyType != EnemyType::NORMAL) {
 			_enemyType = EnemyType::ARMORED;
 			return (_enemyType);
@@ -288,9 +290,6 @@ private:
 	//탄약용 변수
 	//변수 변경 0 -> 26
 	int ammo = 26;
-
-
-
 
 public:
 
