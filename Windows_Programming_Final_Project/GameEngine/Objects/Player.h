@@ -3,8 +3,6 @@
 #include "GameObject.h"
 #include "Enums.h"
 
-
-
 class Player : public GameObject {
 
 private:
