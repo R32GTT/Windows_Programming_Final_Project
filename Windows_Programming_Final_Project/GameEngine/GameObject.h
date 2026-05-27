@@ -298,17 +298,24 @@ public:
 	}
 
 	//총이 발사되는 중임을 보는 함수
+	//탄창수에 따라 살짝 변경함
 	bool Shooting() {
-		is_Shoot = true;
-		ammo--;
-		return (is_Shoot);
+		if (ammo > 0) {
+			is_Shoot = true;
+			ammo--;
+			return (is_Shoot);
+		}
 	}
 
 	//탄창 빈 유무 체크함수
+	//다시 살짝 변경 함
+	//ammo가 0이 될때 is_Shoot을 false로 하고
+	//비었음을 리턴한다
 	bool CheckAmo() {
-		ammo = 0;
-		is_Shoot = false;
-		return (is_OUT);
+		if (ammo == 0) {
+			is_Shoot = false;
+			return (is_OUT);
+		}
 	}
 
 
