@@ -132,6 +132,7 @@ private:
 	//기절과 죽음 유무 Enemy로 이동함
 	bool is_Unconsious = false;
 	bool is_Dead = false;
+	EnemyType _enemyType = EnemyType::NORMAL;
 
 public:
 
