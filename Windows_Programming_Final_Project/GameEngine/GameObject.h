@@ -253,6 +253,9 @@ private:
 	bool is_Meele = false;
 	bool is_Fist = true;
 
+	//총이 지금 발사되고 있는지 판단 변수
+	bool is_Shoot = false;
+
 	//탄창 다 사용했는지 아닌지 유무판단
 	bool is_OUT = false;
 
@@ -294,8 +297,17 @@ public:
 
 	}
 
+	//총이 발사되는 중임을 보는 함수
+	bool Shooting() {
+		is_Shoot = true;
+		ammo--;
+		return (is_Shoot);
+	}
+
 	//탄창 빈 유무 체크함수
 	bool CheckAmo() {
+		ammo = 0;
+		is_Shoot = false;
 		return (is_OUT);
 	}
 
