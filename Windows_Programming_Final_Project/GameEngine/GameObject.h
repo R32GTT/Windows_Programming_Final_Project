@@ -95,6 +95,11 @@ public:
 
 	}
 
+	//플레이어가 가만히 있을때
+	bool is_still() {
+		status = PlayerState::IDLE;
+	}
+
 	//플레이어가 죽었는지 확인할때
 	bool is_alive() {
 
