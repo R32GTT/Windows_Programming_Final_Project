@@ -19,12 +19,13 @@ enum class OBJECTTYPE {
 	FLOOR
 };
 
+
 enum class PlayerState
 {
 	IDLE,
 	MOVE,
 	EXECUTE,
-	DEAD
+	DEAD,
 };
 
 enum class Layers

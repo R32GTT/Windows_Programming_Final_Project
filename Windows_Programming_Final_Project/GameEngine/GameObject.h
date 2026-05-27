@@ -81,7 +81,6 @@ public:
 
 	//무기를 버렸는지 유무확인
 	bool DropWeapon() {
-
 		if (is_drop == true) {
 			return (is_drop);
 		}
@@ -89,21 +88,26 @@ public:
 			is_drop = false;
 			return (is_drop);
 		}
-
 	}
 
 	//플레이어가 가만히 있을때
-	bool is_still() {
+	//PlayerState
+	//bool말고 enum을 이용하여 함수를 수정함
+	PlayerState is_still() {
 		status = PlayerState::IDLE;
+		return (status);
 	}
 
 	//플레이어가 죽었는지 확인할때
-	bool is_alive() {
+	//살아있을때는 어떻게 구현하지???
+	PlayerState is_alive() {
 
-		//if(false)
-		status = PlayerState::DEAD;
-		//else
-		//alive true
+		if (status != PlayerState::DEAD) {
+			return (status);
+		}
+		else if (status == PlayerState::DEAD) {
+			return (status);
+		}
 
 	}
 
