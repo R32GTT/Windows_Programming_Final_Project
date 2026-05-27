@@ -142,6 +142,7 @@
     <ClCompile Include="GameEngine\FileManager.cpp" />
     <ClCompile Include="GameEngine\GameEngine.cpp" />
     <ClCompile Include="GameEngine\GameObject.cpp" />
+    <ClCompile Include="GameEngine\Scene\DevScene.cpp" />
     <ClCompile Include="GameEngine\Scene\EditScene.cpp" />
     <ClCompile Include="GameEngine\Scene\Scene.cpp" />
     <ClCompile Include="GameEngine\Utility\Vec2.cpp" />

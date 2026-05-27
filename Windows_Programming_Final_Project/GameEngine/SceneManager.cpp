@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "SceneManager.h"
-#include "Scene.h"
+#include "Scene/Scene.h"
+#include "Scene/DevScene.h"
+#include "Scene/EditScene.h"
 
 void SceneManager::init()
 {
@@ -29,4 +31,21 @@ void SceneManager::ChangeScene(SceneType sceneType)
 		return;
 
 	Scene* newScene = nullptr;
+
+	switch (sceneType)
+	{
+	case SceneType::DEVSCENE:
+		newScene = new DevScene();
+		break;
+	case SceneType::EDITSCENE:
+		newScene = new EditScene();
+		break;
+	}
+
+	SAFE_DELETE(_scene);
+
+	_scene = newScene;
+	_sceneType = sceneType;
+
+	newScene->Init();
 }

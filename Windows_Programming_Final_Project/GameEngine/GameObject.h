@@ -9,11 +9,13 @@ public:
 
 	virtual void Init();
 	virtual void Update();
-	virtual void Render(HDC);
+	virtual void Render(HDC hdc);
 	
 	virtual bool CheckDead();
 
 	unsigned int GetID() const { return _id; };
+
+	void SetPos(Vec2<float> POS) { pos = POS; };
 
 	bool operator==(const GameObject& rhs) { return _id == rhs._id; };
 
@@ -77,6 +79,11 @@ public:
 		status = PlayerState::DEAD;
 		//return status;
 	}*/
+
+	virtual void Render(HDC hdc) override
+	{
+		Ellipse(hdc, pos.x - 10, pos.y - 10, pos.x + 10, pos.y + 10);
+	}
 
 	//플레이어 무기유무 함수 수정하기
 	//HasWeapon에서 주먹 근거리 원거리 체크하고
