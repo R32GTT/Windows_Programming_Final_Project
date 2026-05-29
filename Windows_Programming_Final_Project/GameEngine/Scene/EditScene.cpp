@@ -3,6 +3,35 @@
 #include "Managers.h"
 #include "Camera.h"
 #include <fstream>
+#include<stdio.h>
+
+//맵 저장하는 함수
+void EditScene::SaveMap(const char* fileName) {
+
+	FILE* fp = fopen(fileName, "w");
+
+	if (fp == NULL) {
+		printf("Save Fail.\n");
+		return;
+	}
+
+
+}
+
+
+
+//맵 불러오는 함수
+void EditScene::LoadMap(const char* fileName) {
+
+	FILE* fp = fopen(fileName, "r");
+
+	if (fp == NULL) {
+		printf("Load Fail.\n");
+		return;
+	}
+
+
+}
 
 
 EditScene::EditScene()
@@ -26,6 +55,12 @@ EditScene::~EditScene()
 void EditScene::Init()
 {
 	//Scene 시작 시 필요한 데이터 준비
+	//처음 플레이어 상태 IDLE
+	//무기는 처음에는 주먹 
+    //PlayerState::IDLE;
+	
+
+
 }
 
 void EditScene::Update()
@@ -68,4 +103,11 @@ void EditScene::Update()
 
 void EditScene::Render(HDC hdc)
 {
+	//Render에서 필요한 것은???
+
+	//배경 그리기
+	//배치된 오브젝트 그리기
+	//선택된 오브젝트 표시
+
+
 }
