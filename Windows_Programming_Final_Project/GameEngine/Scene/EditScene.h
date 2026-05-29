@@ -22,6 +22,10 @@ public:
 	virtual void Update() override;
 	virtual void Render(HDC hdc, float alpha) override;
 
+	//맵 저장하고 불러오는 함수 선언
+	void SaveMap(const char* fileName);
+	void LoadMap(const char* fileName);
+
 
 private:
 	std::vector<std::pair<POINT, POINT>> _lines;
