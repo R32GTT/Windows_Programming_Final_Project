@@ -7,15 +7,25 @@
 
 EditScene::EditScene()
 {
+	//생성자
+	//안전한 기본값만 넣기
+	//mouse
+	//camera
+
 }
 
 EditScene::~EditScene()
 {
+
+	//소멸자
+	//Release();
+
+
 }
 
 void EditScene::Init()
 {
-
+	//Scene 시작 시 필요한 데이터 준비
 }
 
 void EditScene::Update()
