@@ -108,7 +108,7 @@
       <LanguageStandard_C>stdclatest</LanguageStandard_C>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)Scene;$(ProjectDir)Objects;$(ProjectDir)Utility;$(ProjectDir)GameEngine;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Objects;$(ProjectDir)Scene;$(ProjectDir)Utility;$(ProjectDir)GameEngine;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -142,6 +142,8 @@
     <ClCompile Include="GameEngine\FileManager.cpp" />
     <ClCompile Include="GameEngine\GameEngine.cpp" />
     <ClCompile Include="GameEngine\GameObject.cpp" />
+    <ClCompile Include="GameEngine\Objects\Deco.cpp" />
+    <ClCompile Include="GameEngine\Objects\Player.cpp" />
     <ClCompile Include="GameEngine\Scene\DevScene.cpp" />
     <ClCompile Include="GameEngine\Scene\EditScene.cpp" />
     <ClCompile Include="GameEngine\Scene\Scene.cpp" />
@@ -170,6 +172,7 @@
     <ClInclude Include="GameEngine\Objects\Deco.h" />
     <ClInclude Include="GameEngine\Objects\Enemy.h" />
     <ClInclude Include="GameEngine\Objects\Floor.h" />
+    <ClInclude Include="GameEngine\Objects\Objects.h" />
     <ClInclude Include="GameEngine\Objects\Player.h" />
     <ClInclude Include="GameEngine\Objects\Wall.h" />
     <ClInclude Include="GameEngine\Objects\Weapon.h" />

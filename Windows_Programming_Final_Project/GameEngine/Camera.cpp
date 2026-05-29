@@ -10,7 +10,7 @@ void Camera::TickComp()
 	if (_owner == nullptr)
 		return;
 
-	Vec2 pos = _owner->pos;
+	Vec2<float> pos = _owner->GetPos();
 
 	
 

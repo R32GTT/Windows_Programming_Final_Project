@@ -1,5 +1,6 @@
 #pragma once
-#include"GameObject.h"
+#include "GameObject.h"
+#include "Objects/Player.h"
 
 class Camera
 {

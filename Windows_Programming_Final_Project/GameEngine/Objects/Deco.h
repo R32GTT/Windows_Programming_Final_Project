@@ -9,7 +9,6 @@ private:
 	D2D1_RECT_F decoCoords{};
 public:
 
-	DECO();
 	virtual ~DECO();
 	virtual void Init() override;
 	virtual void Update() override;

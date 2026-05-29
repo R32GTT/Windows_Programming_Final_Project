@@ -3,6 +3,7 @@
 #include "Managers.h"
 #include "GameObject.h"
 #include "GameEngine.h"
+#include "../Objects/Objects.h"
 
 DevScene::DevScene()
 {
@@ -27,7 +28,7 @@ void DevScene::Update()
 	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
 }
 
-void DevScene::Render(HDC hdc)
+void DevScene::Render(HDC hdc,float alpha)
 {
-	Super::Render(hdc);
+	Super::Render(hdc, alpha);
 }

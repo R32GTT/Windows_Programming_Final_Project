@@ -52,13 +52,14 @@ void GameEngine::Update()
 		_accumulator -= _FIXED_DT;
 	}
 
+	_alpha = _accumulator / _FIXED_DT;
 }
 
 void GameEngine::Render()
 {
 	float alpha = _accumulator / _FIXED_DT;
 
-	GET_SINGLE(SceneManager)->Render(memDCDB);
+	GET_SINGLE(SceneManager)->Render(memDCDB, _alpha);
 
 	unsigned int fps = GET_SINGLE(TimeManager)->GetFps();
 	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();

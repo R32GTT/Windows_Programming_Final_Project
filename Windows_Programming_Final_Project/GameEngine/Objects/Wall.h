@@ -10,7 +10,7 @@ private:
 
 public:
 
-	Wall();
+
 	virtual ~Wall();
 
 	virtual void Init() override;

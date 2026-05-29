@@ -56,6 +56,6 @@ void EditScene::Update()
 	}
 }
 
-void EditScene::Render(HDC hdc)
+void EditScene::Render(HDC hdc, float alpha)
 {
 }

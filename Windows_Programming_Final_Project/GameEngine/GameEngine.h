@@ -21,6 +21,7 @@ private:
 	HBITMAP memHBITMAPDB{};
 
 	float _accumulator = 0.f;
+	float _alpha = 0.f;
 	const float _FIXED_DT = 1.0f / 60.0f;
 };
 
