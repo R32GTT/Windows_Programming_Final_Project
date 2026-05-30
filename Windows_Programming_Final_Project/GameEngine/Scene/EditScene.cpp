@@ -6,29 +6,34 @@
 #include<stdio.h>
 
 //맵 저장하는 함수
-void EditScene::SaveMap(const char* fileName) {
+//fstream을 이용하여 변경하기
+void EditScene::SaveMap(const std::string& fileName) {
 
-	FILE* fp = fopen(fileName, "w");
+	std::ofstream file(fileName);
 
-	if (fp == NULL) {
-		printf("Save Fail.\n");
+	if (!file.is_open())
+	{
+		MessageBox(NULL, TEXT("맵 파일을 저장할 수 없습니다."), TEXT("SaveMap Error"), MB_OK);
 		return;
 	}
 
+	
 
 }
 
-
-
 //맵 불러오는 함수
-void EditScene::LoadMap(const char* fileName) {
+//fstream을 이용하여 변경하기
+void EditScene::LoadMap(const std::string& fileName) {
 
-	FILE* fp = fopen(fileName, "r");
+	std::ifstream file(fileName);
 
-	if (fp == NULL) {
-		printf("Load Fail.\n");
+	if (!file.is_open())
+	{
+		MessageBox(NULL, TEXT("맵 파일을 열 수 없습니다."), TEXT("LoadMap Error"), MB_OK);
 		return;
 	}
+
+
 
 
 }
@@ -40,6 +45,7 @@ EditScene::EditScene()
 	//안전한 기본값만 넣기
 	//mouse
 	//camera
+	//메모리 이미지 DC 펜 브러시 리소스 해제
 
 }
 

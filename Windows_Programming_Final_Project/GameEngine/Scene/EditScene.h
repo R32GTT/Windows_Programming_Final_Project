@@ -23,8 +23,9 @@ public:
 	virtual void Render(HDC hdc) override;
 
 	//맵 저장하고 불러오는 함수 선언
-	void SaveMap(const char* fileName);
-	void LoadMap(const char* fileName);
+	//fstream 사용으로 변경
+	void SaveMap(const std::string& fileName);
+	void LoadMap(const std::string& fileName);
 
 
 private:
