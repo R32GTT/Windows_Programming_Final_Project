@@ -15,6 +15,9 @@ void EditScene::SaveMap(const char* fileName) {
 		return;
 	}
 
+	//맵 저장할때 쓸 범위 기반 for문
+	//for(const& : ){}
+
 
 }
 
@@ -27,6 +30,9 @@ void EditScene::LoadMap(const char* fileName) {
 		printf("Load Fail.\n");
 		return;
 	}
+
+	//맵 저장할때 쓸 범위 기반 for문
+	//for(const& : ){}
 
 }
 
@@ -55,7 +61,7 @@ void EditScene::Init()
 	//처음 플레이어 상태 IDLE
 	//무기는 처음에는 주먹 
     PlayerState::IDLE;
-	
+	//OBJECTTYPE::WEAPON;
 
 
 }
