@@ -4,6 +4,9 @@
 
 Player::Player()
 {
+    speed = 5.0f;
+
+    type = OBJECTTYPE::PLAYER;
 }
 
 Player::~Player()
@@ -47,7 +50,8 @@ PlayerState Player::Move()
 
     InputManager* input = GET_SINGLE(InputManager);
 
-    if (input->GetButton(KeyType::W)) movingDir.y -= 1.0f;
+    if (input->GetButton(KeyType::W)) 
+        movingDir.y -= 1.0f;
     if (input->GetButton(KeyType::S)) movingDir.y += 1.0f;
     if (input->GetButton(KeyType::A)) movingDir.x -= 1.0f;
     if (input->GetButton(KeyType::D)) movingDir.x += 1.0f;

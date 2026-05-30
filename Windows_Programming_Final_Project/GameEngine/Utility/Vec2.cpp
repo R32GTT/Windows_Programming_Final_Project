@@ -37,9 +37,9 @@ Vec2<T> Vec2<T>::Normalized()
 }
 
 template<typename T>
-Vec2<T> Vec2<T>::Reflect(const Vec2& normal)
+Vec2<T> Vec2<T>::Reflect(Vec2& other)
 {
-	return (*this) - (normal * (2.0f * this->Dot(normal)));
+	return (*this) - (other * (2.0f * this->Dot(other)));
 }
 
 template<typename T>
@@ -74,3 +74,5 @@ bool Vec2<T>::is_Normalized()
 	return (x + y == 1.0f);
 }
 
+template class Vec2<float>;
+template class Vec2<int>;

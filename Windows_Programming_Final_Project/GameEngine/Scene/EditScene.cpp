@@ -5,33 +5,33 @@
 #include <fstream>
 #include<stdio.h>
 
-//맵 저장하는 함수
-void EditScene::SaveMap(const char* fileName) {
-
-	FILE* fp = fopen(fileName, "w");
-
-	if (fp == NULL) {
-		printf("Save Fail.\n");
-		return;
-	}
-
-
-}
-
-
-
-//맵 불러오는 함수
-void EditScene::LoadMap(const char* fileName) {
-
-	FILE* fp = fopen(fileName, "r");
-
-	if (fp == NULL) {
-		printf("Load Fail.\n");
-		return;
-	}
-
-
-}
+////맵 저장하는 함수
+//void EditScene::SaveMap(const char* fileName) {
+//
+//	FILE* fp = fopen_s(fileName, "w");
+//
+//	if (fp == NULL) {
+//		printf("Save Fail.\n");
+//		return;
+//	}
+//
+//
+//}
+//
+//
+//
+////맵 불러오는 함수
+//void EditScene::LoadMap(const char* fileName) {
+//
+//	FILE* fp = fopen_s(fileName, "r");
+//
+//	if (fp == NULL) {
+//		printf("Load Fail.\n");
+//		return;
+//	}
+//
+//
+//}
 
 
 EditScene::EditScene()
