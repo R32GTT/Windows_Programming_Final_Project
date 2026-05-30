@@ -33,9 +33,6 @@ void EditScene::LoadMap(const std::string& fileName) {
 		return;
 	}
 
-
-
-
 }
 
 

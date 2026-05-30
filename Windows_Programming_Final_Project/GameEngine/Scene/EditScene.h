@@ -24,6 +24,7 @@ public:
 
 	//맵 저장하고 불러오는 함수 선언
 	//fstream 사용으로 변경
+	//fstream은 잠시 보류
 	void SaveMap(const std::string& fileName);
 	void LoadMap(const std::string& fileName);
 
