@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "GameEngine.h"
 #include "Managers.h"	//각종 매니저들 모아둔 헤더파일
 
@@ -67,6 +67,9 @@ void GameEngine::Render()
 	{
 		std::wstring str = std::format(L"FPS({0}), DT({1})", fps, deltaTime);
 		::TextOut(memDCDB, 550, 10, str.c_str(), static_cast<int>(str.size()));
+		std::wstring PlayerFacing = std::format(L"Mousepos ({0},{1})",
+			GET_SINGLE(InputManager)->GetMousePos().x, GET_SINGLE(InputManager)->GetMousePos().y);
+		::TextOut(memDCDB, 550, 40, PlayerFacing.c_str(), (int)str.size());
 	}
 
 	::BitBlt(memDC, 0, 0, rect.right, rect.bottom, memDCDB, 0, 0, SRCCOPY); // 비트 블릿 : 고속 복사

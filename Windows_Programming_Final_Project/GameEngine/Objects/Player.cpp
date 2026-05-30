@@ -4,7 +4,7 @@
 
 Player::Player()
 {
-    speed = 5.0f;
+    speed = playerSpeed;
 
     type = OBJECTTYPE::PLAYER;
 }
@@ -22,6 +22,8 @@ void Player::Update()
 	SavePrevPos();
 
 	Move();
+
+    
 
 	Vec2<float> mousePos = GET_SINGLE(InputManager)->GetMousePos();
 	Vec2<float> dirToMouse = mousePos - pos;

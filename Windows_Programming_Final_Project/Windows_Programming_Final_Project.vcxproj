@@ -158,6 +158,7 @@
     <ClCompile Include="GameEngine\SceneManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Config.h" />
     <ClInclude Include="GameEngine\CollisionManager.h" />
     <ClInclude Include="GameEngine\FileBase\FileBase.h" />
     <ClInclude Include="GameEngine\Camera.h" />

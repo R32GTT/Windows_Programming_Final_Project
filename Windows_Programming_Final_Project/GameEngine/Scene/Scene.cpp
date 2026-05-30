@@ -29,7 +29,6 @@ void Scene::Update()
 {
 	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
 
-
 	for (const std::vector<GameObject*>& objects : _objects)
 		for (GameObject* object : objects)
 			object->Update();
