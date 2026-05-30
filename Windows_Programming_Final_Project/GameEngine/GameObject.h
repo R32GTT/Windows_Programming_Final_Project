@@ -32,6 +32,8 @@ protected:
 	Vec2<float> prevPos{};
 	Vec2<float> facingDir{};
 	Vec2<float> movingDir{};
+	Vec2<float> _halfSize{};
+
 	float speed{};
 
 	static unsigned int _sNextId;

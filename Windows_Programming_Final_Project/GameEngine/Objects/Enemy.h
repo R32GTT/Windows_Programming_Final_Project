@@ -10,6 +10,7 @@ private:
 	bool is_Unconsious = false;
 	bool is_Dead = false;
 	EnemyType _enemyType = EnemyType::NORMAL;
+	EnemyState _enemyState = EnemyState::IDLE;
 
 public:
 
@@ -22,38 +23,14 @@ public:
 
 	//적 이동 함수
 	//보류
-	void EmMove() {
+	void EmMove();
 
-		//pos.x 
-		//pos.y
-
-		//facingDir.x
-		//facingDir.y
-
-		//movingDir.x
-		//movingDir.y
-
-
-	}
+	void SetEnemyType(EnemyType etype);
 
 	//일반적인지 덩치인지 구분하는 함수
-	EnemyType What_Enemy() {
-
-		type = OBJECTTYPE::ENEMY;
-
-		if (_enemyType != EnemyType::NORMAL) {
-			_enemyType = EnemyType::ARMORED;
-			return (_enemyType);
-		}
-		else {
-			return (_enemyType);
-		}
-	}
-
-	//적 공격 적 시야 적 이동범위 함수 뼈대
-	//void EmAttack();
-	//void EmSight();
-	//void EnemyRange();
+	//? GetEnemyType 만들면 더 편하지 않을까?
+	EnemyType What_Enemy();
+	EnemyType GetEType();
 
 	//죽음 체크하는 함수(적 버전 추가)
 	//플레이어랑 적이랑 다를 필요가 없어서 VIRTUAL 선언함

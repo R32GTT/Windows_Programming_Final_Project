@@ -27,4 +27,5 @@ public:
 
 private:
 	std::vector<GameObject*> _objects[(int)Layers::LAYER_COUNT];
+	std::unordered_map<unsigned int, GameObject*> _objectMap;
 };

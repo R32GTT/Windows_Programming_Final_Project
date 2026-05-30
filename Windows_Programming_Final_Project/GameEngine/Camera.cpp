@@ -7,16 +7,13 @@ void Camera::Init()
 
 void Camera::TickComp()
 {
-	if (_owner == nullptr)
-		return;
+    if (_owner == nullptr) return;
 
-	Vec2<float> pos = _owner->GetPos();
 
-	
-
+    Vec2<float> ownerPos = _owner->GetPos();
 }
 
-void Camera::Render(HDC hDC)
+void Camera::Render(HDC hDC, float alpha)
 {
 
 }

@@ -15,6 +15,7 @@ enum class EntityType
 class EditScene : public Scene
 {
 public:
+	using Super = Scene;
 	EditScene();
 	virtual ~EditScene();
 

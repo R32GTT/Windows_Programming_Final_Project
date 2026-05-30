@@ -72,6 +72,9 @@
     <ClCompile Include="GameEngine\Objects\Player.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="GameEngine\Objects\Enemy.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameEngine\GameObject.h">

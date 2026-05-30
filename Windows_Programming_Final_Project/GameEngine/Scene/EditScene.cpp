@@ -103,11 +103,5 @@ void EditScene::Update()
 
 void EditScene::Render(HDC hdc, float alpha)
 {
-	//Render에서 필요한 것은???
-
-	//배경 그리기
-	//배치된 오브젝트 그리기
-	//선택된 오브젝트 표시
-
-
+	Super::Render(hdc,alpha);
 }

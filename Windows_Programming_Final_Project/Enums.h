@@ -30,6 +30,15 @@ enum class PlayerState
 	DEAD,
 };
 
+enum class EnemyState
+{
+	IDLE,
+	PATROL,
+	CHASE,
+	ATTACK,
+
+};
+
 enum class EnemyType
 {
 	NORMAL = 0,

@@ -69,7 +69,7 @@ void GameEngine::Render()
 		::TextOut(memDCDB, 550, 10, str.c_str(), static_cast<int>(str.size()));
 		std::wstring PlayerFacing = std::format(L"Mousepos ({0},{1})",
 			GET_SINGLE(InputManager)->GetMousePos().x, GET_SINGLE(InputManager)->GetMousePos().y);
-		::TextOut(memDCDB, 550, 40, PlayerFacing.c_str(), (int)str.size());
+		::TextOut(memDCDB, 550, 40, PlayerFacing.c_str(), (int)PlayerFacing.size());
 	}
 
 	::BitBlt(memDC, 0, 0, rect.right, rect.bottom, memDCDB, 0, 0, SRCCOPY); // 비트 블릿 : 고속 복사

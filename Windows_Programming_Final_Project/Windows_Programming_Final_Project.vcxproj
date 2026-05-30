@@ -143,6 +143,7 @@
     <ClCompile Include="GameEngine\GameEngine.cpp" />
     <ClCompile Include="GameEngine\GameObject.cpp" />
     <ClCompile Include="GameEngine\Objects\Deco.cpp" />
+    <ClCompile Include="GameEngine\Objects\Enemy.cpp" />
     <ClCompile Include="GameEngine\Objects\Player.cpp" />
     <ClCompile Include="GameEngine\Scene\DevScene.cpp" />
     <ClCompile Include="GameEngine\Scene\EditScene.cpp" />
