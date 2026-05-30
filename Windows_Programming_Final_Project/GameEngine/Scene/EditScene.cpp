@@ -18,8 +18,6 @@ void EditScene::SaveMap(const char* fileName) {
 
 }
 
-
-
 //맵 불러오는 함수
 void EditScene::LoadMap(const char* fileName) {
 
@@ -30,9 +28,7 @@ void EditScene::LoadMap(const char* fileName) {
 		return;
 	}
 
-
 }
-
 
 EditScene::EditScene()
 {
@@ -49,7 +45,7 @@ EditScene::~EditScene()
 
 	//소멸자
 	//Release();
-
+	//예시 커밋하기
 
 }
 
@@ -58,7 +54,7 @@ void EditScene::Init()
 	//Scene 시작 시 필요한 데이터 준비
 	//처음 플레이어 상태 IDLE
 	//무기는 처음에는 주먹 
-    //PlayerState::IDLE;
+    PlayerState::IDLE;
 	
 
 
