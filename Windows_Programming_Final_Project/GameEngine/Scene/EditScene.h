@@ -23,10 +23,9 @@ public:
 	virtual void Update() override;
 	virtual void Render(HDC hdc, float alpha) override;
 
-	////맵 저장하고 불러오는 함수 선언
-	//void SaveMap(const char* fileName);
-	//void LoadMap(const char* fileName);
-	// wstring 존재하는데 const char 쓸 필요가 없음
+	//맵 저장하고 불러오는 함수 선언
+	void SaveMap(const char* fileName);
+	void LoadMap(const char* fileName);
 
 
 private:

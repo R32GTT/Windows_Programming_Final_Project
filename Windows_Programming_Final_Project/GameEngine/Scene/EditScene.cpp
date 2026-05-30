@@ -5,34 +5,36 @@
 #include <fstream>
 #include<stdio.h>
 
-////맵 저장하는 함수
-//void EditScene::SaveMap(const char* fileName) {
-//
-//	FILE* fp = fopen_s(fileName, "w");
-//
-//	if (fp == NULL) {
-//		printf("Save Fail.\n");
-//		return;
-//	}
-//
-//
-//}
-//
-//
-//
-////맵 불러오는 함수
-//void EditScene::LoadMap(const char* fileName) {
-//
-//	FILE* fp = fopen_s(fileName, "r");
-//
-//	if (fp == NULL) {
-//		printf("Load Fail.\n");
-//		return;
-//	}
-//
-//
-//}
+//맵 저장하는 함수
+void EditScene::SaveMap(const char* fileName) {
 
+	FILE* fp = fopen(fileName, "w");
+
+	if (fp == NULL) {
+		printf("Save Fail.\n");
+		return;
+	}
+
+	//맵 저장할때 쓸 범위 기반 for문
+	//for(const& : ){}
+
+
+}
+
+//맵 불러오는 함수
+void EditScene::LoadMap(const char* fileName) {
+
+	FILE* fp = fopen(fileName, "r");
+
+	if (fp == NULL) {
+		printf("Load Fail.\n");
+		return;
+	}
+
+	//맵 저장할때 쓸 범위 기반 for문
+	//for(const& : ){}
+
+}
 
 EditScene::EditScene()
 {
@@ -40,6 +42,7 @@ EditScene::EditScene()
 	//안전한 기본값만 넣기
 	//mouse
 	//camera
+	//메모리 이미지 DC 펜 브러시 리소스 해제
 
 }
 
@@ -48,7 +51,7 @@ EditScene::~EditScene()
 
 	//소멸자
 	//Release();
-
+	//예시 커밋하기
 
 }
 
@@ -57,8 +60,8 @@ void EditScene::Init()
 	//Scene 시작 시 필요한 데이터 준비
 	//처음 플레이어 상태 IDLE
 	//무기는 처음에는 주먹 
-    //PlayerState::IDLE;
-	
+    PlayerState::IDLE;
+	//OBJECTTYPE::WEAPON;
 
 
 }
