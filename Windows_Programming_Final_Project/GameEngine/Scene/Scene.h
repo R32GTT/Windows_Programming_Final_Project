@@ -12,12 +12,12 @@ public:
 
 	virtual void Init() abstract;
 	virtual void Update() abstract;
-	virtual void Render(HDC hdc) abstract;
+	virtual void Render(HDC hdc, float alpha) abstract;
 
 	GameObject* GetGameObjectByID(unsigned int ID);
 
 	std::vector<GameObject*> GetGameObjectLayer(GameObject* object) {
-		return _objects[(int)object->layer];
+		return _objects[(int)object->GetLayer()];
 	}
 
 

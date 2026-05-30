@@ -18,6 +18,7 @@ const float PI = 3.1415926f;
 #include "Enums.h"
 #include "GameEngine/Utility/Vec2.h"
 #include "Enums.h"
+#include "Config.h"
 
 // 혹시 모를 D2D 사용을 위한 사전준비
 #include <d2d1.h>

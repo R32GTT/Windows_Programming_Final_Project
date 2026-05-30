@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <cmath>
 #include <cassert>
 #include "pch.h"
@@ -20,7 +20,7 @@ public:
 
 	Vec2<T> Abs();
 	Vec2<T> Normalized();
-	Vec2<T> Reflect(const Vec2& other);
+	Vec2<T> Reflect(Vec2& other);
 
 	float Angle();
 	float Dot(Vec2& other);

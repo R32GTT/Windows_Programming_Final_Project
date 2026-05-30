@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "Scene.h"
 #include "GameObject.h"
 #include "Managers.h"
@@ -29,17 +29,16 @@ void Scene::Update()
 {
 	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
 
-
 	for (const std::vector<GameObject*>& objects : _objects)
 		for (GameObject* object : objects)
 			object->Update();
 }
 
-void Scene::Render(HDC hdc)
+void Scene::Render(HDC hdc, float alpha)
 {
 	for (const std::vector<GameObject*>& objects : _objects)
 		for (GameObject* object : objects)
-			object->Render(hdc);
+			object->Render(hdc, alpha);
 }
 
 GameObject* Scene::GetGameObjectByID(unsigned int ID)

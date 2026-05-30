@@ -1,0 +1,8 @@
+#pragma once
+#include"Deco.h"
+#include "Enemy.h"
+#include "Floor.h"
+#include "Objects.h"
+#include "Player.h"
+#include "Wall.h"
+#include "Weapon.h"

@@ -1,4 +1,4 @@
-#pragma once
+ #pragma once
 #include "pch.h"
 #include "GameObject.h"
 #include "Enums.h"
@@ -11,10 +11,8 @@ public:
 
 	virtual void Init() override;
 	virtual void Update() override;
-	virtual void Render(HDC hdc, float alpha) override
-	{
-		Ellipse(hdc, pos.x - 10, pos.y - 10, pos.x + 10, pos.y + 10);
-	}
+	virtual void Render(HDC hdc, float alpha) override;
+	
 
 	//플레이어 무기유무 함수 수정하기
 	//HasWeapon에서 주먹 근거리 원거리 체크하고
@@ -27,21 +25,7 @@ public:
 	//플레이어 이동 함수
 	//이동 함수 보류
 	//이동 함수 PlayerState::MOVE 추가
-	PlayerState Move() {
-
-		status = PlayerState::MOVE;
-
-		//pos.x 
-		//pos.y
-
-		//facingDir.x
-		//facingDir.y
-
-		//movingDir.x
-		//movingDir.y
-
-		return (status);
-	}
+	PlayerState Move();
 
 	//둘이 달라야 하나??? 죽음
 	//죽음 체크하는 함수(플레이어 버전 추가)

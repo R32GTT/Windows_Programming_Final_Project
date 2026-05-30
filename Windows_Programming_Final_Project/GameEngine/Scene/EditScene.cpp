@@ -6,32 +6,30 @@
 #include<stdio.h>
 
 //맵 저장하는 함수
-//fstream을 이용하여 변경하기
-void EditScene::SaveMap(const std::string& fileName) {
+void EditScene::SaveMap(const char* fileName) {
 
-	std::ofstream file(fileName);
+	FILE* fp = fopen(fileName, "w");
 
-	if (!file.is_open())
-	{
-		MessageBox(NULL, TEXT("맵 파일을 저장할 수 없습니다."), TEXT("SaveMap Error"), MB_OK);
+	if (fp == NULL) {
+		printf("Save Fail.\n");
 		return;
 	}
 
-	
 
 }
 
+
+
 //맵 불러오는 함수
-//fstream을 이용하여 변경하기
-void EditScene::LoadMap(const std::string& fileName) {
+void EditScene::LoadMap(const char* fileName) {
 
-	std::ifstream file(fileName);
+	FILE* fp = fopen(fileName, "r");
 
-	if (!file.is_open())
-	{
-		MessageBox(NULL, TEXT("맵 파일을 열 수 없습니다."), TEXT("LoadMap Error"), MB_OK);
+	if (fp == NULL) {
+		printf("Load Fail.\n");
 		return;
 	}
+
 
 }
 
@@ -104,7 +102,7 @@ void EditScene::Update()
 	}
 }
 
-void EditScene::Render(HDC hdc)
+void EditScene::Render(HDC hdc, float alpha)
 {
 	//Render에서 필요한 것은???
 
