@@ -22,7 +22,11 @@ public:
 	void SetPos(Vec2<float> POS) { pos = POS; };
 	void SavePrevPos() { prevPos = pos; };
 
-	
+	//게임 오브젝트의 위치를 설정하는 함수 추가
+	//void SetPosition(float _x, float _y);
+
+	//게임 오브젝트의 크기를 설정하는 함수
+	//void SetSize(int _width, int _height);
 
 
 	Layers GetLayer() { return layer; };
