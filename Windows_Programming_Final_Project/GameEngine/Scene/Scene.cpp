@@ -29,23 +29,21 @@ void Scene::Update()
 {
 	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
 
+	_cam.SavePrevPos();
+
 	for (const std::vector<GameObject*>& objects : _objects)
 		for (GameObject* object : objects)
 			object->Update();
+
+	_cam.TickComp();
 }
 
 void Scene::Render(HDC hdc, float alpha)
 {
-	Vec2<int> camPos = GET_SINGLE(SceneManager)->GetCameraPos();
+	Vec2F camRenderPos = _cam.GetRenderPos(alpha);
 
-	
-	int camX = static_cast<int>(camPos.x) - WinSizeX/2;
-	int camY = static_cast<int>(camPos.y) - WinSizeY/2;
+	GET_SINGLE(SceneManager)->SetCameraPos(camRenderPos);
 
-	
-	::SetWindowOrgEx(hdc, camX, camY, nullptr);
-
-	
 	for (const std::vector<GameObject*>& objects : _objects)
 		for (GameObject* object : objects)
 			object->Render(hdc, alpha);

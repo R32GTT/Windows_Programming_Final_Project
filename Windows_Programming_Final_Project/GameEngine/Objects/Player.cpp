@@ -5,8 +5,10 @@
 Player::Player()
 {
     speed = playerSpeed;
+    _halfSize = Vec2F(20.0f, 20.0f);
 
     type = OBJECTTYPE::PLAYER;
+    layer = Layers::ACTORS;
 }
 
 Player::~Player()
@@ -35,14 +37,19 @@ void Player::Update()
 
 void Player::Render(HDC hdc, float alpha)
 {
-    Vec2<float> renderPos = GetRenderPos(alpha);
+    // 1. 카메라의 현재 위치를 매니저에서 가져옵니다.
+    Vec2<float> camPos = GET_SINGLE(SceneManager)->GetCameraPos();
 
-    // 실제 pos 대신 보간된 renderPos를 사용하여 부드러운 움직임을 연출합니다.
-    Ellipse(hdc,
-        static_cast<int>(renderPos.x) - 10,
-        static_cast<int>(renderPos.y) - 10,
-        static_cast<int>(renderPos.x) + 10,
-        static_cast<int>(renderPos.y) + 10);
+    // 2. 내 진짜 좌표(GetRenderPos)에서 카메라 좌표를 빼고, 화면 중앙 보정을 더합니다.
+    Vec2<float> screenPos = GetRenderPos(alpha);
+
+    int renderX = static_cast<int>(screenPos.x - camPos.x + WinSizeX / 2);
+    int renderY = static_cast<int>(screenPos.y - camPos.y + WinSizeY / 2);
+
+    // 3. 이제 원래 그리던 GDI 함수(Rectangle, Ellipse, BitBlt 등)에 
+    // 기존 pos.x, pos.y 대신 'renderX', 'renderY'를 대입해서 그립니다!
+    // 예시:
+    ::Ellipse(hdc, renderX - 20, renderY - 20, renderX + 20, renderY + 20);
 }
 
 PlayerState Player::Move()

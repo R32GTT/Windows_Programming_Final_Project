@@ -8,7 +8,7 @@
 //맵 저장하는 함수
 void EditScene::SaveMap(const char* fileName) {
 
-	FILE* fp = fopen(fileName, "w");
+	FILE* fp = NULL;// = fopen_s(fs::,fileName, "w");
 
 	if (fp == NULL) {
 		printf("Save Fail.\n");
@@ -24,7 +24,7 @@ void EditScene::SaveMap(const char* fileName) {
 //맵 불러오는 함수
 void EditScene::LoadMap(const char* fileName) {
 
-	FILE* fp = fopen(fileName, "r");
+	FILE* fp= NULL;// = fopen(fileName, "r");
 
 	if (fp == NULL) {
 		printf("Load Fail.\n");
@@ -75,7 +75,7 @@ void EditScene::Update()
 	if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::KEY_5)) _currentEntity = EntityType::Endpoint;
 
 	POINT curmousePos = GET_SINGLE(InputManager)->GetMousePos();
-	Vec2<int> camPos = GET_SINGLE(SceneManager)->GetCameraPos();
+	Vec2<float> camPos = GET_SINGLE(SceneManager)->GetCameraPos();
 
 	int worldX = (int)curmousePos.x + camPos.x;
 	int worldY = (int)curmousePos.y + camPos.y;

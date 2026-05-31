@@ -19,14 +19,10 @@ public:
 
 	Wall() {
 		type = OBJECTTYPE::WALL;
+		layer = Layers::WALL;
 	}
 
-	Wall(POINT start, POINT end)
-	{
-		type = OBJECTTYPE::WALL;
-		wallCoords.left = start.x; wallCoords.top = start.y;
-		wallCoords.right = end.x; wallCoords.bottom = end.y;
-	}
+	Wall(POINT start, POINT end);
 
 
 };

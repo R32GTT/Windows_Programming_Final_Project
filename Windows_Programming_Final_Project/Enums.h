@@ -49,6 +49,7 @@ enum class EnemyType
 enum class Layers
 {
 	FLOOR,
+	WALL,
 	ITEM,
 	ACTORS,
 	UI,

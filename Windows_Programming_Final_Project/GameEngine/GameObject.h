@@ -16,8 +16,11 @@ public:
 
 	Vec2<float> GetRenderPos(float alpha);
 	Vec2<float> GetPos() { return pos; }
-
+	Vec2F GetPrevPos() { return prevPos; };
+	Vec2F GetHalfSize() { return _halfSize; };
 	unsigned int GetID() const { return _id; };
+
+	Vec2I GetScreenPos(float alpha);
 
 	void SetPos(Vec2<float> POS) { pos = POS; };
 	void SavePrevPos() { prevPos = pos; };

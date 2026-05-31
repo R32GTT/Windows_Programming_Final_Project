@@ -134,9 +134,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="GameEngine\FileBase\FileBase.cpp" />
     <ClCompile Include="GameEngine\Camera.cpp" />
-    <ClCompile Include="GameEngine\FileBase\FileTypes\FlipBook.cpp" />
+    <ClCompile Include="GameEngine\CollisionManager.cpp" />
+    <ClCompile Include="GameEngine\FileBase\FileBase.cpp" />    <ClCompile Include="GameEngine\FileBase\FileTypes\FlipBook.cpp" />
     <ClCompile Include="GameEngine\FileBase\FileTypes\Sprite.cpp" />
     <ClCompile Include="GameEngine\FileBase\FileTypes\Texture.cpp" />
     <ClCompile Include="GameEngine\FileManager.cpp" />
@@ -145,6 +145,7 @@
     <ClCompile Include="GameEngine\Objects\Deco.cpp" />
     <ClCompile Include="GameEngine\Objects\Enemy.cpp" />
     <ClCompile Include="GameEngine\Objects\Player.cpp" />
+    <ClCompile Include="GameEngine\Objects\Wall.cpp" />
     <ClCompile Include="GameEngine\Scene\DevScene.cpp" />
     <ClCompile Include="GameEngine\Scene\EditScene.cpp" />
     <ClCompile Include="GameEngine\Scene\Scene.cpp" />
@@ -160,9 +161,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Config.h" />
+    <ClInclude Include="GameEngine\Camera.h" />
     <ClInclude Include="GameEngine\CollisionManager.h" />
     <ClInclude Include="GameEngine\FileBase\FileBase.h" />
-    <ClInclude Include="GameEngine\Camera.h" />
     <ClInclude Include="Enums.h" />
     <ClInclude Include="GameEngine\FileBase\FileTypes\FlipBook.h" />
     <ClInclude Include="GameEngine\FileBase\FileTypes\Sprite.h" />
@@ -188,6 +189,7 @@
     <ClInclude Include="GameEngine\TimeManager.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="GameEngine\SceneManager.h" />
+    <ClInclude Include="Types.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Windows_Programming_Final_Project.rc" />
