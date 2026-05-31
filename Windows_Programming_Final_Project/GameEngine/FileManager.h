@@ -22,11 +22,13 @@ public:
 
 	const fs::path& GetFilePath() { return filePath; };
 
+	void LoadAespriteJson(const std::wstring& path);
+
 	Texture* GetTexture(const std::wstring& key) { return _textures[key]; };
 	Texture* LoadTexture(const std::wstring& key, const std::wstring& path);
 
 	Sprite* GetSprite(const std::wstring& key) { return _sprites[key]; };
-	Sprite* CreateSprite(const std::wstring& key, Texture* texture, int x = 0, int y = 0, int cx = 0, int cy = 0);
+	Sprite* CreateSprite(const std::wstring& key, Texture* texture, float x = 0, float y = 0, float cx = 0, float cy = 0);
 
 	FlipBook* GetFlipBook(const std::wstring& key) { return _flipbooks[key]; };
 	FlipBook* CreateFlipBook(const std::wstring& key);

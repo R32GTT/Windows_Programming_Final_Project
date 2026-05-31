@@ -3,16 +3,13 @@
 #include "../FileBase.h"
 
 class Texture;
+class Sprite;
 
 struct FlipbookInfo
 {
-	Texture* texture{};
 	std::wstring name{};
-	Vec2F size{};
-	int start{};
-	int end{};
-	int line{};
-	float duration{ 1.f };
+	std::vector<Sprite*> frames{}; 
+	float duration{ 0.1f };        
 	bool loop{ true };
 };
 

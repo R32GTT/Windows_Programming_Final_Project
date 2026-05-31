@@ -29,6 +29,7 @@ const float PI = 3.1415926f;
 
 #include <format>
 #include <filesystem>
+
 namespace fs = std::filesystem;
 
 //#pragma comment(lib, "msimg32.lib") DX2D Overhaul

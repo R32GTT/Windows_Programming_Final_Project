@@ -8,7 +8,7 @@ class Texture;
 class Sprite : public FileBase
 {
 public:
-	Sprite(Texture* texture, int x, int y, int cx, int cy);
+	Sprite(Texture* texture, float x, float y, float cx, float cy);
 	virtual ~Sprite();
 
 	Texture* GetTexture() { return _texture; }
