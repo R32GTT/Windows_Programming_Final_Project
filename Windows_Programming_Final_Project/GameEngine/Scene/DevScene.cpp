@@ -28,7 +28,7 @@ void DevScene::Update()
 	Super::Update();
 }
 
-void DevScene::Render(HDC hdc,float alpha)
+void DevScene::Render(ID2D1RenderTarget* renderTarget,float alpha)
 {
-	Super::Render(hdc, alpha);
+	Super::Render(renderTarget, alpha);
 }

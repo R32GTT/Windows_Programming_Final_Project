@@ -9,19 +9,43 @@ GameEngine::GameEngine()
 
 GameEngine::~GameEngine()
 {
+	SafeRelease(&_renderTarget);
+	SafeRelease(&_d2dFactory);
+	SafeRelease(&_wicFactory);
 }
 
 void GameEngine::Init(HWND hWnd)
 {
 	memhWnd = hWnd;
-	memDC = ::GetDC(hWnd);
-
 	GetClientRect(hWnd, &rect);
 
-	memDCDB = ::CreateCompatibleDC(memDC);
-	memHBITMAPDB = ::CreateCompatibleBitmap(memDC, rect.right, rect.bottom);
-	HBITMAP prev = (HBITMAP)SelectObject(memDCDB, memHBITMAPDB);
-	::DeleteObject(prev);
+	HRESULT hr = D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, &_d2dFactory);
+	if (FAILED(hr))
+	{
+		::MessageBox(hWnd, L"D2D 팩토리 생성에 실패했습니다.", L"초기화 에러", MB_OK);
+		return;
+	}
+
+
+	hr = _d2dFactory->CreateHwndRenderTarget(
+		D2D1::RenderTargetProperties(),
+		D2D1::HwndRenderTargetProperties(hWnd, D2D1::SizeU(rect.right, rect.bottom)),
+		&_renderTarget
+	);
+	if (FAILED(hr))
+	{
+		::MessageBox(hWnd, L"D2D 렌더 타겟 생성에 실패했습니다.", L"초기화 에러", MB_OK);
+		return;
+	}
+
+	hr = CoCreateInstance(CLSID_WICImagingFactory, NULL, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(&_wicFactory));
+	if (FAILED(hr))
+	{
+		::MessageBox(hWnd, L"WIC 팩토리 생성에 실패했습니다. (COM 초기화를 확인하세요)", L"초기화 에러", MB_OK);
+		return;
+	}
+
+	GET_SINGLE(FileManager)->Init(hWnd, L"../Resources", _renderTarget, _wicFactory);
 
 	GET_SINGLE(TimeManager)->Init();
 	GET_SINGLE(InputManager)->Init(hWnd);
@@ -57,21 +81,31 @@ void GameEngine::Update()
 
 void GameEngine::Render()
 {
-	float alpha = _accumulator / _FIXED_DT;
+	if (!_renderTarget) return;
 
-	GET_SINGLE(SceneManager)->Render(memDCDB, _alpha);
+	_renderTarget->BeginDraw();
+
+	_renderTarget->Clear(D2D1::ColorF(D2D1::ColorF::Black));
+
+
+
+	GET_SINGLE(SceneManager)->Render(_renderTarget, _alpha);
 
 	unsigned int fps = GET_SINGLE(TimeManager)->GetFps();
 	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
 
 	{
-		std::wstring str = std::format(L"FPS({0}), DT({1})", fps, deltaTime);
-		::TextOut(memDCDB, 550, 10, str.c_str(), static_cast<int>(str.size()));
-		std::wstring PlayerFacing = std::format(L"Mousepos ({0},{1})",
-			GET_SINGLE(InputManager)->GetMousePos().x, GET_SINGLE(InputManager)->GetMousePos().y);
-		::TextOut(memDCDB, 550, 40, PlayerFacing.c_str(), (int)PlayerFacing.size());
+		
 	}
+	HRESULT hr = _renderTarget->EndDraw();
 
-	::BitBlt(memDC, 0, 0, rect.right, rect.bottom, memDCDB, 0, 0, SRCCOPY); // 비트 블릿 : 고속 복사
-	::PatBlt(memDCDB, 0, 0, rect.right, rect.bottom, WHITENESS);
+	if (hr == D2DERR_RECREATE_TARGET)
+	{
+		SafeRelease(&_renderTarget);
+		_d2dFactory->CreateHwndRenderTarget(
+			D2D1::RenderTargetProperties(),
+			D2D1::HwndRenderTargetProperties(memhWnd, D2D1::SizeU(rect.right, rect.bottom)),
+			&_renderTarget
+		);
+	}
 }

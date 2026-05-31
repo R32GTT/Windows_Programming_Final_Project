@@ -13,7 +13,7 @@ void Wall::Update()
 {
 }
 
-void Wall::Render(HDC hdc, float alpha)
+void Wall::Render(ID2D1RenderTarget* renderTarget, float alpha)
 {
 }
 

@@ -13,7 +13,7 @@ public:
 
 	virtual void Init() abstract;
 	virtual void Update() abstract;
-	virtual void Render(HDC hdc, float alpha) abstract;
+	virtual void Render(ID2D1RenderTarget* renderTarget, float alpha) abstract;
 
 	GameObject* GetGameObjectByID(unsigned int ID);
 

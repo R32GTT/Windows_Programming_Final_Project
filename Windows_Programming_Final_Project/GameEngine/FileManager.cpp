@@ -10,10 +10,12 @@ FileManager::~FileManager()
 	Clear();
 }
 
-void FileManager::Init(HWND hwnd, fs::path filepath)
+void FileManager::Init(HWND hwnd, fs::path filepath, ID2D1RenderTarget* renderTarget, IWICImagingFactory* wicFactory)
 {
 	hWnd = hwnd;
 	filePath = filepath;
+	_renderTarget = renderTarget;
+	_wicFactory = wicFactory;
 }
 
 void FileManager::Clear()
@@ -34,7 +36,7 @@ void FileManager::Clear()
 	_flipbooks.clear();
 }
 
-Texture* FileManager::LoadTexture(const std::wstring& key, const std::wstring& path, unsigned int transparent)
+Texture* FileManager::LoadTexture(const std::wstring& key, const std::wstring& path)
 {
 	if (_textures.find(key) != _textures.end())
 		return _textures[key];
@@ -42,8 +44,7 @@ Texture* FileManager::LoadTexture(const std::wstring& key, const std::wstring& p
 	fs::path fullPath = filePath / path;
 
 	Texture* texture = new Texture();
-	texture->LoadBmp(hWnd, fullPath.c_str());
-	texture->SetTransparent(transparent);
+	texture->Load(_renderTarget, _wicFactory, fullPath.wstring());
 	_textures[key] = texture;
 
 	return texture;

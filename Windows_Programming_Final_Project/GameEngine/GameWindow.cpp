@@ -15,31 +15,37 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                       _In_ LPWSTR    lpCmdLine,
                       _In_ int       nCmdShow)
 {
+    HRESULT hr = CoInitializeEx(NULL, COINIT_MULTITHREADED);
+    if (FAILED(hr)) {
+        return -1;
+    }
+
     MyRegisterClass(hInstance);
 
     if (!InitInstance(hInstance, nCmdShow))
         return FALSE;
 
-    GameEngine GE;
-    GE.Init(g_hWnd);
-
-
     MSG msg{};
 
-    while (msg.message != WM_QUIT)
     {
-        if (::PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
+        GameEngine GE;
+        GE.Init(g_hWnd);
+
+        while (msg.message != WM_QUIT)
         {
-            ::TranslateMessage(&msg);
-            ::DispatchMessage(&msg);
-        }
-        else
-        {
+            if (::PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
+            {
+                ::TranslateMessage(&msg);
+                ::DispatchMessage(&msg);
+            }
+            else
+            {
                 GE.Update();
                 GE.Render();
+            }
         }
     }
-
+    CoUninitialize();
     return (int)msg.wParam;
 }
 

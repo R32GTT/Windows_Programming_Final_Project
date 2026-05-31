@@ -8,7 +8,7 @@ struct FlipbookInfo
 {
 	Texture* texture{};
 	std::wstring name{};
-	Vec2<int> size{};
+	Vec2F size{};
 	int start{};
 	int end{};
 	int line{};

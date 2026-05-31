@@ -1,4 +1,6 @@
 #pragma once
+#include "../GameEngine/FileBase/json.hpp"
+
 
 class FileBase;
 class Texture;
@@ -14,14 +16,14 @@ public:
 	~FileManager();
 
 public:
-	void Init(HWND hwnd, fs::path filepath);
+	void Init(HWND hwnd, fs::path filepath, ID2D1RenderTarget* renderTarget, IWICImagingFactory* wicFactory);
 	
 	void Clear();
 
 	const fs::path& GetFilePath() { return filePath; };
 
 	Texture* GetTexture(const std::wstring& key) { return _textures[key]; };
-	Texture* LoadTexture(const std::wstring& key, const std::wstring& path, unsigned int transparent = RGB(255, 0, 255));
+	Texture* LoadTexture(const std::wstring& key, const std::wstring& path);
 
 	Sprite* GetSprite(const std::wstring& key) { return _sprites[key]; };
 	Sprite* CreateSprite(const std::wstring& key, Texture* texture, int x = 0, int y = 0, int cx = 0, int cy = 0);
@@ -34,6 +36,9 @@ public:
 private:
 	HWND hWnd{};
 	fs::path filePath{};
+
+	ID2D1RenderTarget* _renderTarget{};
+	IWICImagingFactory* _wicFactory{};
 	
 	std::unordered_map<std::wstring, Texture*>		_textures;
 	std::unordered_map<std::wstring, Sprite*>		_sprites;

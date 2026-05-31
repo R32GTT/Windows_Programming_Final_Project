@@ -108,7 +108,7 @@
       <LanguageStandard_C>stdclatest</LanguageStandard_C>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)Objects;$(ProjectDir)Scene;$(ProjectDir)Utility;$(ProjectDir)GameEngine;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)FileBase\FileTypes;$(ProjectDir)FileBase;$(ProjectDir)Objects;$(ProjectDir)Scene;$(ProjectDir)Utility;$(ProjectDir)GameEngine;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -126,7 +126,7 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)Scene;$(ProjectDir)Objects;$(ProjectDir)Utility;$(ProjectDir)GameEngine;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)FileBase\FileTypes;$(ProjectDir)FileBase;$(ProjectDir)Objects;$(ProjectDir)Scene;$(ProjectDir)Utility;$(ProjectDir)GameEngine;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -136,7 +136,8 @@
   <ItemGroup>
     <ClCompile Include="GameEngine\Camera.cpp" />
     <ClCompile Include="GameEngine\CollisionManager.cpp" />
-    <ClCompile Include="GameEngine\FileBase\FileBase.cpp" />    <ClCompile Include="GameEngine\FileBase\FileTypes\FlipBook.cpp" />
+    <ClCompile Include="GameEngine\FileBase\FileBase.cpp" />
+    <ClCompile Include="GameEngine\FileBase\FileTypes\FlipBook.cpp" />
     <ClCompile Include="GameEngine\FileBase\FileTypes\Sprite.cpp" />
     <ClCompile Include="GameEngine\FileBase\FileTypes\Texture.cpp" />
     <ClCompile Include="GameEngine\FileManager.cpp" />
@@ -168,6 +169,7 @@
     <ClInclude Include="GameEngine\FileBase\FileTypes\FlipBook.h" />
     <ClInclude Include="GameEngine\FileBase\FileTypes\Sprite.h" />
     <ClInclude Include="GameEngine\FileBase\FileTypes\Texture.h" />
+    <ClInclude Include="GameEngine\FileBase\json.hpp" />
     <ClInclude Include="GameEngine\FileManager.h" />
     <ClInclude Include="GameEngine\GameEngine.h" />
     <ClInclude Include="GameEngine\GameObject.h" />

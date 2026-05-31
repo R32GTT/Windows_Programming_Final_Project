@@ -14,10 +14,10 @@ void SceneManager::Update()
 		_scene->Update();
 }
 
-void SceneManager::Render(HDC hdc, float alpha)
+void SceneManager::Render(ID2D1RenderTarget* renderTarget, float alpha)
 {
 	if (_scene)
-		_scene->Render(hdc, alpha);
+		_scene->Render(renderTarget, alpha);
 }
 
 void SceneManager::Clear()

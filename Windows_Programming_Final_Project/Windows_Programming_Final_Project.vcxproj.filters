@@ -173,6 +173,9 @@
     <ClInclude Include="GameEngine\Camera.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="GameEngine\FileBase\json.hpp">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Windows_Programming_Final_Project.rc">

@@ -38,7 +38,7 @@ void Scene::Update()
 	_cam.TickComp();
 }
 
-void Scene::Render(HDC hdc, float alpha)
+void Scene::Render(ID2D1RenderTarget* renderTarget, float alpha)
 {
 	Vec2F camRenderPos = _cam.GetRenderPos(alpha);
 
@@ -46,7 +46,7 @@ void Scene::Render(HDC hdc, float alpha)
 
 	for (const std::vector<GameObject*>& objects : _objects)
 		for (GameObject* object : objects)
-			object->Render(hdc, alpha);
+			object->Render(renderTarget, alpha);
 }
 
 GameObject* Scene::GetGameObjectByID(unsigned int ID)

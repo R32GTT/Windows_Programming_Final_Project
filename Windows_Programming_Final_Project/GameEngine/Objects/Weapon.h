@@ -51,7 +51,7 @@ public:
 	virtual ~Weapon();
 	virtual void Init() override;
 	virtual void Update() override;
-	virtual void Render(HDC hdc, float alpha) override;
+	virtual void Render(ID2D1RenderTarget* renderTarget, float alpha) override;
 
 	//무기 체크 함수
 	//수정해서 하나로 합치기 

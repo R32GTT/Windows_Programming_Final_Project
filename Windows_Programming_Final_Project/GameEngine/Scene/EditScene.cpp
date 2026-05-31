@@ -104,7 +104,7 @@ void EditScene::Update()
 	}
 }
 
-void EditScene::Render(HDC hdc, float alpha)
+void EditScene::Render(ID2D1RenderTarget* renderTarget, float alpha)
 {
-	Super::Render(hdc,alpha);
+	Super::Render(renderTarget,alpha);
 }

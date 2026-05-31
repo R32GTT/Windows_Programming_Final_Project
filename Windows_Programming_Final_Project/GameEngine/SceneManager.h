@@ -9,7 +9,7 @@ class SceneManager
 public:
 	void init();
 	void Update();
-	void Render(HDC hdc,float alpha);
+	void Render(ID2D1RenderTarget* renderTarget,float alpha);
 
 	void Clear();
 

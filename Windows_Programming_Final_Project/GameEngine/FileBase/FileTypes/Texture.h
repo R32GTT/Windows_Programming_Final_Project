@@ -8,19 +8,16 @@ public:
 	Texture();
 	virtual ~Texture();
 
-	Texture*	LoadBmp(HWND hWnd, const std::wstring& path);
-	HDC			GetDC();
+	void Load(ID2D1RenderTarget* renderTarget, IWICImagingFactory* wicFactory, const std::wstring& path);
 
-	void		SetSize(Vec2<int> size) { _size = size; };
-	Vec2<int>	GetSize() { return _size; };
+	ID2D1Bitmap* GetBitmap() { return _bitmap; };
 
-	void SetTransparent(unsigned int transparent) { _transparent = transparent; };
-	unsigned int GetTransparent() { return _transparent; };
+	void		SetSize(Vec2F size) { _size = size; };
+	Vec2F	GetSize() { return _size; };
 
 
 private:
-	HDC				_hDC{};
-	HBITMAP			_bitmap{};
-	Vec2<int>		_size{};
-	unsigned int	_transparent = RGB(255, 0, 255);
+	ID2D1Bitmap* _bitmap{};
+	Vec2F		_size{};
+	
 };

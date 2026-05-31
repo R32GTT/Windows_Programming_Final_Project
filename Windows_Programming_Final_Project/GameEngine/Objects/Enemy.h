@@ -18,7 +18,7 @@ public:
 	virtual ~Enemy();
 	virtual void Init() override;
 	virtual void Update() override;
-	virtual void Render(HDC hdc, float alpha) override;
+	virtual void Render(ID2D1RenderTarget* renderTarget, float alpha) override;
 
 
 	//적 이동 함수

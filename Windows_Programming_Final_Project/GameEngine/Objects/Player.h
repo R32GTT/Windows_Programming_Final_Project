@@ -11,7 +11,7 @@ public:
 
 	virtual void Init() override;
 	virtual void Update() override;
-	virtual void Render(HDC hdc, float alpha) override;
+	virtual void Render(ID2D1RenderTarget* renderTarget, float alpha) override;
 	
 
 	//플레이어 무기유무 함수 수정하기

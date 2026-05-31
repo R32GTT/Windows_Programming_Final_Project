@@ -1,6 +1,7 @@
 ﻿#include "pch.h"
 #include "Player.h"
 #include "Managers.h"
+#include "../FileBase/FileTypes/Texture.h"
 
 Player::Player()
 {
@@ -35,21 +36,55 @@ void Player::Update()
 	}
 }
 
-void Player::Render(HDC hdc, float alpha)
+void Player::Render(ID2D1RenderTarget* renderTarget, float alpha)
 {
-    // 1. 카메라의 현재 위치를 매니저에서 가져옵니다.
-    Vec2<float> camPos = GET_SINGLE(SceneManager)->GetCameraPos();
+    if (!renderTarget) return;
 
-    // 2. 내 진짜 좌표(GetRenderPos)에서 카메라 좌표를 빼고, 화면 중앙 보정을 더합니다.
+    // 1. 카메라 및 화면 중앙 보정이 들어간 좌표 계산 (기존 로직 유지)
+    Vec2<float> camPos = GET_SINGLE(SceneManager)->GetCameraPos();
     Vec2<float> screenPos = GetRenderPos(alpha);
 
-    int renderX = static_cast<int>(screenPos.x - camPos.x + WinSizeX / 2);
-    int renderY = static_cast<int>(screenPos.y - camPos.y + WinSizeY / 2);
+    float renderX = screenPos.x - camPos.x + WinSizeX / 2.0f;
+    float renderY = screenPos.y - camPos.y + WinSizeY / 2.0f;
 
-    // 3. 이제 원래 그리던 GDI 함수(Rectangle, Ellipse, BitBlt 등)에 
-    // 기존 pos.x, pos.y 대신 'renderX', 'renderY'를 대입해서 그립니다!
-    // 예시:
-    ::Ellipse(hdc, renderX - 20, renderY - 20, renderX + 20, renderY + 20);
+    // 2. FileManager에서 등록해 둔 플레이어 텍스처를 꺼내옴
+    // (예시로 씬 진입이나 Init 단계에서 LoadTexture(L"Player", L"Player.png")가 끝났다고 가정)
+    Texture* playerTex = GET_SINGLE(FileManager)->GetTexture(L"Player");
+
+    // 만약 텍스처가 아직 없거나 비트맵 로드가 안 되었다면 임시로 원이라도 그리게 방어코드 작성
+    if (playerTex == nullptr || playerTex->GetBitmap() == nullptr)
+    {
+        ID2D1SolidColorBrush* temporaryBrush = nullptr;
+        renderTarget->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::White), &temporaryBrush);
+        if (temporaryBrush)
+        {
+            D2D1_ELLIPSE ellipse = D2D1::Ellipse(D2D1::Point2F(renderX, renderY), _halfSize.x, _halfSize.y);
+            renderTarget->FillEllipse(ellipse, temporaryBrush);
+            temporaryBrush->Release();
+        }
+        return;
+    }
+
+    // 3. 로드된 DX2D 비트맵 객체 획득
+    ID2D1Bitmap* pBitmap = playerTex->GetBitmap();
+
+    // 4. 그려질 목적지 사각형 구역 설정 (중심점 기준)
+    D2D1_RECT_F destRect = D2D1::RectF(
+        renderX - _halfSize.x,
+        renderY - _halfSize.y,
+        renderX + _halfSize.x,
+        renderY + _halfSize.y
+    );
+
+    // 5. 비트맵 그리기 수행
+    // srcRect 자리에 nullptr을 주면 이미지 전체를 원본 사이즈로 destRect에 맞춰 그라데이션 보정해서 그려줌
+    renderTarget->DrawBitmap(
+        pBitmap,
+        &destRect,
+        1.0f, // 투명도 (Alpha)
+        D2D1_BITMAP_INTERPOLATION_MODE_LINEAR,
+        nullptr // 원본 소스 사각형 구역 (전체 출력 시 nullptr)
+    );
 }
 
 PlayerState Player::Move()

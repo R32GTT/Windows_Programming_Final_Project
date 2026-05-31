@@ -31,7 +31,12 @@ const float PI = 3.1415926f;
 #include <filesystem>
 namespace fs = std::filesystem;
 
-#pragma comment(lib, "msimg32.lib")
+//#pragma comment(lib, "msimg32.lib") DX2D Overhaul
+
+#pragma comment(lib, "d2d1.lib")
+#pragma comment(lib, "dwrite.lib")
+#pragma comment(lib, "windowscodecs.lib")
+#pragma comment(lib, "dxguid.lib")
 
 #define DECLARE_SINGLE(classname)			\
 private:									\

@@ -13,13 +13,17 @@ Sprite::~Sprite()
 {
 }
 
-HDC Sprite::GetDC()
+ID2D1Bitmap* Sprite::GetBitmap()
 {
-	return _texture->GetDC();
+	if (_texture)
+		return _texture->GetBitmap();
+	return nullptr;
 }
 
-int Sprite::GetTransparent()
+D2D1_RECT_F Sprite::GetSrcRect()
 {
-	return _texture->GetTransparent();
+	return D2D1_RECT_F(_x, _y, _x + _cx, _y + _cy);
 }
+
+
 

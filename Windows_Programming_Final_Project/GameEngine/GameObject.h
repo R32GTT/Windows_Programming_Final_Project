@@ -9,7 +9,7 @@ public:
 
 	virtual void Init();
 	virtual void Update();
-	virtual void Render(HDC hdc, float alpha);
+	virtual void Render(ID2D1RenderTarget* renderTarget, float alpha);
 	virtual bool CheckDead();
 
 	bool operator==(const GameObject& rhs) { return _id == rhs._id; };

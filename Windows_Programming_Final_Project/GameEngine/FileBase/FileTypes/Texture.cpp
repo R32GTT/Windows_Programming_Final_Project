@@ -7,33 +7,47 @@ Texture::Texture()
 
 Texture::~Texture()
 {
+	SafeRelease(&_bitmap);
 }
 
-Texture* Texture::LoadBmp(HWND hWnd, const std::wstring& path)
+void Texture::Load(ID2D1RenderTarget* renderTarget, IWICImagingFactory* wicFactory, const std::wstring& path)
 {
-	HDC hDC = ::GetDC(hWnd);
+	if(!renderTarget || !wicFactory) return;
 
-	_hDC = ::CreateCompatibleDC(hDC);
+	IWICBitmapDecoder* decoder = nullptr;
+	IWICBitmapFrameDecode* frame = nullptr;
+	IWICFormatConverter* converter = nullptr;
 
-	_bitmap = (HBITMAP)::LoadImage(nullptr, path.c_str(), IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE | LR_CREATEDIBSECTION | LR_DEFAULTSIZE);
+	HRESULT hr = wicFactory->CreateDecoderFromFilename(
+		path.c_str(), nullptr, GENERIC_READ, WICDecodeMetadataCacheOnLoad, &decoder);
 
-	if (_bitmap == NULL)
+	if (SUCCEEDED(hr))
+		hr = decoder->GetFrame(0, &frame);
+
+	if (SUCCEEDED(hr))
+		hr = wicFactory->CreateFormatConverter(&converter);
+
+	if (SUCCEEDED(hr))
 	{
-		::MessageBox(hWnd, path.c_str(), L"Image Load Failed!", NULL);
+		hr = converter->Initialize(
+			frame, GUID_WICPixelFormat32bppPBGRA, WICBitmapDitherTypeNone,
+			nullptr, 0.f, WICBitmapPaletteTypeMedianCut);
 	}
 
-	HBITMAP prev = (HBITMAP)SelectObject(_hDC, _bitmap);
-	::DeleteObject(prev);
+	if (SUCCEEDED(hr) && _bitmap)
+	{
+		D2D1_SIZE_F size = _bitmap->GetSize();
+		_size.x = size.width;
+		_size.y = size.height;
+	}
+	else
+	{
+		::MessageBox(nullptr, path.c_str(), L"Image Load Failed!", NULL);
+	}
 
-	BITMAP bit = {};
-	::GetObject(_bitmap, sizeof(BITMAP), &bit);
-	_size.x = bit.bmWidth;
-	_size.y = bit.bmHeight;
-
-	return this;
+	SafeRelease(&converter);
+	SafeRelease(&frame);
+	SafeRelease(&decoder);
+		
 }
 
-HDC Texture::GetDC()
-{
-	return _hDC;
-}

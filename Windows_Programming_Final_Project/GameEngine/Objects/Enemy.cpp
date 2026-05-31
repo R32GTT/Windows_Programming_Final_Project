@@ -18,7 +18,7 @@ void Enemy::Update()
 {
 }
 
-void Enemy::Render(HDC hdc, float alpha)
+void Enemy::Render(ID2D1RenderTarget* renderTarget, float alpha)
 {
 	Vec2<float> prevPos = GetRenderPos(alpha);
 }

@@ -15,7 +15,7 @@ public:
 
 	virtual void Init() override;
 	virtual void Update() override;
-	virtual void Render(HDC hdc, float alpha) override;
+	virtual void Render(ID2D1RenderTarget* renderTarget, float alpha) override;
 
 	Wall() {
 		type = OBJECTTYPE::WALL;

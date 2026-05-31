@@ -14,6 +14,6 @@ void DECO::Update()
 {
 }
 
-void DECO::Render(HDC hdc, float alpha)
+void DECO::Render(ID2D1RenderTarget* renderTarget, float alpha)
 {
 }
