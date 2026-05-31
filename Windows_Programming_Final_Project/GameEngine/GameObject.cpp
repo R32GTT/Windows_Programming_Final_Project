@@ -6,6 +6,19 @@ unsigned int GameObject::_sNextId = 1;
 GameObject::GameObject()
 {
 	_id = _sNextId++;
+
+	//오브젝트 고유 번호는 있으니 필요한 것들을 추가함.
+	//지워도 괜찮음
+	pos = { 0.0f, 0.0f };
+	prevPos = pos;
+
+	facingDir = { 1.0f, 0.0f };
+	movingDir = { 0.0f, 0.0f };
+
+	_halfSize = { 25.0f, 25.0f };
+	speed = 0.0f;
+
+
 }
 
 GameObject::~GameObject()
