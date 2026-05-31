@@ -36,4 +36,21 @@ Vec2<float> GameObject::GetRenderPos(float alpha)
 	return prevPos * (1.0f - alpha) + pos * alpha;
 }
 
+//SetPosition SetSize SetHalfSize 함수들 추가
+void GameObject::SetPosition(Vec2<float> _pos) {
+
+
+}
+
+void GameObject::SetSize(float x, float y) {
+
+
+}
+
+void GameObject::SetHalfSize(Vec2<float> halfSize) {
+
+
+
+}
+
 

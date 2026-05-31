@@ -23,10 +23,16 @@ public:
 	void SavePrevPos() { prevPos = pos; };
 
 	//게임 오브젝트의 위치를 설정하는 함수 추가
-	//void SetPosition(float _x, float _y);
+	//추가 수정이 필요하다 
+	void SetPosition(Vec2<float> _pos);
+	
 
 	//게임 오브젝트의 크기를 설정하는 함수
-	//void SetSize(int _width, int _height);
+	//추가 수정이 필요하다 
+	void SetSize(float x, float y);
+
+	//halfsize를 저장할 함수 추가
+	void SetHalfSize(Vec2<float> halfsize);
 
 
 	Layers GetLayer() { return layer; };
