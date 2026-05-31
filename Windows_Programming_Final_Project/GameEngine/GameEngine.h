@@ -1,5 +1,8 @@
 #pragma once
 #include "pch.h"
+#include <dwrite.h> // DirectWrite 헤더
+#pragma comment(lib, "dwrite.lib")
+
 class GameEngine
 {
 public:
@@ -23,6 +26,10 @@ private:
 	ID2D1Factory* _d2dFactory{};
 	ID2D1HwndRenderTarget* _renderTarget{};
 	IWICImagingFactory* _wicFactory{};
+
+	IDWriteFactory* _dwriteFactory{};
+	IDWriteTextFormat* _textFormat{};
+	ID2D1SolidColorBrush* _debugBrush{};
 
 	float _accumulator = 0.f;
 	float _alpha = 0.f;
