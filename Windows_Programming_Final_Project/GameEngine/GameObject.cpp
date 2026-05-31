@@ -14,7 +14,6 @@ GameObject::GameObject()
 
 	facingDir = { 1.0f, 0.0f };
 	movingDir = { 0.0f, 0.0f };
-
 	_halfSize = { 25.0f, 25.0f };
 	speed = 0.0f;
 
