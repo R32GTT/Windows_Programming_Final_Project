@@ -57,61 +57,81 @@ void FileManager::LoadAespriteJson(const std::wstring& path)
 	std::ifstream file(fullPath);
 
 	if (!file.is_open()) {
-		::MessageBox(hWnd, fullPath.c_str(), L"JSON 파싱 실패: 파일이 없습니다.", MB_OK);
+		::MessageBox(hWnd, fullPath.c_str(), L"파일이 없습니다.", MB_OK);
 		return;
 	}
 
 	json j;
-	file >> j; // JSON 파일 파싱 완료
+	file >> j;
 
-	// 1. 메타 데이터에서 원본 이미지(Texture) 로드
+
 	std::string imgNameStr = j["meta"]["image"];
 	std::wstring imgName = StrToWStr(imgNameStr);
 
 	fs::path imagePath = fullPath.parent_path() / imgName;
-	std::wstring texKey = fullPath.stem().wstring(); // 예: Player.json -> "Player"
+	std::wstring texKey = fullPath.stem().wstring(); 
 
 	Texture* tex = LoadTexture(texKey, imagePath.wstring());
 
-	// 2. Frames 배열을 순회하며 Sprite들 조각내기
 	std::vector<Sprite*> allSprites;
-	for (auto& [frameName, frameData] : j["frames"].items())
+	std::vector<int> allDurations; 
+
+	if (j["frames"].is_array())
 	{
-		float x = frameData["frame"]["x"];
-		float y = frameData["frame"]["y"];
-		float w = frameData["frame"]["w"];
-		float h = frameData["frame"]["h"];
+		for (auto& frameData : j["frames"])
+		{
+			std::wstring sprKey = StrToWStr(frameData["filename"]);
+			float x = frameData["frame"]["x"];
+			float y = frameData["frame"]["y"];
+			float w = frameData["frame"]["w"];
+			float h = frameData["frame"]["h"];
 
-		std::wstring sprKey = StrToWStr(frameName);
+			allSprites.push_back(CreateSprite(sprKey, tex, x, y, w, h));
+			allDurations.push_back(frameData["duration"]);
+		}
+	}
+	else if (j["frames"].is_object())
+	{
+		for (auto it = j["frames"].begin(); it != j["frames"].end(); ++it)
+		{
+			auto& frameData = it.value();
+			std::wstring sprKey = StrToWStr(frameData["filename"]);
+			float x = frameData["frame"]["x"];
+			float y = frameData["frame"]["y"];
+			float w = frameData["frame"]["w"];
+			float h = frameData["frame"]["h"];
 
-		Sprite* sprite = CreateSprite(sprKey, tex, x, y, w, h);
-		allSprites.push_back(sprite);
+			allSprites.push_back(CreateSprite(sprKey, tex, x, y, w, h));
+			allDurations.push_back(frameData["duration"]);
+		}
 	}
 
-	// 3. FrameTags를 읽어서 애니메이션(FlipBook) 상태별로 묶어주기
+
 	if (j["meta"].contains("frameTags"))
 	{
 		for (auto& tag : j["meta"]["frameTags"])
 		{
+
 			std::wstring animName = StrToWStr(tag["name"]);
 			int from = tag["from"];
 			int to = tag["to"];
 
-			// 엔진 안에서 꺼내 쓸 키값 생성 (예: "Player_Idle")
+
 			std::wstring fbKey = texKey + L"_" + animName;
 			FlipBook* fb = CreateFlipBook(fbKey);
 
 			FlipbookInfo info;
 			info.name = fbKey;
 
-			// from ~ to 인덱스의 스프라이트들을 배열에 밀어넣음
+
+			if (from >= 0 && from < allDurations.size()) {
+				info.duration = allDurations[from] / 1000.0f;
+			}
+
+
 			for (int i = from; i <= to; ++i) {
 				info.frames.push_back(allSprites[i]);
 			}
-
-			// Aseprite의 첫 프레임 재생 시간을 엔진용 초 단위로 변환
-			int durationMs = j["frames"].begin().value()["duration"];
-			info.duration = durationMs / 1000.0f;
 
 			fb->SetInfo(info);
 		}

@@ -1,5 +1,7 @@
 #pragma once
 
+class FlipBook;
+
 class GameObject
 {
 public:
@@ -18,6 +20,7 @@ public:
 	Vec2<float> GetPos() { return pos; }
 	Vec2F GetPrevPos() { return prevPos; };
 	Vec2F GetHalfSize() { return _halfSize; };
+	Layers GetLayer() { return layer; };
 	unsigned int GetID() const { return _id; };
 
 	Vec2I GetScreenPos(float alpha);
@@ -38,15 +41,23 @@ public:
 	void SetHalfSize(Vec2<float> halfsize);
 
 
-	Layers GetLayer() { return layer; };
+	void PlayAnimation(FlipBook* anim);
+	void UpdateAnimation(float dt);
+	void RenderAnimation(ID2D1RenderTarget* renderTarget, float renderX, float renderY);
+
+
+
+
 
 protected:
-	Vec2<float> pos{};
-	Vec2<float> prevPos{};
-	Vec2<float> facingDir{};
-	Vec2<float> movingDir{};
-	Vec2<float> _halfSize{};
+	Vec2F pos{};
+	Vec2F prevPos{};
+	Vec2F facingDir{};
+	Vec2F movingDir{};
+	Vec2F _halfSize{};
+	Vec2F _renderOffset{};
 
+	float _rotationAngle{};
 	float speed{};
 
 	static unsigned int _sNextId;
@@ -54,6 +65,10 @@ protected:
 	unsigned int _id{};
 
 	Layers layer = Layers::ACTORS;
-
 	OBJECTTYPE type = OBJECTTYPE::NONE;
+
+	FlipBook*	_currAnim{};
+	int			_currFrame{};
+	float		_animTimer{};
+
 };
