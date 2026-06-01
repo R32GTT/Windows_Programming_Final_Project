@@ -18,4 +18,7 @@ public:
 private:
 	bool CheckAABB(GameObject* a, GameObject* b);
 
+	//OBB 충돌 체크 추가하기
+	bool CheckOBB(GameObject* a, GameObject* b);
+
 };
