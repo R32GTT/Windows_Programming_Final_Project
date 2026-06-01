@@ -27,7 +27,7 @@ bool CollisionManager::CheckAABB(GameObject* a, GameObject* b)
 	return (diff.x <= minDistance.x && diff.y <= minDistance.y);
 }
 
-//OBB충돌 체크 구현시작
+
 bool CollisionManager::CheckOBB(GameObject* a, GameObject* b)
 {
 	//Vec2

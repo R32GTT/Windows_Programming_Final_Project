@@ -23,6 +23,9 @@ public:
 	Layers GetLayer() { return layer; };
 	unsigned int GetID() const { return _id; };
 
+	//OBB 충돌 체크를 위한 GetFacingDir 추가.
+	Vec2F GetFacningDir() { return facingDir; };
+
 	Vec2I GetScreenPos(float alpha);
 
 	void SetPos(Vec2<float> POS) { pos = POS; };
@@ -30,15 +33,15 @@ public:
 
 	//게임 오브젝트의 위치를 설정하는 함수 추가
 	//추가 수정이 필요하다 
-	void SetPosition(Vec2<float> _pos);
+	//void SetPosition(Vec2<float> _pos);
 	
 
 	//게임 오브젝트의 크기를 설정하는 함수
 	//추가 수정이 필요하다 
-	void SetSize(float x, float y);
+	//void SetSize(float x, float y);
 
 	//halfsize를 저장할 함수 추가
-	void SetHalfSize(Vec2<float> halfsize);
+	//void SetHalfSize(Vec2<float> halfsize);
 
 
 	void PlayAnimation(FlipBook* anim);
