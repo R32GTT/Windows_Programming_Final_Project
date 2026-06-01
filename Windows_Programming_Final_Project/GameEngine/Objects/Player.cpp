@@ -27,19 +27,21 @@ void Player::Update()
 
 	Move();
 
-    
-    // 1. [회전 버그 해결] 내 월드 좌표(pos)를 마우스와 같은 '화면 좌표'로 변환!
-    Vec2<float> camPos = GET_SINGLE(SceneManager)->GetCameraPos();
-    Vec2<float> myScreenPos = pos - camPos + Vec2<float>(WinSizeX / 2.0f, WinSizeY / 2.0f);
+    Vec2F camPos = GET_SINGLE(SceneManager)->GetCameraPos();
+    Vec2F halfSize = Vec2F(WinSizeX, WinSizeY) / 2.0f;
+    Vec2F myScreenPos = pos - camPos + halfSize;
 
-    Vec2<float> mousePos = GET_SINGLE(InputManager)->GetMousePos();
-    Vec2<float> dirToMouse = mousePos - myScreenPos; // (마우스 화면좌표) - (내 화면좌표)
+    Vec2F mousePos = GET_SINGLE(InputManager)->GetMousePos();
+    Vec2F dirToMouse = mousePos - myScreenPos;
 
     if (dirToMouse.LengthSq() > 0.0f) {
         facingDir = dirToMouse.Normalized();
-        _rotationAngle = facingDir.Angle() * (180.0f / PI) + 90.0f;
+        _rotationAngle = facingDir.Angle() * (180.0f / PI) + 90.0f; // Spirte가 위를 향하기 때문에 +90
     }
 
+    _renderOffset = Vec2F(0.0f, -32.0f); // 그냥 상수로 빼버릴까 싶네 애들 다 동일하게 쓰는건데
+
+    //TODO 근접 및 원거리 공격시 애니메이션 추가해야 함.
     // 2. [애니메이션 상태 머신 해결]
     FlipBook* punchAnim = GET_SINGLE(FileManager)->GetFlipBook(L"MainCharAnim_Punch");
     FlipBook* idleAnim = GET_SINGLE(FileManager)->GetFlipBook(L"MainCharAnim_Idle");
@@ -50,10 +52,6 @@ void Player::Update()
     {
         _isAttacking = true;
         PlayAnimation(punchAnim);
-
-        // 3. [피벗 버그 해결] Aseprite에서 무기를 뻗은 방향에 맞게 수정하세요!
-        // 오른쪽으로 뻗으면 (32.0f, 0.0f), 왼쪽이면 (-32.0f, 0.0f), 위면 (0.0f, -32.0f)
-        _renderOffset = Vec2<float>(0.0f, -32.0f);
     }
 
     // 공격 중일 때의 처리 (애니메이션이 끝났는지 확인)
@@ -70,7 +68,6 @@ void Player::Update()
     if (!_isAttacking)
     {
         PlayAnimation(idleAnim);
-        _renderOffset = Vec2<float>(0.0f, 0.0f);
     }
 
     // 애니메이션 시간 업데이트
@@ -89,41 +86,6 @@ void Player::Render(ID2D1RenderTarget* renderTarget, float alpha)
     float renderY = screenPos.y - camPos.y + WinSizeY / 2.0f;
 
     RenderAnimation(renderTarget, renderX, renderY);
-
-    /*Texture* playerTex = GET_SINGLE(FileManager)->GetTexture(L"Player");
-
-    if (playerTex == nullptr || playerTex->GetBitmap() == nullptr)
-    {
-        ID2D1SolidColorBrush* temporaryBrush = nullptr;
-        renderTarget->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::White), &temporaryBrush);
-        if (temporaryBrush)
-        {
-            D2D1_ELLIPSE ellipse = D2D1::Ellipse(D2D1::Point2F(renderX, renderY), _halfSize.x, _halfSize.y);
-            renderTarget->FillEllipse(ellipse, temporaryBrush);
-            temporaryBrush->Release();
-        }
-        return;
-    }*/
-
-    //// 3. 로드된 DX2D 비트맵 객체 획득
-    //ID2D1Bitmap* pBitmap = playerTex->GetBitmap();
-
-    //// 4. 그려질 목적지 사각형 구역 설정 (중심점 기준)
-    //D2D1_RECT_F destRect = D2D1::RectF(
-    //    renderX - _halfSize.x,
-    //    renderY - _halfSize.y,
-    //    renderX + _halfSize.x,
-    //    renderY + _halfSize.y
-    //);
-
- 
-    //renderTarget->DrawBitmap(
-    //    pBitmap,
-    //    &destRect,
-    //    1.0f, // 투명도 (Alpha)
-    //    D2D1_BITMAP_INTERPOLATION_MODE_LINEAR,
-    //    nullptr // 원본 소스 사각형 구역 (전체 출력 시 nullptr)
-    //);
 }
 
 PlayerState Player::Move()

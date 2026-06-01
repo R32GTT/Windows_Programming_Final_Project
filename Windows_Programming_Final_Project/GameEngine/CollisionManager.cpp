@@ -33,7 +33,7 @@ bool CollisionManager::CheckOBB(GameObject* a, GameObject* b)
 	//Vec2
 
 	//Vec2
-
+	return false;
 }
 
 
@@ -61,13 +61,3 @@ void CollisionManager::Update()
 
 }
 
-<<<<<<< HEAD
-//OBB충돌 체크 구현시작
-bool CollisionManager::CheckOBB(GameObject* a, GameObject* b)
-{
-
-	return false;
-}
-
-=======
->>>>>>> 60cbe2e03c36c562fef8638f3b84f7ec6027a0ec
