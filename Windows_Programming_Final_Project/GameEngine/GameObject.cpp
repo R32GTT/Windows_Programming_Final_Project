@@ -15,7 +15,7 @@ GameObject::GameObject()
 	pos = { 0.0f, 0.0f };
 	prevPos = pos;
 
-	facingDir = { 1.0f, 0.0f };
+	facingDir = { 1.0f, 0.0f };  //기본적으로 오른쪽을 바라봅니다
 	movingDir = { 0.0f, 0.0f };
 	_halfSize = { 25.0f, 25.0f };
 	speed = 0.0f;
