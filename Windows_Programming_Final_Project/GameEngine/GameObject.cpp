@@ -124,7 +124,7 @@ void GameObject::RenderAnimation(ID2D1RenderTarget* renderTarget, float renderX,
 
 	renderTarget->DrawBitmap(dxBitmap, &destRect, 1.0f, D2D1_BITMAP_INTERPOLATION_MODE_LINEAR, &srcRect);
 
-	renderTarget->SetTransform(oldTransform)
+	renderTarget->SetTransform(oldTransform);
 }
 
 

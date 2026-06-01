@@ -68,10 +68,12 @@ void FileManager::LoadAespriteJson(const std::wstring& path)
 	std::string imgNameStr = j["meta"]["image"];
 	std::wstring imgName = StrToWStr(imgNameStr);
 
-	fs::path imagePath = fullPath.parent_path() / imgName;
-	std::wstring texKey = fullPath.stem().wstring(); 
+	fs::path relativePath = path;
+	fs::path imageRelativePath = relativePath.parent_path() / imgName;
 
-	Texture* tex = LoadTexture(texKey, imagePath.wstring());
+	std::wstring texKey = fullPath.stem().wstring();
+
+	Texture* tex = LoadTexture(texKey, imageRelativePath.wstring());
 
 	std::vector<Sprite*> allSprites;
 	std::vector<int> allDurations; 
@@ -136,6 +138,12 @@ void FileManager::LoadAespriteJson(const std::wstring& path)
 			fb->SetInfo(info);
 		}
 	}
+}
+
+void FileManager::LoadGlobalResources()
+{
+	LoadAespriteJson(L"MainCharAnim.json");
+
 }
 
 Texture* FileManager::LoadTexture(const std::wstring& key, const std::wstring& path)

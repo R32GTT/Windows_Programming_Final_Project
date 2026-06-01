@@ -9,6 +9,7 @@ GameEngine::GameEngine()
 
 GameEngine::~GameEngine()
 {
+	GET_SINGLE(FileManager)->Clear();
 	SafeRelease(&_textFormat);
 	SafeRelease(&_dwriteFactory);
 	SafeRelease(&_debugBrush);
@@ -67,7 +68,15 @@ void GameEngine::Init(HWND hWnd)
 	// 3. 텍스트를 그릴 브러쉬(색상) 생성 (예: 노란색)
 	_renderTarget->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::Yellow), &_debugBrush);
 
-	GET_SINGLE(FileManager)->Init(hWnd, L"../Resources", _renderTarget, _wicFactory);
+
+	_renderTarget->BeginDraw();
+	_renderTarget->Clear(D2D1::ColorF(D2D1::ColorF::Black));
+
+	_renderTarget->EndDraw();
+
+	GET_SINGLE(FileManager)->Init(hWnd, L"Resources", _renderTarget, _wicFactory);
+
+	GET_SINGLE(FileManager)->LoadGlobalResources();
 
 	GET_SINGLE(TimeManager)->Init();
 	GET_SINGLE(InputManager)->Init(hWnd);

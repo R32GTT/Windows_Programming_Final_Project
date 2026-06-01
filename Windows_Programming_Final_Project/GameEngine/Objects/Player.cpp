@@ -28,22 +28,54 @@ void Player::Update()
 	Move();
 
     
+    // 1. [회전 버그 해결] 내 월드 좌표(pos)를 마우스와 같은 '화면 좌표'로 변환!
+    Vec2<float> camPos = GET_SINGLE(SceneManager)->GetCameraPos();
+    Vec2<float> myScreenPos = pos - camPos + Vec2<float>(WinSizeX / 2.0f, WinSizeY / 2.0f);
 
-	Vec2<float> mousePos = GET_SINGLE(InputManager)->GetMousePos();
-	Vec2<float> dirToMouse = mousePos - pos;
+    Vec2<float> mousePos = GET_SINGLE(InputManager)->GetMousePos();
+    Vec2<float> dirToMouse = mousePos - myScreenPos; // (마우스 화면좌표) - (내 화면좌표)
 
-	if (dirToMouse.LengthSq() > 0.0f) {
-		facingDir = dirToMouse.Normalized();
-        _rotationAngle = facingDir.Angle() * (180.0f / PI);
-	}
-
-    if (_currAnim)
-    {
-        _renderOffset = Vec2F(0.0f, 32.0f);
+    if (dirToMouse.LengthSq() > 0.0f) {
+        facingDir = dirToMouse.Normalized();
+        _rotationAngle = facingDir.Angle() * (180.0f / PI) + 90.0f;
     }
 
-    float fixedDT = 1.0f / 60.0f;
-    UpdateAnimation(fixedDT);
+    // 2. [애니메이션 상태 머신 해결]
+    FlipBook* punchAnim = GET_SINGLE(FileManager)->GetFlipBook(L"MainCharAnim_Punch");
+    FlipBook* idleAnim = GET_SINGLE(FileManager)->GetFlipBook(L"MainCharAnim_Idle");
+
+    // 마우스를 클릭했고, 현재 공격 중이 아니라면 공격 시작!
+    // (InputManager에 GetButtonDown(한번 눌림 체크)가 있다면 그걸 쓰는게 더 좋습니다)
+    if (GET_SINGLE(InputManager)->GetButton(KeyType::LeftMouse) && !_isAttacking)
+    {
+        _isAttacking = true;
+        PlayAnimation(punchAnim);
+
+        // 3. [피벗 버그 해결] Aseprite에서 무기를 뻗은 방향에 맞게 수정하세요!
+        // 오른쪽으로 뻗으면 (32.0f, 0.0f), 왼쪽이면 (-32.0f, 0.0f), 위면 (0.0f, -32.0f)
+        _renderOffset = Vec2<float>(0.0f, -32.0f);
+    }
+
+    // 공격 중일 때의 처리 (애니메이션이 끝났는지 확인)
+    if (_isAttacking)
+    {
+        // 현재 펀치 애니메이션이고, 마지막 프레임에 도달했다면 공격 종료!
+        if (_currAnim == punchAnim && _currFrame >= punchAnim->GetInfo().frames.size() - 1)
+        {
+            _isAttacking = false;
+        }
+    }
+
+    // 공격 중이 아닐 때는 대기(Idle) 모션 유지
+    if (!_isAttacking)
+    {
+        PlayAnimation(idleAnim);
+        _renderOffset = Vec2<float>(0.0f, 0.0f);
+    }
+
+    // 애니메이션 시간 업데이트
+    float fixedDt = 1.0f / 60.f;
+    UpdateAnimation(fixedDt);
 }
 
 void Player::Render(ID2D1RenderTarget* renderTarget, float alpha)

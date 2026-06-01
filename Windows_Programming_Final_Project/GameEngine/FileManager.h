@@ -22,7 +22,9 @@ public:
 
 	const fs::path& GetFilePath() { return filePath; };
 
+	
 	void LoadAespriteJson(const std::wstring& path);
+	void LoadGlobalResources();
 
 	Texture* GetTexture(const std::wstring& key) { return _textures[key]; };
 	Texture* LoadTexture(const std::wstring& key, const std::wstring& path);

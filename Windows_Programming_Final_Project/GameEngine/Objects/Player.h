@@ -87,6 +87,8 @@ private:
 	//무기 버림유무 변수 추가
 	bool is_drop = false;
 
+	bool _isAttacking = false; // 공격 중인지 체크하는 플래그
+
 	PlayerState status = PlayerState::IDLE;
 
 };
