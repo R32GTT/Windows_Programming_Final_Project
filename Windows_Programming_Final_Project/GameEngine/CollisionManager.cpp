@@ -27,6 +27,16 @@ bool CollisionManager::CheckAABB(GameObject* a, GameObject* b)
 	return (diff.x <= minDistance.x && diff.y <= minDistance.y);
 }
 
+//OBB충돌 체크 구현시작
+bool CollisionManager::CheckOBB(GameObject* a, GameObject* b)
+{
+	//Vec2
+
+	//Vec2
+
+}
+
+
 void CollisionManager::Update()
 {
 	Scene* currentScene = GET_SINGLE(SceneManager)->GetCurrentScene();
@@ -42,15 +52,12 @@ void CollisionManager::Update()
 			{
 				ResolveWallCollision(actor, wall);
 			}
+			else if (CheckOBB(actor, wall))
+			{
+				ResolveWallCollision(actor, wall);
+			}
 		}
 	}
-
-}
-
-//OBB충돌 체크 구현시작
-bool CollisionManager::CheckOBB(GameObject* a, GameObject* b)
-{
-
 
 }
 
