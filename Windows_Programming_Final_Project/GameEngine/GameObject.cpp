@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "GameObject.h"
 #include "Managers.h"
+#include "FileBase/FileTypes/FlipBook.h"
+#include "FileBase/FileTypes/Sprite.h"
 
 unsigned int GameObject::_sNextId = 1;
 
@@ -59,6 +61,70 @@ Vec2I GameObject::GetScreenPos(float alpha)
     int screenY = std::round(worldPos.y - camPos.y + WinSizeY / 2.0f);
 
     return { screenX, screenY };
+}
+
+void GameObject::PlayAnimation(FlipBook* anim)
+{
+	if (anim == nullptr || _currAnim == anim)  return;
+
+	_currAnim = anim;
+	_currFrame = 0;
+	_animTimer = 0.0f;
+}
+
+void GameObject::UpdateAnimation(float dt)
+{
+	if (_currAnim == nullptr) return;
+
+	const FlipbookInfo& info = _currAnim->GetInfo();
+	if (info.frames.empty()) return;
+
+	_animTimer += dt;
+
+	if (_animTimer >= info.duration)
+	{
+		_animTimer -= info.duration;
+		_currFrame++;
+
+		if (_currFrame >= info.frames.size())
+		{
+			if (info.loop)
+				_currFrame = 0;
+			else
+				_currFrame = (int)info.frames.size() - 1;
+		}
+	}
+}
+
+void GameObject::RenderAnimation(ID2D1RenderTarget* renderTarget, float renderX, float renderY)
+{
+	if (_currAnim == nullptr || _currAnim->GetInfo().frames.empty()) return;
+
+	Sprite* currentSprite = _currAnim->GetInfo().frames[_currFrame];
+	ID2D1Bitmap* dxBitmap = currentSprite->GetBitmap();
+	D2D1_RECT_F srcRect = currentSprite->GetSrcRect();
+
+	Vec2F spriteSize = currentSprite->GetSize();
+
+	float destLeft = renderX - (spriteSize.x / 2.0f) + _renderOffset.x;
+	float destTop = renderY - (spriteSize.y / 2.0f) + _renderOffset.y;
+	float destRight = destLeft + spriteSize.x;
+	float destBottom = destTop + spriteSize.y;
+
+	D2D1_RECT_F destRect = D2D1::RectF(destLeft, destTop, destRight, destBottom);
+
+	D2D1_MATRIX_3X2_F oldTransform;
+	renderTarget->GetTransform(&oldTransform);
+
+	D2D1_POINT_2F pivotPoint = D2D1::Point2F(renderX, renderY);
+
+	renderTarget->SetTransform(
+		D2D1::Matrix3x2F::Rotation(_rotationAngle, pivotPoint) * oldTransform
+	);
+
+	renderTarget->DrawBitmap(dxBitmap, &destRect, 1.0f, D2D1_BITMAP_INTERPOLATION_MODE_LINEAR, &srcRect);
+
+	renderTarget->SetTransform(oldTransform)
 }
 
 
