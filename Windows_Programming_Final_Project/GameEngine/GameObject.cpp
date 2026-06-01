@@ -37,8 +37,8 @@ void GameObject::Update()
 
 void GameObject::Render(ID2D1RenderTarget* renderTarget, float alpha)
 {
-}
 
+}
 
 
 bool GameObject::CheckDead()
