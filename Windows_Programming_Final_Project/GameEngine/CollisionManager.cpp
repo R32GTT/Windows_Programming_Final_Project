@@ -28,15 +28,6 @@ bool CollisionManager::CheckAABB(GameObject* a, GameObject* b)
 }
 
 
-bool CollisionManager::CheckOBB(GameObject* a, GameObject* b)
-{
-	//Vec2
-
-	//Vec2
-
-}
-
-
 void CollisionManager::Update()
 {
 	Scene* currentScene = GET_SINGLE(SceneManager)->GetCurrentScene();
