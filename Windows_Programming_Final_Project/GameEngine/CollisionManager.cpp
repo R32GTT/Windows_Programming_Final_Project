@@ -47,3 +47,10 @@ void CollisionManager::Update()
 
 }
 
+//OBB충돌 체크 구현시작
+bool CollisionManager::CheckOBB(GameObject* a, GameObject* b)
+{
+
+
+}
+
