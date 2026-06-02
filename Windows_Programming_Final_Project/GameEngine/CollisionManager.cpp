@@ -57,3 +57,64 @@ void CollisionManager::Update()
 
 //OBB충돌 체크 구현시작
 //혹시 문제가 있으면 삭제해도 괜찮음
+bool CollisionManager::CheckOBB(GameObject* a, GameObject* b)
+{
+
+	//Half Center
+	//Right Up
+	Vec2F aCenter = a->GetPos();
+	Vec2F bCenter = b->GetPos();
+
+	Vec2F aHalf = a->GetHalfSize();
+	Vec2F bHalf = b->GetHalfSize();
+
+	//a의 회전 축
+	//Normailize를 해야 함
+	Vec2F aRight = a->GetFacningDir().Normalized();
+	Vec2F aUp = Vec2F(-aRight.y, aRight.x);
+
+	//b의 회전 축
+	Vec2F bRight = b->GetFacningDir().Normalized();
+	Vec2F bUp = Vec2F(-bRight.y, bRight.x);
+
+	Vec2F ceterDiff = bCenter - aCenter;
+
+
+	Vec2F axes[4] = {
+
+		aRight,
+		aUp,
+		bRight,
+		bUp
+
+
+	};
+
+	//투영 부분
+	for (int i = 0; i < 4; i++)
+	{
+		Vec2F axis = axes[i];
+
+		//두 중심 사이 거리를 현재 축에 투영
+		float distance = fabs(ceterDiff.Dot(axis));
+
+		//a의 반지름을 현재 축에 투영
+		float aRadius = aHalf.x * fabs(aRight.Dot(axis)) + aHalf.y * fabs(aUp.Dot(axis));
+
+		//b의 반지름을 현재 축에 투영
+		float bRadius = bHalf.x * fabs(bRight.Dot(axis)) + bHalf.y * fabs(bUp.Dot(axis));
+
+		//이 축에서 만약 떨어져 있다면 충돌이 아니다
+		if (distance > aRadius + bRadius)
+		{
+			return false;
+		}
+
+
+	}
+
+
+	//그런데 모든 축에서 겹치면 충돌이라고 한다
+	return true;
+}
+
