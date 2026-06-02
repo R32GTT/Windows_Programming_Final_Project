@@ -7,25 +7,25 @@ template <typename T>
 class Vec2
 {
 public:
-	Vec2() {};
-	Vec2(T _x, T _y) :x(_x), y(_y) {};
-	Vec2(const Vec2& base) { x = base.x; y = base.y; };
-	Vec2(Vec2&& base) noexcept = default;
+constexpr	Vec2() {};
+constexpr	Vec2(T _x, T _y) :x(_x), y(_y) {};
+constexpr	Vec2(const Vec2& base) : x(base.x), y(base.y) {};
+constexpr	Vec2(Vec2&& base) noexcept = default;
 	Vec2(POINT pt) { x = (float)pt.x; y = (float)pt.y; };
 
 	~Vec2() = default;
 
-	float LengthSq();
-	float Length();
+	float LengthSq() const;
+	float Length() const;
 
 	Vec2<T> Abs();
 	Vec2<T> Normalized();
 	Vec2<T> Reflect(Vec2& other);
 
 	float Angle();
-	float Dot(Vec2& other);
+	float Dot(const Vec2& other);
 	float Aspect() { return x / y; };
-	float Cross(Vec2& other);
+	float Cross(const Vec2& other);
 
 	bool Is_Equal_Approx(Vec2& other);
 	bool is_Normalized();

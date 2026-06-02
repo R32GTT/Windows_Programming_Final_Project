@@ -2,12 +2,12 @@
 #include "Vec2.h"
 
 template<typename T>
-float Vec2<T>::LengthSq()
+float Vec2<T>::LengthSq() const
 {
 	return x * x + y * y;
 }
 template<typename T>
-float Vec2<T>::Length()
+float Vec2<T>::Length() const 
 {
 	return std::sqrt(LengthSq());
 }
@@ -49,13 +49,13 @@ float Vec2<T>::Angle()
 }
 
 template<typename T>
-float Vec2<T>::Dot(Vec2& other)
+float Vec2<T>::Dot(const Vec2& other)
 {
 	return ((x * other.x) + (y * other.y));
 }
 
 template<typename T>
-float Vec2<T>::Cross(Vec2& other)
+float Vec2<T>::Cross(const Vec2& other)
 {
 	return x * other.y - y * other.x;
 }

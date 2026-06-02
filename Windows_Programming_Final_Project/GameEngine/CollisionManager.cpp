@@ -11,7 +11,6 @@ void CollisionManager::Init()
 {
 }
 
-
 void CollisionManager::ResolveWallCollision(GameObject* movingObj, GameObject* wall)
 {
 	Vec2<float> safePos = movingObj->GetPrevPos();
@@ -25,6 +24,11 @@ bool CollisionManager::CheckAABB(GameObject* a, GameObject* b)
 	Vec2F minDistance = a->GetHalfSize() + b->GetHalfSize();
 
 	return (diff.x <= minDistance.x && diff.y <= minDistance.y);
+}
+
+bool CollisionManager::CheckOBB(GameObject* a, GameObject* b)
+{
+	return false;
 }
 
 
@@ -49,13 +53,7 @@ void CollisionManager::Update()
 			}
 		}
 	}
-
+}
 
 //OBB충돌 체크 구현시작
 //혹시 문제가 있으면 삭제해도 괜찮음
-bool CollisionManager::CheckOBB(GameObject* a, GameObject* b)
-{
-
-	return false;
-}
-

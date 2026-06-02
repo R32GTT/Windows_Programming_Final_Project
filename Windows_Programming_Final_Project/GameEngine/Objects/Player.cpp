@@ -31,6 +31,7 @@ void Player::Update()
     Vec2F halfSize = Vec2F(WinSizeX, WinSizeY) / 2.0f;
     Vec2F myScreenPos = pos - camPos + halfSize;
 
+
     Vec2F mousePos = GET_SINGLE(InputManager)->GetMousePos();
     Vec2F dirToMouse = mousePos - myScreenPos;
 
@@ -71,7 +72,7 @@ void Player::Update()
     }
 
     // 애니메이션 시간 업데이트
-    float fixedDt = 1.0f / 60.f;
+    float fixedDt = 1.0f / 60.0f;
     UpdateAnimation(fixedDt);
 }
 
@@ -79,13 +80,16 @@ void Player::Render(ID2D1RenderTarget* renderTarget, float alpha)
 {
     if (!renderTarget) return;
 
-    Vec2<float> camPos = GET_SINGLE(SceneManager)->GetCameraPos();
-    Vec2<float> screenPos = GetRenderPos(alpha);
+  //Vec2F camPos = GET_SINGLE(SceneManager)->GetCameraPos();
+    Vec2F screenPos = GetRenderPos(alpha);
 
-    float renderX = screenPos.x - camPos.x + WinSizeX / 2.0f;
-    float renderY = screenPos.y - camPos.y + WinSizeY / 2.0f;
+   //Vec2F screenPos2 = GetScreenPos(alpha);
+    Vec2F ToRenderPos = GET_SINGLE(SceneManager)->ToRenderPos(screenPos);
 
-    RenderAnimation(renderTarget, renderX, renderY);
+    //float renderX = screenPos.x - camPos.x + WinSizeX / 2.0f;
+    //float renderY = screenPos.y - camPos.y + WinSizeY / 2.0f;
+
+    RenderAnimation(renderTarget, ToRenderPos.x, ToRenderPos.y);
 }
 
 PlayerState Player::Move()

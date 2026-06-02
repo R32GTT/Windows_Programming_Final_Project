@@ -51,17 +51,22 @@ Vec2<float> GameObject::GetRenderPos(float alpha)
 	return prevPos * (1.0f - alpha) + pos * alpha;
 }
 
-Vec2I GameObject::GetScreenPos(float alpha)
-{
-    Vec2<float> worldPos = GetRenderPos(alpha);
-
-    Vec2<float> camPos = GET_SINGLE(SceneManager)->GetCameraPos();
-
-    int screenX = std::round(worldPos.x - camPos.x + WinSizeX / 2.0f);
-    int screenY = std::round(worldPos.y - camPos.y + WinSizeY / 2.0f);
-
-    return { screenX, screenY };
-}
+// 현재 사용 안함.
+//Vec2F GameObject::GetScreenPos(float alpha)
+//{
+//    Vec2F worldPos = GetRenderPos(alpha);
+//
+//    Vec2F camPos = GET_SINGLE(SceneManager)->GetCameraPos();
+//
+//	Vec2F WinSizeV(WinSizeX, WinSizeY);
+//	Vec2F screen = worldPos - camPos + WinSizeV / 2.0f;
+//
+//    /*int screenX = std::round(worldPos.x - camPos.x + WinSizeX / 2.0f);
+//    int screenY = std::round(worldPos.y - camPos.y + WinSizeY / 2.0f);
+//	*/
+//
+//    return screen;
+//}
 
 void GameObject::PlayAnimation(FlipBook* anim)
 {

@@ -17,13 +17,17 @@ public:
 	void ChangeScene(SceneType sceneType, const std::wstring& mapFilePath);
 	Scene* GetCurrentScene() { return _scene; };
 
-	Vec2<float> GetCameraPos() { return cameraPos; };
-	void SetCameraPos(Vec2<float> pos) { cameraPos = pos; };
+	Vec2F GetCameraPos() { return cameraPos; };
+	void SetCameraPos(Vec2F pos) { cameraPos = pos; };
+	
+	Vec2F ToRenderPos(Vec2F alphaPos);
 
 private:
 	Scene* _scene;
 	SceneType _sceneType = SceneType::NONE;
 
-	Vec2<float> cameraPos{};
+	Vec2F cameraPos{};
+	Vec2F winSizeV{ WinSizeX,WinSizeY };
+	static constexpr Vec2F halfWinSizeV{ WinSizeX / 2.0f,WinSizeY / 2.0f };
 };
 

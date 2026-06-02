@@ -54,3 +54,10 @@ void SceneManager::ChangeScene(SceneType sceneType, const std::wstring& mapFileP
 {
 	
 }
+
+Vec2F SceneManager::ToRenderPos(Vec2F alphaPos)
+{
+	Vec2F renderPos = alphaPos - cameraPos + halfWinSizeV;
+	return renderPos;
+}
+
