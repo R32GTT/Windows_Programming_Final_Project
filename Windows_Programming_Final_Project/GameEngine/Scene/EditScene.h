@@ -27,7 +27,7 @@ public:
 	void SaveMap(const std::wstring& fileName);
 	void LoadMap(const std::wstring& fileName);
 
-
+	
 private:
 	std::vector<std::pair<POINT, POINT>> _lines;
 

@@ -4,6 +4,7 @@
 #include "FileBase/FileTypes/FlipBook.h"
 #include "FileBase/FileTypes/Sprite.h"
 #include "Utility/EnumUtils.h"
+#include "LevelData/LevelData.h"
 
 unsigned int GameObject::_sNextId = 1;
 
@@ -144,17 +145,10 @@ void GameObject::SaveToJson(nlohmann::json& outJson)
 	outJson["halfSize_y"] = _halfSize.y;
 }
 
-void GameObject::LoadFromJson(nlohmann::json& inJson)
+void GameObject::LoadFromData(const ObjectSpawnData& spawnData)
 {
-	if (inJson.contains("x") && inJson.contains("y")) {
-		pos.x = inJson["x"];
-		pos.y = inJson["y"];
-	}
-	if (inJson.contains("halfSize_x") && inJson.contains("halfSize_y")) {
-		_halfSize.x = inJson["halfSize_x"];
-		_halfSize.y = inJson["halfSize_y"];
-	}
-	if(inJson.contains("ObjectType"))
+
 }
+
 
 

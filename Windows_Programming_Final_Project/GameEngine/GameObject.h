@@ -2,6 +2,7 @@
 #include "FileBase/json.hpp"
 
 class FlipBook;
+class ObjectSpawnData;
 
 class GameObject
 {
@@ -58,7 +59,7 @@ public:
 public:
 
 	virtual void SaveToJson(nlohmann::json& outJson);
-	virtual void LoadFromJson(nlohmann::json& inJson);
+	virtual void LoadFromData(const ObjectSpawnData& );
 
 
 
@@ -69,7 +70,7 @@ protected:
 	Vec2F facingDir{};
 	Vec2F movingDir{};
 	Vec2F _halfSize{};
-	Vec2F _renderOffset{};
+	Vec2F _renderOffset{ 0.0f,-32.0f };
 
 	float _rotationAngle{};
 	float speed{};

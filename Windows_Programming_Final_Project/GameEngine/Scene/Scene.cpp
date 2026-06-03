@@ -1,7 +1,10 @@
 ﻿#include "pch.h"
 #include "Scene.h"
 #include "GameObject.h"
+#include "../Objects/Objects.h"
 #include "Managers.h"
+#include "../Utility/Vec2.h"
+#include "../LevelData/LevelData.h"	
 
 Scene::Scene()
 {
@@ -76,4 +79,54 @@ void Scene::RemoveObject(GameObject* object)
 	std::vector<GameObject*>& v = _objects[(int)object->GetLayer()];
 	v.erase(std::remove(v.begin(), v.end(), object), v.end());
 	_objectMap.erase(object->GetID());
+}
+
+void Scene::BuildMapFromData(const MapData& mapData)
+{
+	std::unordered_map<unsigned int, unsigned int> idMap;
+
+	for (const ObjectSpawnData& spawnData : mapData.objects)
+	{
+		GameObject* newObj = nullptr;
+
+		switch (spawnData.objType)
+		{
+		case OBJECTTYPE::NONE:
+			break;
+		case OBJECTTYPE::PLAYER:
+			newObj = new Player();
+			break;
+		case OBJECTTYPE::ENEMY:
+			newObj = new Enemy();
+			break;
+		case OBJECTTYPE::WEAPON:
+			newObj = new Weapon();
+			break;
+		case OBJECTTYPE::PROJECTILE:
+			newObj = new Projectile();
+			break;
+		case OBJECTTYPE::DECO:
+			newObj = new DECO();
+			break;
+		case OBJECTTYPE::WALL:
+			newObj = new Wall();
+			break;
+		case OBJECTTYPE::FLOOR:
+			newObj = new Floor();
+			break;
+		case OBJECTTYPE::ENDPOINT:
+			newObj = new EndPoint();
+			break;
+		case OBJECTTYPE::OBJECT_COUNT:
+			break;
+		default:
+			break;
+		}
+
+		if (newObj != nullptr)
+		{
+			newObj->LoadFromData(spawnData);
+		}
+	}
+
 }

@@ -182,6 +182,18 @@
     <ClInclude Include="GameEngine\Utility\EnumUtils.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="GameEngine\DataManager.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngine\LevelData\LevelData.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngine\Objects\Projectile.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngine\Objects\EndPoint.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Windows_Programming_Final_Project.rc">

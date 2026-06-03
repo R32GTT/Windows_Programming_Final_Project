@@ -3,6 +3,9 @@
 #include "GameObject.h"
 #include "Camera.h"
 
+struct MapData;
+
+
 class GameObject;
 
 class Scene
@@ -29,6 +32,8 @@ public:
 
 	void AddObject(GameObject* object);
 	void RemoveObject(GameObject* object);
+
+	void BuildMapFromData(const MapData& mapData);
 
 protected:
 	Camera _cam;

@@ -5,6 +5,7 @@
 #include <fstream>
 #include "../FileBase/json.hpp"
 
+
 using json = nlohmann::json;
 
 EditScene::EditScene()
@@ -101,3 +102,5 @@ void EditScene::LoadMap(const std::wstring& fileName)
 
 
 }
+
+

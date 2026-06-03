@@ -166,6 +166,7 @@
     <ClInclude Include="Config.h" />
     <ClInclude Include="GameEngine\Camera.h" />
     <ClInclude Include="GameEngine\CollisionManager.h" />
+    <ClInclude Include="GameEngine\DataManager.h" />
     <ClInclude Include="GameEngine\FileBase\FileBase.h" />
     <ClInclude Include="Enums.h" />
     <ClInclude Include="GameEngine\FileBase\FileTypes\FlipBook.h" />
@@ -175,12 +176,15 @@
     <ClInclude Include="GameEngine\FileManager.h" />
     <ClInclude Include="GameEngine\GameEngine.h" />
     <ClInclude Include="GameEngine\GameObject.h" />
+    <ClInclude Include="GameEngine\LevelData\LevelData.h" />
     <ClInclude Include="GameEngine\Managers.h" />
     <ClInclude Include="GameEngine\Objects\Deco.h" />
+    <ClInclude Include="GameEngine\Objects\EndPoint.h" />
     <ClInclude Include="GameEngine\Objects\Enemy.h" />
     <ClInclude Include="GameEngine\Objects\Floor.h" />
     <ClInclude Include="GameEngine\Objects\Objects.h" />
     <ClInclude Include="GameEngine\Objects\Player.h" />
+    <ClInclude Include="GameEngine\Objects\Projectile.h" />
     <ClInclude Include="GameEngine\Objects\Wall.h" />
     <ClInclude Include="GameEngine\Objects\Weapon.h" />
     <ClInclude Include="GameEngine\Scene\DevScene.h" />

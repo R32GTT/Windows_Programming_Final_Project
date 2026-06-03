@@ -6,3 +6,5 @@
 #include "Player.h"
 #include "Wall.h"
 #include "Weapon.h"
+#include "Projectile.h"
+#include "EndPoint.h"

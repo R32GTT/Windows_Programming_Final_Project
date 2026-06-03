@@ -40,8 +40,6 @@ void Player::Update()
         _rotationAngle = facingDir.Angle() * (180.0f / PI) + 90.0f; // Spirte가 위를 향하기 때문에 +90
     }
 
-    _renderOffset = Vec2F(0.0f, -32.0f); // 그냥 상수로 빼버릴까 싶네 애들 다 동일하게 쓰는건데
-
     //TODO 근접 및 원거리 공격시 애니메이션 추가해야 함.
     // 2. [애니메이션 상태 머신 해결]
     FlipBook* punchAnim = GET_SINGLE(FileManager)->GetFlipBook(L"MainCharAnim_Punch");
