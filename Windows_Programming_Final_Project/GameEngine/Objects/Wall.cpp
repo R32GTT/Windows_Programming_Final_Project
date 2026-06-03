@@ -11,7 +11,6 @@ Wall::~Wall()
 void Wall::Init()
 {
 	layer = Layers::WALL;
-	_halfSize = { 25.0f, 25.0f };
 
 }
 
