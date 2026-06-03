@@ -3,6 +3,7 @@
 #include "Managers.h"
 #include "FileBase/FileTypes/FlipBook.h"
 #include "FileBase/FileTypes/Sprite.h"
+#include "Utility/EnumUtils.h"
 
 unsigned int GameObject::_sNextId = 1;
 
@@ -130,6 +131,20 @@ void GameObject::RenderAnimation(ID2D1RenderTarget* renderTarget, float renderX,
 	renderTarget->DrawBitmap(dxBitmap, &destRect, 1.0f, D2D1_BITMAP_INTERPOLATION_MODE_LINEAR, &srcRect);
 
 	renderTarget->SetTransform(oldTransform);
+}
+
+void GameObject::SaveToJson(nlohmann::json& outJson)
+{
+	outJson["Layer"] = LayerToString(layer);
+	outJson["x"] = pos.x;
+	outJson["y"] = pos.y;
+	outJson["halfSize_x"] = _halfSize.x;
+	outJson["halfSize_y"] = _halfSize.y;
+}
+
+void GameObject::LoadFromJson(nlohmann::json& inJson)
+{
+
 }
 
 

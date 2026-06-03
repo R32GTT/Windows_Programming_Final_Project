@@ -24,8 +24,8 @@ public:
 	virtual void Render(ID2D1RenderTarget* renderTarget, float alpha) override;
 
 	//맵 저장하고 불러오는 함수 선언
-	void SaveMap(const char* fileName);
-	void LoadMap(const char* fileName);
+	void SaveMap(const std::wstring& fileName);
+	void LoadMap(const std::wstring& fileName);
 
 
 private:

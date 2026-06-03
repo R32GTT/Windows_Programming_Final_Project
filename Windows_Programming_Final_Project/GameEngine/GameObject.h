@@ -1,4 +1,5 @@
 #pragma once
+#include "FileBase/json.hpp"
 
 class FlipBook;
 
@@ -54,7 +55,10 @@ public:
 	void PlayAnimation(FlipBook* anim);
 	void UpdateAnimation(float dt);
 	void RenderAnimation(ID2D1RenderTarget* renderTarget, float renderX, float renderY);
+public:
 
+	virtual void SaveToJson(nlohmann::json& outJson);
+	virtual void LoadFromJson(nlohmann::json& inJson);
 
 
 

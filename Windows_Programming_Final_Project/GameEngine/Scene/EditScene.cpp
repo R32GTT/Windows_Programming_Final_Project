@@ -3,38 +3,9 @@
 #include "Managers.h"
 #include "Camera.h"
 #include <fstream>
-#include<stdio.h>
+#include "../FileBase/json.hpp"
 
-//맵 저장하는 함수
-void EditScene::SaveMap(const char* fileName) {
-
-	FILE* fp = NULL;// = fopen_s(fs::,fileName, "w");
-
-	if (fp == NULL) {
-		printf("Save Fail.\n");
-		return;
-	}
-
-	//맵 저장할때 쓸 범위 기반 for문
-	//for(const& : ){}
-
-
-}
-
-//맵 불러오는 함수
-void EditScene::LoadMap(const char* fileName) {
-
-	FILE* fp= NULL;// = fopen(fileName, "r");
-
-	if (fp == NULL) {
-		printf("Load Fail.\n");
-		return;
-	}
-
-	//맵 저장할때 쓸 범위 기반 for문
-	//for(const& : ){}
-
-}
+using json = nlohmann::json;
 
 EditScene::EditScene()
 {
@@ -107,4 +78,26 @@ void EditScene::Update()
 void EditScene::Render(ID2D1RenderTarget* renderTarget, float alpha)
 {
 	Super::Render(renderTarget,alpha);
+}
+
+void EditScene::SaveMap(const std::wstring& fileName)
+{
+	json mapData;
+	mapData["objects"] == json::array();
+
+	for (int i = 0; i < (int)Layers::LAYER_COUNT; i++)
+	{
+		for (GameObject* obj : GetObjectsByLayer(static_cast<Layers>(i)))
+		{
+			json obJson;
+		}
+	}
+
+
+}
+
+void EditScene::LoadMap(const std::wstring& fileName)
+{
+
+
 }

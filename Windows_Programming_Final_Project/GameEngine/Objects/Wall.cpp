@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Wall.h"
+#include "Managers.h"
 
 Wall::~Wall()
 {
@@ -15,6 +16,14 @@ void Wall::Update()
 
 void Wall::Render(ID2D1RenderTarget* renderTarget, float alpha)
 {
+	if (!renderTarget) return;
+
+	Vec2F screenPos = GetRenderPos(alpha);
+
+	Vec2F ToRenderPos = GET_SINGLE(SceneManager)->ToRenderPos(screenPos);
+
+	RenderAnimation(renderTarget, ToRenderPos.x, ToRenderPos.y);
+
 }
 
 Wall::Wall(POINT start, POINT end)

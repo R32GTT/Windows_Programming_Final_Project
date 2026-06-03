@@ -27,13 +27,13 @@ void Player::Update()
 
 	Move();
 
-    Vec2F camPos = GET_SINGLE(SceneManager)->GetCameraPos();
-    Vec2F halfSize = Vec2F(WinSizeX, WinSizeY) / 2.0f;
-    Vec2F myScreenPos = pos - camPos + halfSize;
-
+    //Vec2F camPos = GET_SINGLE(SceneManager)->GetCameraPos();
+    //Vec2F halfSize = Vec2F(WinSizeX, WinSizeY) / 2.0f;
+    //Vec2F myScreenPos = pos - camPos + halfSize;
+    
 
     Vec2F mousePos = GET_SINGLE(InputManager)->GetMousePos();
-    Vec2F dirToMouse = mousePos - myScreenPos;
+    Vec2F dirToMouse = mousePos - GET_SINGLE(SceneManager)->ToRenderPos(pos);
 
     if (dirToMouse.LengthSq() > 0.0f) {
         facingDir = dirToMouse.Normalized();

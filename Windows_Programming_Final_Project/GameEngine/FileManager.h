@@ -35,6 +35,8 @@ public:
 	FlipBook* GetFlipBook(const std::wstring& key) { return _flipbooks[key]; };
 	FlipBook* CreateFlipBook(const std::wstring& key);
 
+	
+
 
 
 private:
