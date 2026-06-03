@@ -26,12 +26,6 @@ bool CollisionManager::CheckAABB(GameObject* a, GameObject* b)
 	return (diff.x <= minDistance.x && diff.y <= minDistance.y);
 }
 
-bool CollisionManager::CheckOBB(GameObject* a, GameObject* b)
-{
-	return false;
-}
-
-
 void CollisionManager::Update()
 {
 	Scene* currentScene = GET_SINGLE(SceneManager)->GetCurrentScene();
