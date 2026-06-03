@@ -9,7 +9,7 @@ DECO::~DECO()
 //_halfSize는 wall과 일단 똑같이 25 25
 void DECO::Init()
 {
-	type = OBJECTTYPE::DECO;
+	layer = Layers::DECO;
 	_halfSize = { 25.0f, 25.0f };
 }
 
