@@ -1,20 +1,36 @@
 #include "pch.h"
 #include "Wall.h"
+#include "GameObject.h"
 
 Wall::~Wall()
 {
 }
 
+//wall layer를 수정
+//halfsize 일단 25 25로 함
 void Wall::Init()
 {
+	layer = Layers::WALL;
+	_halfSize = { 25.0f, 25.0f };
+
 }
 
 void Wall::Update()
 {
 }
 
+//Wall Render 시작하기
+//Sprite가 없으니 일반 도형으로 Render하기
 void Wall::Render(ID2D1RenderTarget* renderTarget, float alpha)
 {
+	if (renderTarget == nullptr) return;
+
+	Vec2<float> renderPos = GetRenderPos(alpha);
+
+
+
+
+
 }
 
 Wall::Wall(POINT start, POINT end)
