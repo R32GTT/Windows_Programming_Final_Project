@@ -10,7 +10,6 @@ DECO::~DECO()
 void DECO::Init()
 {
 	layer = Layers::DECO;
-	_halfSize = { 25.0f, 25.0f };
 }
 
 void DECO::Update()
