@@ -27,9 +27,17 @@ void Wall::Render(ID2D1RenderTarget* renderTarget, float alpha)
 
 	Vec2<float> renderPos = GetRenderPos(alpha);
 
+	D2D1_RECT_F rect = D2D1::RectF(renderPos.x - _halfSize.x, renderPos.y - _halfSize.y, renderPos.x + _halfSize.x, renderPos.y + _halfSize.y);
 
+	ID2D1SolidColorBrush* brush = nullptr;
 
+	renderTarget->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::Gray), &brush);
 
+	if (brush != nullptr)
+	{
+		renderTarget->FillRectangle(rect, brush);
+		brush->Release();
+	}
 
 }
 

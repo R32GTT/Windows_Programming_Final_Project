@@ -8,6 +8,8 @@ DECO::~DECO()
 
 void DECO::Init()
 {
+
+
 }
 
 void DECO::Update()
