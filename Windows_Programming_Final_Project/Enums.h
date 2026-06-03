@@ -50,6 +50,7 @@ enum class Layers
 {
 	FLOOR,
 	WALL,
+	DECO,
 	ITEM,
 	ACTORS,
 	UI,
