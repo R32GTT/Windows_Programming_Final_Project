@@ -56,3 +56,15 @@ enum class Layers
 	UI,
 	LAYER_COUNT
 };
+
+enum class WPTYPE {
+	NONE = 0,
+	FIST,
+	//KNIFE, TODO Maybe someday...
+	CROWBAR,
+	//AXE,
+	//PISTOL,
+	//SHOTGUN,
+	RIFLE,
+	TOTAL_COUNT
+};

@@ -7,18 +7,6 @@ class Weapon : public GameObject {
 
 private:
 
-	enum class WPTYPE {
-		NONE = 0,
-		FIST,
-		//KNIFE, TODO Maybe someday...
-		CROWBAR,
-		//AXE,
-		//PISTOL,
-		//SHOTGUN,
-		RIFLE,
-		TOTAL_COUNT
-	};
-
 	bool is_RIFLE = false;
 	bool is_Meele = false;
 	bool is_Fist = true;

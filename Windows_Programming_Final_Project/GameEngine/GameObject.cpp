@@ -16,7 +16,7 @@ GameObject::GameObject()
 	pos = { 0.0f, 0.0f };
 	prevPos = pos;
 
-	facingDir = { 1.0f, 0.0f };  //기본적으로 오른쪽을 바라봅니다(위쪽 방향을 기본 방향으로 할 시 0.0f -1.0f로 한다)
+	facingDir = { 0.0f, -1.0f };  //기본적으로 오른쪽을 바라봅니다(위쪽 방향을 기본 방향으로 할 시 0.0f -1.0f로 한다)
 	movingDir = { 0.0f, 0.0f };
 	_halfSize = { 25.0f, 25.0f };
 	speed = 0.0f;
@@ -135,7 +135,9 @@ void GameObject::RenderAnimation(ID2D1RenderTarget* renderTarget, float renderX,
 
 void GameObject::SaveToJson(nlohmann::json& outJson)
 {
+	outJson["Id"] = _id;
 	outJson["Layer"] = LayerToString(layer);
+	outJson["ObjectType"] = ObjectTypeToString(type);
 	outJson["x"] = pos.x;
 	outJson["y"] = pos.y;
 	outJson["halfSize_x"] = _halfSize.x;
@@ -144,7 +146,15 @@ void GameObject::SaveToJson(nlohmann::json& outJson)
 
 void GameObject::LoadFromJson(nlohmann::json& inJson)
 {
-
+	if (inJson.contains("x") && inJson.contains("y")) {
+		pos.x = inJson["x"];
+		pos.y = inJson["y"];
+	}
+	if (inJson.contains("halfSize_x") && inJson.contains("halfSize_y")) {
+		_halfSize.x = inJson["halfSize_x"];
+		_halfSize.y = inJson["halfSize_y"];
+	}
+	if(inJson.contains("ObjectType"))
 }
 
 
