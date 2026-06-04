@@ -1,5 +1,4 @@
 #pragma once
-#include "FileBase/json.hpp"
 
 class FlipBook;
 class ObjectSpawnData;
@@ -23,19 +22,23 @@ public:
 	Vec2<float> GetPos() { return pos; }
 	Vec2F GetPrevPos() { return prevPos; };
 	Vec2F GetHalfSize() { return _halfSize; };
+	 
+	//OBB 충돌 체크를 위한 GetFacingDir 추가.
+	Vec2F GetFacningDir() { return facingDir; };
 
 	OBJECTTYPE GetObjectType() { return type; }
 	Layers GetLayer() { return layer; };
 	unsigned int GetID() const { return _id; };
 
 public:
-	//OBB 충돌 체크를 위한 GetFacingDir 추가.
-	Vec2F GetFacningDir() { return facingDir; };
+	
 
-	//Vec2F GetScreenPos(float alpha); // 사용 안해서 그냥 버려둠. 나중에 써먹으려나?
+	//Vec2F GetScreenPos(float alpha); 사용 안해서 그냥 버려둠. 나중에 써먹으려나?
 
-	void SetPos(Vec2<float> POS) { pos = POS; };
+	void SetPos(Vec2F POS) { pos = POS; }; // 위치 Set 함수 Vec2F로 받음
 	void SavePrevPos() { prevPos = pos; };
+
+	void SetHalfSize(Vec2F halfSize) { _halfSize = halfSize; };
 
 	//SetFacingDir 추가
 	//플레이어 이동하거나 회전할 때 방향을 바꾸려 하면
@@ -58,8 +61,8 @@ public:
 	void RenderAnimation(ID2D1RenderTarget* renderTarget, float renderX, float renderY);
 public:
 
-	virtual void SaveToJson(nlohmann::json& outJson);
-	virtual void LoadFromData(const ObjectSpawnData& );
+	virtual void SaveToData(ObjectSpawnData& outData);
+	virtual void LoadFromData(const ObjectSpawnData& spawnData);
 
 
 

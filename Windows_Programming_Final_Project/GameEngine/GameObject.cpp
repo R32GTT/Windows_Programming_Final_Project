@@ -3,7 +3,6 @@
 #include "Managers.h"
 #include "FileBase/FileTypes/FlipBook.h"
 #include "FileBase/FileTypes/Sprite.h"
-#include "Utility/EnumUtils.h"
 #include "LevelData/LevelData.h"
 
 unsigned int GameObject::_sNextId = 1;
@@ -134,20 +133,23 @@ void GameObject::RenderAnimation(ID2D1RenderTarget* renderTarget, float renderX,
 	renderTarget->SetTransform(oldTransform);
 }
 
-void GameObject::SaveToJson(nlohmann::json& outJson)
+
+
+void GameObject::SaveToData(ObjectSpawnData& outData)
 {
-	outJson["Id"] = _id;
-	outJson["Layer"] = LayerToString(layer);
-	outJson["ObjectType"] = ObjectTypeToString(type);
-	outJson["x"] = pos.x;
-	outJson["y"] = pos.y;
-	outJson["halfSize_x"] = _halfSize.x;
-	outJson["halfSize_y"] = _halfSize.y;
+	outData.fileID = GetID();
+	outData.layers = GetLayer();
+	outData.objType = GetObjectType();
+	outData.pos = GetPos();
+	outData.halfSize = GetHalfSize();
 }
 
 void GameObject::LoadFromData(const ObjectSpawnData& spawnData)
 {
-
+	SetPos(spawnData.pos);
+	prevPos = spawnData.pos;
+	SetHalfSize(spawnData.halfSize);
+	layer = (spawnData.layers);
 }
 
 

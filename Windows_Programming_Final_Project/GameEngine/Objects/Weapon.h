@@ -41,6 +41,9 @@ public:
 	virtual void Update() override;
 	virtual void Render(ID2D1RenderTarget* renderTarget, float alpha) override;
 
+	virtual void SaveToData(ObjectSpawnData& outData) override;
+	virtual void LoadFromData(const ObjectSpawnData& spawnData) override;
+
 	//무기 체크 함수
 	//수정해서 하나로 합치기 
 

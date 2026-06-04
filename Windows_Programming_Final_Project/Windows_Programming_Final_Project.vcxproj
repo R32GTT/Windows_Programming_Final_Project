@@ -137,6 +137,7 @@
   <ItemGroup>
     <ClCompile Include="GameEngine\Camera.cpp" />
     <ClCompile Include="GameEngine\CollisionManager.cpp" />
+    <ClCompile Include="GameEngine\DataManager.cpp" />
     <ClCompile Include="GameEngine\FileBase\FileBase.cpp" />
     <ClCompile Include="GameEngine\FileBase\FileTypes\FlipBook.cpp" />
     <ClCompile Include="GameEngine\FileBase\FileTypes\Sprite.cpp" />
@@ -146,10 +147,12 @@
     <ClCompile Include="GameEngine\GameObject.cpp" />
     <ClCompile Include="GameEngine\Objects\Deco.cpp" />
     <ClCompile Include="GameEngine\Objects\Enemy.cpp" />
+    <ClCompile Include="GameEngine\Objects\Floor.cpp" />
     <ClCompile Include="GameEngine\Objects\Player.cpp" />
     <ClCompile Include="GameEngine\Objects\Wall.cpp" />
     <ClCompile Include="GameEngine\Scene\DevScene.cpp" />
     <ClCompile Include="GameEngine\Scene\EditScene.cpp" />
+    <ClCompile Include="GameEngine\Scene\PlayScene.cpp" />
     <ClCompile Include="GameEngine\Scene\Scene.cpp" />
     <ClCompile Include="GameEngine\Utility\EnumUtils.cpp" />
     <ClCompile Include="GameEngine\Utility\Vec2.cpp" />
@@ -189,6 +192,7 @@
     <ClInclude Include="GameEngine\Objects\Weapon.h" />
     <ClInclude Include="GameEngine\Scene\DevScene.h" />
     <ClInclude Include="GameEngine\Scene\EditScene.h" />
+    <ClInclude Include="GameEngine\Scene\PlayScene.h" />
     <ClInclude Include="GameEngine\Scene\Scene.h" />
     <ClInclude Include="GameEngine\Utility\EnumUtils.h" />
     <ClInclude Include="GameEngine\Utility\Vec2.h" />

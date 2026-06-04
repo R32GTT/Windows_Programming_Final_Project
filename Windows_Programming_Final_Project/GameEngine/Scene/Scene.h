@@ -28,17 +28,33 @@ public:
 		return _objects[(int)layer];
 	}
 
+	std::vector<GameObject*> GetAllObjects() {
+		std::vector<GameObject*> allObjects;
+
+		for (const std::vector<GameObject*>& layerObjects : _objects)
+		{
+			allObjects.insert(allObjects.end(), layerObjects.begin(), layerObjects.end());
+		}
+
+		return allObjects;
+	}
+
+	
 
 
 	void AddObject(GameObject* object);
 	void RemoveObject(GameObject* object);
 
 	void BuildMapFromData(const MapData& mapData);
+	void LinkObjectReferences(const MapData& mapData, const std::unordered_map<unsigned int, unsigned int>& idMap);
+
 
 protected:
 	Camera _cam;
 
 private:
+	GameObject* CreateObjectFromData(const ObjectSpawnData& data);
+
 	std::vector<GameObject*> _objects[(int)Layers::LAYER_COUNT];
 	std::unordered_map<unsigned int, GameObject*> _objectMap;
 };

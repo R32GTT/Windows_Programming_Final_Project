@@ -187,3 +187,43 @@ FlipBook* FileManager::CreateFlipBook(const std::wstring& key)
 
 	return fb;
 }
+
+void FileManager::SaveMapJson(const std::wstring& fileName, const json& mapJson)
+{
+	fs::path fullPath = filePath / fileName;
+
+	std::ofstream file(fullPath);
+
+	if (file.is_open())
+	{
+		file << mapJson.dump(4);
+		file.close();
+	}
+	else
+	{
+		::MessageBox(hWnd, fullPath.c_str(), L"맵 파일 저장에 실패했습니다.", MB_OK);
+	}
+}
+
+json FileManager::LoadMapJson(const std::wstring& fileName)
+{
+	
+	fs::path fullPath = filePath / fileName;
+
+	std::ifstream file(fullPath);
+	json mapJson;
+
+	if (file.is_open())
+	{
+
+		file >> mapJson;
+		file.close();
+	}
+	else
+	{
+		::MessageBox(hWnd, fullPath.c_str(), L"맵 파일을 찾을 수 없습니다.", MB_OK);
+	}
+
+	return mapJson;
+	
+}

@@ -1,6 +1,7 @@
 #pragma once
 #include "../GameEngine/FileBase/json.hpp"
 
+using json = nlohmann::json;
 
 class FileBase;
 class Texture;
@@ -35,8 +36,8 @@ public:
 	FlipBook* GetFlipBook(const std::wstring& key) { return _flipbooks[key]; };
 	FlipBook* CreateFlipBook(const std::wstring& key);
 
-	
-
+	void SaveMapJson(const std::wstring& fileName, const json& mapJson);
+	json LoadMapJson(const std::wstring& fileName);
 
 
 private:

@@ -90,6 +90,14 @@ void Player::Render(ID2D1RenderTarget* renderTarget, float alpha)
     RenderAnimation(renderTarget, ToRenderPos.x, ToRenderPos.y);
 }
 
+void Player::SaveToData(ObjectSpawnData& outData)
+{
+}
+
+void Player::LoadFromData(const ObjectSpawnData& spawnData)
+{
+}
+
 PlayerState Player::Move()
 {
     movingDir.x = 0.0f;

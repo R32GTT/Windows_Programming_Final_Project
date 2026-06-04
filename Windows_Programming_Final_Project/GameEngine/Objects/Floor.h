@@ -16,6 +16,9 @@ public:
 	virtual void Update() override;
 	virtual void Render(ID2D1RenderTarget* renderTarget, float alpha) override;
 
+	virtual void SaveToData(ObjectSpawnData& outData) override;
+	virtual void LoadFromData(const ObjectSpawnData& spawnData) override;
+
 
 	Floor() {
 		layer = Layers::FLOOR;

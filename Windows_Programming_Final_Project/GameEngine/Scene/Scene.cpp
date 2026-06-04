@@ -87,46 +87,70 @@ void Scene::BuildMapFromData(const MapData& mapData)
 
 	for (const ObjectSpawnData& spawnData : mapData.objects)
 	{
-		GameObject* newObj = nullptr;
-
-		switch (spawnData.objType)
-		{
-		case OBJECTTYPE::NONE:
-			break;
-		case OBJECTTYPE::PLAYER:
-			newObj = new Player();
-			break;
-		case OBJECTTYPE::ENEMY:
-			newObj = new Enemy();
-			break;
-		case OBJECTTYPE::WEAPON:
-			newObj = new Weapon();
-			break;
-		case OBJECTTYPE::PROJECTILE:
-			newObj = new Projectile();
-			break;
-		case OBJECTTYPE::DECO:
-			newObj = new DECO();
-			break;
-		case OBJECTTYPE::WALL:
-			newObj = new Wall();
-			break;
-		case OBJECTTYPE::FLOOR:
-			newObj = new Floor();
-			break;
-		case OBJECTTYPE::ENDPOINT:
-			newObj = new EndPoint();
-			break;
-		case OBJECTTYPE::OBJECT_COUNT:
-			break;
-		default:
-			break;
-		}
+		GameObject* newObj = CreateObjectFromData(spawnData);
 
 		if (newObj != nullptr)
 		{
 			newObj->LoadFromData(spawnData);
+			AddObject(newObj);
+			idMap[spawnData.fileID] = newObj->GetID();
 		}
 	}
 
+}
+
+void Scene::LinkObjectReferences(const MapData& mapData, const std::unordered_map<unsigned int, unsigned int>& idMap)
+{
+	/* for (const ObjectSpawnData& spawnData : mapData.objects)
+	{
+		if (spawnData.targetId != 0)
+		{
+			unsigned int realOwnerId = idMap.at(spawnData.id);
+			unsigned int realTargetId = idMap.at(spawnData.targetId);
+
+			GameObject* owner = GetGameObjectByID(realOwnerId);
+			GameObject* target = GetGameObjectByID(realTargetId);
+			// owner->SetTarget(target);
+		}
+	}
+	*/
+}
+
+GameObject* Scene::CreateObjectFromData(const ObjectSpawnData& data)
+{
+	GameObject* newObj = nullptr;
+	switch (data.objType)
+	{
+	case OBJECTTYPE::NONE:
+		break;
+	case OBJECTTYPE::PLAYER:
+		newObj = new Player();
+		break;
+	case OBJECTTYPE::ENEMY:
+		newObj = new Enemy();
+		break;
+	case OBJECTTYPE::WEAPON:
+		newObj = new Weapon();
+		break;
+	case OBJECTTYPE::PROJECTILE:
+		newObj = new Projectile();
+		break;
+	case OBJECTTYPE::DECO:
+		newObj = new DECO();
+		break;
+	case OBJECTTYPE::WALL:
+		newObj = new Wall();
+		break;
+	case OBJECTTYPE::FLOOR:
+		newObj = new Floor();
+		break;
+	case OBJECTTYPE::ENDPOINT:
+		newObj = new EndPoint();
+		break;
+	case OBJECTTYPE::OBJECT_COUNT:
+		break;
+	default:
+		break;
+	}
+	return newObj;
 }

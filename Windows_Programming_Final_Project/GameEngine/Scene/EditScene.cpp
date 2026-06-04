@@ -2,11 +2,10 @@
 #include "EditScene.h"
 #include "Managers.h"
 #include "Camera.h"
+#include "../LevelData/LevelData.h"
 #include <fstream>
-#include "../FileBase/json.hpp"
 
 
-using json = nlohmann::json;
 
 EditScene::EditScene()
 {
@@ -83,18 +82,16 @@ void EditScene::Render(ID2D1RenderTarget* renderTarget, float alpha)
 
 void EditScene::SaveMap(const std::wstring& fileName)
 {
-	json mapData;
-	mapData["objects"] == json::array();
+	std::vector<ObjectSpawnData> mapDataList;
 
-	for (int i = 0; i < (int)Layers::LAYER_COUNT; i++)
+	for (GameObject* obj : GetAllObjects())
 	{
-		for (GameObject* obj : GetObjectsByLayer(static_cast<Layers>(i)))
-		{
-			json obJson;
-		}
+		ObjectSpawnData data{};
+		obj->SaveToData(data);
+		mapDataList.push_back(data);
 	}
 
-
+	GET_SINGLE(DataManager)->SaveMapData(fileName, mapDataList);
 }
 
 void EditScene::LoadMap(const std::wstring& fileName)

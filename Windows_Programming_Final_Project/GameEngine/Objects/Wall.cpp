@@ -32,6 +32,15 @@ void Wall::Render(ID2D1RenderTarget* renderTarget, float alpha)
 
 }
 
+void Wall::SaveToData(ObjectSpawnData& outData)
+{
+
+}
+
+void Wall::LoadFromData(const ObjectSpawnData& spawnData)
+{
+}
+
 Wall::Wall(POINT start, POINT end)
 {
 	type = OBJECTTYPE::WALL;
