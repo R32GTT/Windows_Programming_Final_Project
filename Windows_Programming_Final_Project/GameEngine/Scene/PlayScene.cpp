@@ -2,6 +2,10 @@
 #include "PlayScene.h"
 #include "Managers.h"
 
+PlayScene::PlayScene()
+{
+}
+
 PlayScene::~PlayScene()
 {
 }

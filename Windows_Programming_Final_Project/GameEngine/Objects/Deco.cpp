@@ -1,15 +1,14 @@
 #include "pch.h"
 #include "Deco.h"
-
+#include "../LevelData/LevelData.h"
 
 DECO::~DECO()
 {
 }
 
-//_halfSize는 wall과 일단 똑같이 25 25
 void DECO::Init()
 {
-	layer = Layers::DECO;
+
 }
 
 void DECO::Update()
@@ -37,4 +36,15 @@ void DECO::Render(ID2D1RenderTarget* renderTarget, float alpha)
 	}
 
 
+}
+
+void DECO::SaveToData(ObjectSpawnData& outData)
+{
+	GameObject::SaveToData(outData);
+}
+
+void DECO::LoadFromData(const ObjectSpawnData& spawnData)
+{
+
+	GameObject::LoadFromData(spawnData);
 }

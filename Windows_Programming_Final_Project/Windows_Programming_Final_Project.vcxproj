@@ -146,10 +146,13 @@
     <ClCompile Include="GameEngine\GameEngine.cpp" />
     <ClCompile Include="GameEngine\GameObject.cpp" />
     <ClCompile Include="GameEngine\Objects\Deco.cpp" />
+    <ClCompile Include="GameEngine\Objects\EndPoint.cpp" />
     <ClCompile Include="GameEngine\Objects\Enemy.cpp" />
     <ClCompile Include="GameEngine\Objects\Floor.cpp" />
     <ClCompile Include="GameEngine\Objects\Player.cpp" />
+    <ClCompile Include="GameEngine\Objects\Projectile.cpp" />
     <ClCompile Include="GameEngine\Objects\Wall.cpp" />
+    <ClCompile Include="GameEngine\Objects\Weapon.cpp" />
     <ClCompile Include="GameEngine\Scene\DevScene.cpp" />
     <ClCompile Include="GameEngine\Scene\EditScene.cpp" />
     <ClCompile Include="GameEngine\Scene\PlayScene.cpp" />

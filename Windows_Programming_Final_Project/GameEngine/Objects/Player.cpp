@@ -92,10 +92,13 @@ void Player::Render(ID2D1RenderTarget* renderTarget, float alpha)
 
 void Player::SaveToData(ObjectSpawnData& outData)
 {
+    GameObject::SaveToData(outData);
+
 }
 
 void Player::LoadFromData(const ObjectSpawnData& spawnData)
 {
+    GameObject::LoadFromData(spawnData);
 }
 
 PlayerState Player::Move()

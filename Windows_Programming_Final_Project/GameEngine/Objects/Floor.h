@@ -9,7 +9,6 @@ private:
 
 public:
 
-
 	virtual ~Floor();
 
 	virtual void Init() override;

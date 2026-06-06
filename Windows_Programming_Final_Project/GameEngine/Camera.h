@@ -20,6 +20,8 @@ public:
 
 	void SetPos(Vec2F POS) { _pos = POS; };
 
+	Vec2F GetPos() { return _pos; };
+
 private:
 	GameObject* _owner = nullptr;
 

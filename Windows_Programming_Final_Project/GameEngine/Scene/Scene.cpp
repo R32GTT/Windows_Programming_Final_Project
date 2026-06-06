@@ -12,12 +12,16 @@ Scene::Scene()
 
 Scene::~Scene()
 {
-	for (const std::vector<GameObject*>& objects : _objects)
-		for (GameObject* object : objects)
+	for (int i = 0; i < (int)Layers::LAYER_COUNT; ++i)
+	{
+		for (GameObject* object : _objects[i])
+		{
 			SAFE_DELETE(object);
-
-	_objects->clear();
-
+		}
+		_objects[i].clear(); // 각 레이어별로 vector를 확실히 비워줌
+	}
+	_player = nullptr;
+	_objectMap.clear();
 }
 
 void Scene::Init()
@@ -52,6 +56,20 @@ void Scene::Render(ID2D1RenderTarget* renderTarget, float alpha)
 			object->Render(renderTarget, alpha);
 }
 
+void Scene::Clear()
+{
+	for (int i = 0; i < (int)Layers::LAYER_COUNT; ++i)
+	{
+		for (GameObject* object : _objects[i])
+		{
+			SAFE_DELETE(object);
+		}
+		_objects[i].clear(); // 각 레이어별로 vector를 확실히 비워줌
+	}
+	_player = nullptr;
+	_objectMap.clear();
+}
+
 GameObject* Scene::GetGameObjectByID(unsigned int ID)
 {
 	auto iter = _objectMap.find(ID);
@@ -79,6 +97,8 @@ void Scene::RemoveObject(GameObject* object)
 	std::vector<GameObject*>& v = _objects[(int)object->GetLayer()];
 	v.erase(std::remove(v.begin(), v.end(), object), v.end());
 	_objectMap.erase(object->GetID());
+
+	SAFE_DELETE(object);
 }
 
 void Scene::BuildMapFromData(const MapData& mapData)
@@ -125,6 +145,7 @@ GameObject* Scene::CreateObjectFromData(const ObjectSpawnData& data)
 		break;
 	case OBJECTTYPE::PLAYER:
 		newObj = new Player();
+		_player = newObj;
 		break;
 	case OBJECTTYPE::ENEMY:
 		newObj = new Enemy();

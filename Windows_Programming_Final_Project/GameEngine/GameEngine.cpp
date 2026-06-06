@@ -78,11 +78,14 @@ void GameEngine::Init(HWND hWnd)
 
 	GET_SINGLE(FileManager)->LoadGlobalResources();
 
+	GET_SINGLE(DataManager)->Init();
 	GET_SINGLE(TimeManager)->Init();
 	GET_SINGLE(InputManager)->Init(hWnd);
 	GET_SINGLE(SceneManager)->init();
 
-	GET_SINGLE(SceneManager)->ChangeScene(SceneType::DEVSCENE);
+	std::wstring startMapPath = L"Chapter1_Map1.json";
+
+	GET_SINGLE(SceneManager)->ChangeScene(SceneType::EDITSCENE, startMapPath);
 
 }
 
@@ -131,8 +134,8 @@ void GameEngine::Render()
 	 Vec2<float> mPos = GET_SINGLE(InputManager)->GetMousePos();
 	 debugStr += std::format(L"\nMouse: {}, {}", (int)mPos.x, (int)mPos.y);
 	 
-	 Vec2F Ppos = GET_SINGLE(SceneManager)->GetCurrentScene()->GetGameObjectByID(1)->GetPos();
-	 debugStr += std::format(L"\nPos: {}, {}", Ppos.x, Ppos.y);
+	 //Vec2F Ppos = GET_SINGLE(SceneManager)->GetCurrentScene()->GetGameObjectByID()->GetPos();
+	 //debugStr += std::format(L"\nPos: {}, {}", Ppos.x, Ppos.y);
 
 	D2D1_RECT_F textRect = D2D1::RectF(10.f, 10.f, 800.f, 600.f);
 	_renderTarget->DrawTextW(

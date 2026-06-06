@@ -142,6 +142,7 @@ void GameObject::SaveToData(ObjectSpawnData& outData)
 	outData.objType = GetObjectType();
 	outData.pos = GetPos();
 	outData.halfSize = GetHalfSize();
+	outData.spriteName = GetSpriteName();
 }
 
 void GameObject::LoadFromData(const ObjectSpawnData& spawnData)
@@ -150,6 +151,7 @@ void GameObject::LoadFromData(const ObjectSpawnData& spawnData)
 	prevPos = spawnData.pos;
 	SetHalfSize(spawnData.halfSize);
 	layer = (spawnData.layers);
+	SetSpriteName(spawnData.spriteName);
 }
 
 

@@ -8,16 +8,6 @@
 
 using json = nlohmann::json;
 
-static std::wstring StrToWStr(const std::string& str) {
-	if (str.empty()) return L"";
-	int size = MultiByteToWideChar(CP_UTF8, 0, &str[0], (int)str.size(), NULL, 0);
-	std::wstring result(size, 0);
-	MultiByteToWideChar(CP_UTF8, 0, &str[0], (int)str.size(), &result[0], size);
-	return result;
-}
-
-
-
 
 FileManager::~FileManager()
 {
@@ -211,19 +201,24 @@ json FileManager::LoadMapJson(const std::wstring& fileName)
 	fs::path fullPath = filePath / fileName;
 
 	std::ifstream file(fullPath);
+
+	if (!file.is_open())
+	{
+		return json{};
+	}
+
 	json mapJson;
-
-	if (file.is_open())
+	try
 	{
-
 		file >> mapJson;
-		file.close();
 	}
-	else
+	catch (json::parse_error& e)
 	{
-		::MessageBox(hWnd, fullPath.c_str(), L"맵 파일을 찾을 수 없습니다.", MB_OK);
+		file.close();
+		return json{};
 	}
 
+	file.close();
 	return mapJson;
 	
 }

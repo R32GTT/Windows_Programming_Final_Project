@@ -1,5 +1,7 @@
-#pragma once
+﻿#pragma once
 class Scene;
+
+struct MapData;
 
 class SceneManager
 {
@@ -15,6 +17,7 @@ public:
 
 	void ChangeScene(SceneType sceneType);
 	void ChangeScene(SceneType sceneType, const std::wstring& mapFilePath);
+	void ChangeMap(const MapData& nextMapData);
 	Scene* GetCurrentScene() { return _scene; };
 
 	Vec2F GetCameraPos() { return cameraPos; };

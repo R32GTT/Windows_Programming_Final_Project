@@ -26,6 +26,8 @@ public:
 	//OBB 충돌 체크를 위한 GetFacingDir 추가.
 	Vec2F GetFacningDir() { return facingDir; };
 
+	std::wstring GetSpriteName() { return _spriteName; };
+
 	OBJECTTYPE GetObjectType() { return type; }
 	Layers GetLayer() { return layer; };
 	unsigned int GetID() const { return _id; };
@@ -39,6 +41,8 @@ public:
 	void SavePrevPos() { prevPos = pos; };
 
 	void SetHalfSize(Vec2F halfSize) { _halfSize = halfSize; };
+
+	void SetSpriteName(std::wstring name) { _spriteName = name; };
 
 	//SetFacingDir 추가
 	//플레이어 이동하거나 회전할 때 방향을 바꾸려 하면
@@ -81,6 +85,8 @@ protected:
 	static unsigned int _sNextId;
 
 	unsigned int _id{};
+
+	std::wstring _spriteName{};
 
 	Layers layer = Layers::ACTORS;
 	OBJECTTYPE type = OBJECTTYPE::NONE;

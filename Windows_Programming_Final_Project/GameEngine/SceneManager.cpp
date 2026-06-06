@@ -1,8 +1,11 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "SceneManager.h"
 #include "Scene/Scene.h"
 #include "Scene/DevScene.h"
 #include "Scene/EditScene.h"
+#include "Scene/PlayScene.h"
+#include "LevelData/LevelData.h"
+#include "DataManager.h"
 
 void SceneManager::init()
 {
@@ -29,7 +32,10 @@ void SceneManager::ChangeScene(SceneType sceneType)
 {
 	if (_sceneType == sceneType)
 		return;
+}
 
+void SceneManager::ChangeScene(SceneType sceneType, const std::wstring& mapFilePath)
+{
 	Scene* newScene = nullptr;
 
 	switch (sceneType)
@@ -40,6 +46,9 @@ void SceneManager::ChangeScene(SceneType sceneType)
 	case SceneType::EDITSCENE:
 		newScene = new EditScene();
 		break;
+	case SceneType::PLAYSCENE:
+		newScene = new PlayScene();
+		break;
 	}
 
 	SAFE_DELETE(_scene);
@@ -47,13 +56,29 @@ void SceneManager::ChangeScene(SceneType sceneType)
 	_scene = newScene;
 	_sceneType = sceneType;
 
-	newScene->Init();
+	if (_scene)
+	{
+		_scene->Init();
+	}
+
+	if (_scene != nullptr && !mapFilePath.empty())
+	{
+		GET_SINGLE(DataManager)->LoadMapData(mapFilePath);
+		MapData loadedMapData = GET_SINGLE(DataManager)->GetCurrentMapData();
+		_scene->BuildMapFromData(loadedMapData);
+	}
 }
 
-void SceneManager::ChangeScene(SceneType sceneType, const std::wstring& mapFilePath)
+void SceneManager::ChangeMap(const MapData& nextMapData)
 {
-	
+	if (_scene == nullptr) return;
+
+	//WPTYPE currentWP =  //TODO
+
+	_scene->Clear();
+	_scene->BuildMapFromData(nextMapData);
 }
+
 
 Vec2F SceneManager::ToRenderPos(Vec2F alphaPos)
 {

@@ -3,6 +3,7 @@
 
 class PlayScene : public Scene
 {
+public:
 	using Super = Scene;
 	PlayScene();
 	virtual ~PlayScene();

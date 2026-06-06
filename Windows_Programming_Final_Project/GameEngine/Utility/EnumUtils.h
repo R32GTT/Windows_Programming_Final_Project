@@ -11,5 +11,8 @@ Layers StringToLayer(const std::string& str);
 std::string EnemyTypeToString(EnemyType type);
 EnemyType StringToEnemyType(const std::string& str);
 
+std::string WeaponTypeToString(WPTYPE type);
+WPTYPE StringToWeaponType(const std::string& str);
+
 
 

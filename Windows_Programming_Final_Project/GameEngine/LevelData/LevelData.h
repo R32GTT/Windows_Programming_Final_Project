@@ -16,6 +16,8 @@ struct ObjectSpawnData
 	EnemyType enemyType = EnemyType::NORMAL;
 	WPTYPE weaponType = WPTYPE::FIST;
 
+	std::wstring spriteName{ L"" };
+
 	std::string textData = "";
 };
 

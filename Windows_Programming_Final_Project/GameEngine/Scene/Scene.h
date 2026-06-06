@@ -18,6 +18,8 @@ public:
 	virtual void Update() abstract;
 	virtual void Render(ID2D1RenderTarget* renderTarget, float alpha) abstract;
 
+	void Clear();
+
 	GameObject* GetGameObjectByID(unsigned int ID);
 
 	std::vector<GameObject*> GetGameObjectLayer(GameObject* object) {
@@ -49,12 +51,13 @@ public:
 	void LinkObjectReferences(const MapData& mapData, const std::unordered_map<unsigned int, unsigned int>& idMap);
 
 
+
 protected:
 	Camera _cam;
-
-private:
 	GameObject* CreateObjectFromData(const ObjectSpawnData& data);
 
+private:
 	std::vector<GameObject*> _objects[(int)Layers::LAYER_COUNT];
 	std::unordered_map<unsigned int, GameObject*> _objectMap;
+	GameObject* _player{};
 };

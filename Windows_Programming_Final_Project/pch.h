@@ -39,6 +39,24 @@ namespace fs = std::filesystem;
 #pragma comment(lib, "windowscodecs.lib")
 #pragma comment(lib, "dxguid.lib")
 
+
+inline std::wstring StrToWStr(const std::string& str) {
+	if (str.empty()) return L"";
+	int size = MultiByteToWideChar(CP_UTF8, 0, &str[0], (int)str.size(), NULL, 0);
+	std::wstring result(size, 0);
+	MultiByteToWideChar(CP_UTF8, 0, &str[0], (int)str.size(), &result[0], size);
+	return result;
+}
+
+inline std::string WStrToStr(const std::wstring& wstr) {
+	if (wstr.empty()) return "";
+	int size = WideCharToMultiByte(CP_UTF8, 0, &wstr[0], (int)wstr.size(), NULL, 0, NULL, NULL);
+	std::string result(size, 0);
+	WideCharToMultiByte(CP_UTF8, 0, &wstr[0], (int)wstr.size(), &result[0], size, NULL, NULL);
+	return result;
+}
+
+
 #define DECLARE_SINGLE(classname)			\
 private:									\
 	classname() { }							\

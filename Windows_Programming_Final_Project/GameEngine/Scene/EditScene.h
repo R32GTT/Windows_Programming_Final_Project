@@ -35,6 +35,10 @@ private:
 	POINT _lastPos{};
 	POINT _prevMousePos{};
 
+	POINT _wallStart{};
+	bool _isDraggingWall = false;
+	GameObject* _selectedObject = nullptr; 
+
 	EntityType _currentEntity = EntityType::Wall;
 
 	const int _gridSize = 16;

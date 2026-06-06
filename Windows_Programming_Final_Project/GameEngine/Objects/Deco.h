@@ -20,10 +20,12 @@ public:
 
 	DECO() {
 		type = OBJECTTYPE::DECO;
+		layer = Layers::DECO;
 	}
 
 	DECO(POINT start, POINT end) {
 		type = OBJECTTYPE::DECO;
+		layer = Layers::DECO;
 		decoCoords.left = start.x; decoCoords.top = start.y;
 		decoCoords.right = end.x; decoCoords.bottom = end.y;
 	}
