@@ -5,6 +5,7 @@ enum class EntityType
 {
 	NONE = 0,
 	PlayerSpawn,
+	Deco,
 	Enemy,
 	Weapon,
 	Wall,

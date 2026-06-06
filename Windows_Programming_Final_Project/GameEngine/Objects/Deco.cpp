@@ -1,6 +1,7 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "Deco.h"
 #include "../LevelData/LevelData.h"
+#include "GameObject.h"
 
 DECO::~DECO()
 {
@@ -38,13 +39,3 @@ void DECO::Render(ID2D1RenderTarget* renderTarget, float alpha)
 
 }
 
-void DECO::SaveToData(ObjectSpawnData& outData)
-{
-	GameObject::SaveToData(outData);
-}
-
-void DECO::LoadFromData(const ObjectSpawnData& spawnData)
-{
-
-	GameObject::LoadFromData(spawnData);
-}

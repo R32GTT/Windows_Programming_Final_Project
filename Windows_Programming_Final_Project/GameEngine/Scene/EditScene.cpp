@@ -55,7 +55,8 @@ void EditScene::Update()
 	if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::KEY_2)) _currentEntity = EntityType::Enemy;
 	if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::KEY_3)) _currentEntity = EntityType::Weapon;
 	if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::KEY_4)) _currentEntity = EntityType::Wall;
-	if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::KEY_5)) _currentEntity = EntityType::Endpoint;
+	if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::KEY_5)) _currentEntity = EntityType::Deco;
+	if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::KEY_6)) _currentEntity = EntityType::Endpoint;
 
 	POINT curmousePos = GET_SINGLE(InputManager)->GetMousePos();
 
@@ -101,8 +102,29 @@ void EditScene::Update()
 			{
 				GameObject* newObj = nullptr;
 
-				if (_currentEntity == EntityType::Enemy) newObj = new Enemy();
-				// else if (_currentEntity == EntityType::Deco) newObj = new DECO();
+				switch (_currentEntity)
+				{
+				case EntityType::NONE:
+					break;
+				case EntityType::PlayerSpawn:
+					newObj = new Player();
+					break;
+				case EntityType::Deco:
+					newObj = new DECO();
+					break;
+				case EntityType::Enemy:
+					newObj = new Enemy();
+					break;
+				case EntityType::Weapon:
+					newObj = new Weapon();
+					break;
+				case EntityType::Endpoint:
+					newObj = new EndPoint();
+					break;
+				default:
+					break;
+				}
+
 
 				if (newObj != nullptr)
 				{
