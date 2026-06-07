@@ -17,6 +17,17 @@ Player::~Player()
 {
 }
 
+
+void Player::SetWeaponType(WPTYPE type)
+{
+    currentWeapon_Player = type;
+}
+
+WPTYPE Player::GetWeaponType() const
+{
+    return currentWeapon_Player;
+}
+
 void Player::Init()
 {
 }

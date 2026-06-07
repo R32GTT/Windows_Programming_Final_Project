@@ -16,15 +16,13 @@ public:
 	virtual void SaveToData(ObjectSpawnData& outData) override;
 	virtual void LoadFromData(const ObjectSpawnData& spawnData) override;
 	
+	//무기 값을 바꾸는 함수
+	void SetWeaponType(WPTYPE type);
 
-	//플레이어 무기유무 함수 수정하기
-	//HasWeapon에서 주먹 근거리 원거리 체크하고
-	bool HasWeapon() {
+	//현재 무기 값을 확인하는 함수
+	WPTYPE GetWeaponType() const;
 
-		//Weapon::What_Weapon
-		//무기는 Weapon을 쓸까 아니면 ITEM을 사용할까???
-
-	}
+	
 	//플레이어 이동 함수
 	//이동 함수 보류
 	//이동 함수 PlayerState::MOVE 추가
