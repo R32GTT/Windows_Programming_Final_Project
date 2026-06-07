@@ -52,6 +52,12 @@ private:
 	GameObject* _owner;         // 누가 발사/공격했는가 (자신이 맞지 않기 위해)
 	ProjectileType _projType;   // 총알인지 근접인지
 
+	//발사체 방향
+	Vec2<float> _dir{};
+
+	//발사체가 생성된 후 실제로 지난 시간
+	float _elapsedTime = 0.0f;
+
 	float _damage;              // 공격력
 	float _lifeTime;            // 최대 생존 시간 (초)
 	float _currentTimer;        // 현재 생존 시간 계산용
