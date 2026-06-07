@@ -9,6 +9,10 @@ private:
 	//기절과 죽음 유무 Enemy로 이동함
 	bool is_Unconsious = false;
 	bool is_Dead = false;
+
+	//어떤 무기를 가지고 있는지 변수(적 용)
+	WPTYPE currentWeapon_Enemy = WPTYPE::NONE;
+
 	EnemyType _enemyType = EnemyType::NORMAL;
 	EnemyState _enemyState = EnemyState::IDLE;
 

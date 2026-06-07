@@ -92,6 +92,9 @@ private:
 
 	bool _isAttacking = false; // 공격 중인지 체크하는 플래그
 
+	//어떤 무기를 가지고 있는지 변수(플레이어 용)
+	WPTYPE currentWeapon_Player = WPTYPE::NONE;
+
 	PlayerState status = PlayerState::IDLE;
 
 };
