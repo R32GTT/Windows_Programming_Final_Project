@@ -36,12 +36,6 @@ public:
 	virtual void LoadFromData(const ObjectSpawnData& spawnData) override;
 
 
-	virtual void Init() override;
-	virtual void Update() override;
-	virtual void Render(ID2D1RenderTarget* renderTarget, float alpha) override;
-	virtual bool CheckDead() override;
-
-
 	void SetInfo(GameObject* owner, ProjectileType type, float damage, float speed, float lifeTime);
 
 	GameObject* GetOwner() { return _owner; }
