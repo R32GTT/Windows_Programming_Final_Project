@@ -30,6 +30,8 @@ WPTYPE Player::GetWeaponType() const
 
 void Player::Init()
 {
+    FlipBook* idleAnim = GET_SINGLE(FileManager)->GetFlipBook(L"MainCharAnim_Idle");
+    PlayAnimation(idleAnim);
 }
 
 void Player::Update()

@@ -17,6 +17,13 @@ enum class KeyType
 	Delete = VK_DELETE,
 
 	F1 = VK_F1,
+	F2 = VK_F2,
+	F3 = VK_F3,
+	F4 = VK_F4,
+	F5 = VK_F5,
+	F5 = VK_F5,
+	F6 = VK_F6,
+
 
 	KEY_1 = '1',
 	KEY_2 = '2',
