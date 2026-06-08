@@ -40,6 +40,10 @@ void DataManager::GoToNextMap(std::string mapInfo)
         if (curScene != nullptr)
         {
            //TODO
+            curScene->Clear();
+            curScene->BuildMapFromData(nextMapData);
+
+
         }
     }
     else
