@@ -33,6 +33,11 @@ void CollisionManager::Update()
 	const auto& actors = currentScene->GetObjectsByLayer(Layers::ACTORS);
 	const auto& walls = currentScene->GetObjectsByLayer(Layers::WALL);
 
+	//wallCollision과 ProjectileCollision추가
+	CheckActorWallCollision(actors, walls);
+	CheckProjectileCollision(actors, walls);
+
+
 	for (auto& actor : actors)
 	{
 		for (auto& wall : walls)
@@ -48,6 +53,15 @@ void CollisionManager::Update()
 		}
 	}
 }
+
+void CollisionManager::CheckActorWallCollision(const std::vector<GameObject*>& actors, const std::vector<GameObject*>& walls)
+{
+
+
+}
+
+//void CollisionManager::CheckProjectileCollision(const std::vector<GameObject*>& actors, const std::vector<GameObject>& walls)
+
 
 //OBB충돌 체크 구현시작
 //혹시 문제가 있으면 삭제해도 괜찮음
