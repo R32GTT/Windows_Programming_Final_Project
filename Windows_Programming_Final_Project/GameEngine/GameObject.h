@@ -94,5 +94,4 @@ protected:
 	FlipBook*	_currAnim{};
 	int			_currFrame{};
 	float		_animTimer{};
-
 };

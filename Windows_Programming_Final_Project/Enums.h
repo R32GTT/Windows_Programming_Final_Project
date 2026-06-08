@@ -27,6 +27,8 @@ enum class PlayerState
 {
 	IDLE,
 	MOVE,
+	ATTACK,
+	THROW,
 	EXECUTE,
 	DEAD,
 };
@@ -37,7 +39,8 @@ enum class EnemyState
 	PATROL,
 	CHASE,
 	ATTACK,
-
+	UNCONSCIOUS,
+	DEAD
 };
 
 enum class EnemyType

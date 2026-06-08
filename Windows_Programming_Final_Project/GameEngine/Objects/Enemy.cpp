@@ -16,6 +16,7 @@ Enemy::~Enemy()
 void Enemy::Init()
 {
 	FlipBook* idleAnim = GET_SINGLE(FileManager)->GetFlipBook(L"MobCharAnim_Idle");
+	FlipBook* idleAnimF = GET_SINGLE(FileManager)->GetFlipBook(L"FMobCharAnim_Idle");
 	PlayAnimation(idleAnim);
 }
 

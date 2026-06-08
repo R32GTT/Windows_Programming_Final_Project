@@ -13,10 +13,6 @@ Projectile::~Projectile()
 
 //Projectile.cpp 함수들 추가
 void Projectile::Init() {
-
-	speed = 500.0f;
-	_halfSize = { 10.0f, 10.0f };
-
 }
 
 void Projectile::Update()
