@@ -21,8 +21,8 @@ enum class KeyType
 	F3 = VK_F3,
 	F4 = VK_F4,
 	F5 = VK_F5,
-	F5 = VK_F5,
 	F6 = VK_F6,
+	F7 = VK_F7,
 
 
 	KEY_1 = '1',

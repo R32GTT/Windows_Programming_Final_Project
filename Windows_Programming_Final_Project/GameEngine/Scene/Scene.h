@@ -41,7 +41,9 @@ public:
 		return allObjects;
 	}
 
-	
+	void SetPlayer(GameObject* player) { _player = player; };
+	GameObject* GetPlayer() { return _player; };
+	void SetCamOwner(GameObject* object) { _cam.SetOwner(object); };
 
 
 	void AddObject(GameObject* object);

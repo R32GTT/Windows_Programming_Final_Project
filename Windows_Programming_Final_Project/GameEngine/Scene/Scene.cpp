@@ -113,6 +113,8 @@ void Scene::BuildMapFromData(const MapData& mapData)
 		{
 			newObj->LoadFromData(spawnData);
 			AddObject(newObj);
+			if (newObj->GetObjectType() == OBJECTTYPE::PLAYER)
+				SetPlayer(newObj);
 			idMap[spawnData.fileID] = newObj->GetID();
 		}
 	}

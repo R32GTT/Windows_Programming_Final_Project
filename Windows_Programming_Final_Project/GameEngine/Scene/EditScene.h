@@ -33,6 +33,7 @@ private:
 	std::vector<std::pair<POINT, POINT>> _lines;
 
 	bool _setOrigin = true;
+	bool _playerSpawned = false;
 	POINT _lastPos{};
 	POINT _prevMousePos{};
 

@@ -133,7 +133,12 @@ void FileManager::LoadAespriteJson(const std::wstring& path)
 void FileManager::LoadGlobalResources()
 {
 	LoadAespriteJson(L"MainCharAnim.json");
-
+	LoadAespriteJson(L"MobCharAnim.json");
+	LoadAespriteJson(L"FMobCharAnim.json");
+	LoadAespriteJson(L"Deco1CharAnim.json");
+	LoadAespriteJson(L"Deco2CharAnim.json");
+	LoadAespriteJson(L"GunCharAnim.json");
+	LoadAespriteJson(L"CrowCharAnim.json");
 }
 
 Texture* FileManager::LoadTexture(const std::wstring& key, const std::wstring& path)

@@ -16,12 +16,17 @@ DevScene::~DevScene()
 
 void DevScene::Init()
 {
-	Player* pp = new Player();
+	/*Player* pp = new Player();
 	pp->SetPos(Vec2<float>(400.0f, 300.0f));
 	
 	AddObject(pp);
 
-	_cam.SetOwner(pp);
+	_cam.SetOwner(pp);*/
+	Super::Init();
+	if (Super::GetPlayer() != nullptr)
+	{
+		Super::SetCamOwner(Super::GetPlayer());
+	}
 }
 
 void DevScene::Update()
