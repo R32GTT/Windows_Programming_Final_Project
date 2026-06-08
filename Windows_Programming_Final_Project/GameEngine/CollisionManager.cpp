@@ -35,7 +35,7 @@ void CollisionManager::Update()
 
 	//wallCollision과 ProjectileCollision추가
 	CheckActorWallCollision(actors, walls);
-	CheckProjectileCollision(actors, walls);
+	//CheckProjectileCollision(actors, walls);
 
 
 	for (auto& actor : actors)
