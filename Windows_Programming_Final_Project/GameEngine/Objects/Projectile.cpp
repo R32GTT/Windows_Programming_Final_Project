@@ -34,6 +34,8 @@ void Projectile::Update()
 
 void Projectile::Render(ID2D1RenderTarget* renderTarget, float alpha)
 {
+	if (!renderTarget) return;
+
 	Vec2<float> renderPos = GetRenderPos(alpha);
 
 	D2D1_ELLIPSE ellipse = D2D1::Ellipse(D2D1::Point2F(renderPos.x, renderPos.y), _halfSize.x, _halfSize.y);
