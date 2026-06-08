@@ -56,16 +56,18 @@ void SceneManager::ChangeScene(SceneType sceneType, const std::wstring& mapFileP
 	_scene = newScene;
 	_sceneType = sceneType;
 
-	if (_scene)
-	{
-		_scene->Init();
-	}
+	
 
 	if (_scene != nullptr && !mapFilePath.empty())
 	{
 		GET_SINGLE(DataManager)->LoadMapData(mapFilePath);
 		MapData loadedMapData = GET_SINGLE(DataManager)->GetCurrentMapData();
 		_scene->BuildMapFromData(loadedMapData);
+	}
+
+	if (_scene)
+	{
+		_scene->Init();
 	}
 }
 
@@ -79,6 +81,13 @@ void SceneManager::ChangeMap(const MapData& nextMapData)
 	_scene->BuildMapFromData(nextMapData);
 }
 
+
+
+
+void SceneManager::SetCamOwner(GameObject* object)
+{
+	_scene->SetCamOwner(object);
+}
 
 Vec2F SceneManager::ToRenderPos(Vec2F alphaPos)
 {

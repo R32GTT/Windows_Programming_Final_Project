@@ -2,6 +2,7 @@
 class Scene;
 
 struct MapData;
+class GameObject;
 
 class SceneManager
 {
@@ -22,6 +23,8 @@ public:
 
 	Vec2F GetCameraPos() { return cameraPos; };
 	void SetCameraPos(Vec2F pos) { cameraPos = pos; };
+
+	void SetCamOwner(GameObject* object);
 	
 	Vec2F ToRenderPos(Vec2F alphaPos);
 

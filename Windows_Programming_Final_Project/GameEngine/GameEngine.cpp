@@ -83,10 +83,11 @@ void GameEngine::Init(HWND hWnd)
 	GET_SINGLE(InputManager)->Init(hWnd);
 	GET_SINGLE(SceneManager)->init();
 
-	std::wstring startMapPath = L"Chapter1_Map1.json";
+	std::wstring startMapPath = L"TestMap1.json";
 
 	//GET_SINGLE(SceneManager)->ChangeScene(SceneType::EDITSCENE, startMapPath);
-	GET_SINGLE(SceneManager)->ChangeScene(SceneType::DEVSCENE,L"");
+	GET_SINGLE(SceneManager)->ChangeScene(SceneType::DEVSCENE,startMapPath);
+	//GET_SINGLE(SceneManager)->ChangeScene(SceneType::DEVSCENE,L"");
 }
 
 void GameEngine::Update()

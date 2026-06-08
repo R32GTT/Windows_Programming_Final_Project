@@ -32,7 +32,7 @@ void EditScene::Init()
 	//처음 플레이어 상태 IDLE
 	//무기는 처음에는 주먹 
 	//OBJECTTYPE::WEAPON;
-
+	Super::Init();
 
 }
 
@@ -50,6 +50,7 @@ void EditScene::Update()
 
 	_cam.SetPos(camPos);
 	_cam.TickComp(); 
+	GET_SINGLE(SceneManager)->SetCameraPos(camPos);
 
 	if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::KEY_1)) _currentEntity = EntityType::PlayerSpawn;
 	if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::KEY_2)) _currentEntity = EntityType::Enemy;
@@ -107,7 +108,12 @@ void EditScene::Update()
 				case EntityType::NONE:
 					break;
 				case EntityType::PlayerSpawn:
-					newObj = new Player();
+					if (!_playerSpawned) // 플레이어는 무조건 하나여야 하니까
+					{
+						newObj = new Player();
+						Super::SetPlayer(newObj);
+						_playerSpawned = true;
+					}
 					break;
 				case EntityType::Deco:
 					newObj = new DECO();
@@ -156,7 +162,16 @@ void EditScene::Update()
 				mouseWorldPos.y >= objPos.y - halfSize.y &&
 				mouseWorldPos.y <= objPos.y + halfSize.y)
 			{
-				if (_selectedObject == obj) _selectedObject = nullptr;
+				
+				if (_selectedObject == obj)
+				{
+					if (_selectedObject->GetObjectType() == OBJECTTYPE::PLAYER)
+					{
+						Super::SetPlayer(nullptr); _playerSpawned = false;
+					}
+					_selectedObject = nullptr;
+				}
+				
 				RemoveObject(obj);
 				break;
 			}

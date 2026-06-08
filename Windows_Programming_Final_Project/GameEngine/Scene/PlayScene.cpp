@@ -12,11 +12,13 @@ PlayScene::~PlayScene()
 
 void PlayScene::Init()
 {
-	GET_SINGLE(DataManager)->LoadMapData(L"Map1.json");
+	GET_SINGLE(DataManager)->LoadMapData(L"TestMap1.json");
 
 	const MapData& mapData = GET_SINGLE(DataManager)->GetCurrentMapData();
 
 	Super::BuildMapFromData(mapData);
+
+	Super::Init();
 }
 
 void PlayScene::Update()

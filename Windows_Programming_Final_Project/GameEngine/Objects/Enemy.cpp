@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Enemy.h"
+#include "Managers.h"
 #include "../LevelData/LevelData.h"
 
 Enemy::Enemy()
@@ -14,6 +15,8 @@ Enemy::~Enemy()
 
 void Enemy::Init()
 {
+	FlipBook* idleAnim = GET_SINGLE(FileManager)->GetFlipBook(L"MobCharAnim_Idle");
+	PlayAnimation(idleAnim);
 }
 
 void Enemy::Update()
@@ -22,7 +25,13 @@ void Enemy::Update()
 
 void Enemy::Render(ID2D1RenderTarget* renderTarget, float alpha)
 {
-	Vec2<float> prevPos = GetRenderPos(alpha);
+	if (!renderTarget) return;
+
+	Vec2F screenPos = GetRenderPos(alpha);
+
+	Vec2F ToRenderPos = GET_SINGLE(SceneManager)->ToRenderPos(screenPos);
+
+	RenderAnimation(renderTarget, ToRenderPos.x, ToRenderPos.y);
 }
 
 void Enemy::SaveToData(ObjectSpawnData& outData)

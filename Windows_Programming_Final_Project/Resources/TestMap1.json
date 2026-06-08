@@ -1,0 +1,36 @@
+{
+    "objects": [
+        {
+            "EnemyType": "NORMAL",
+            "Id": 1,
+            "Layer": "WALL",
+            "ObjectType": "WALL",
+            "SpriteName": "",
+            "WallRectB": -64.0,
+            "WallRectL": -32.0,
+            "WallRectR": -16.0,
+            "WallRectT": -80.0,
+            "WeaponType": "FIST",
+            "halfSize_x": 8.0,
+            "halfSize_y": 8.0,
+            "x": -24.0,
+            "y": -72.0
+        },
+        {
+            "EnemyType": "NORMAL",
+            "Id": 3,
+            "Layer": "ACTORS",
+            "ObjectType": "PLAYER",
+            "SpriteName": "",
+            "WallRectB": 0.0,
+            "WallRectL": 0.0,
+            "WallRectR": 0.0,
+            "WallRectT": 0.0,
+            "WeaponType": "FIST",
+            "halfSize_x": 20.0,
+            "halfSize_y": 20.0,
+            "x": -1008.0,
+            "y": -112.0
+        }
+    ]
+}
