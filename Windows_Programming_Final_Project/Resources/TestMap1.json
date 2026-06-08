@@ -18,7 +18,7 @@
         },
         {
             "EnemyType": "NORMAL",
-            "Id": 3,
+            "Id": 2,
             "Layer": "ACTORS",
             "ObjectType": "PLAYER",
             "SpriteName": "",
@@ -31,6 +31,22 @@
             "halfSize_y": 20.0,
             "x": -1008.0,
             "y": -112.0
+        },
+        {
+            "EnemyType": "NORMAL",
+            "Id": 3,
+            "Layer": "ACTORS",
+            "ObjectType": "ENEMY",
+            "SpriteName": "",
+            "WallRectB": 0.0,
+            "WallRectL": 0.0,
+            "WallRectR": 0.0,
+            "WallRectT": 0.0,
+            "WeaponType": "FIST",
+            "halfSize_x": 25.0,
+            "halfSize_y": 25.0,
+            "x": -640.0,
+            "y": -32.0
         }
     ]
 }

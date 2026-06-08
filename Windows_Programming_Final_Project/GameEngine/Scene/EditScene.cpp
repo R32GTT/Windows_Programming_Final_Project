@@ -136,6 +136,7 @@ void EditScene::Update()
 				{
 					newObj->Init();
 					newObj->SetPos(Vec2F{ (float)snapX, (float)snapY }); // 스폰 위치 세팅
+					newObj->SavePrevPos();
 					AddObject(newObj);
 				}
 

@@ -237,7 +237,7 @@
  "meta": {
   "app": "https://www.aseprite.org/",
   "version": "1.3.18-beta1-dev",
-  "image": "Deco1CharAnim.png",
+  "image": "GunCharAnim.png",
   "format": "RGBA8888",
   "size": { "w": 720, "h": 560 },
   "scale": "1",
@@ -249,7 +249,7 @@
    { "name": "Rifle Shooting", "from": 24, "to": 25, "direction": "forward", "color": "#000000ff" }
   ],
   "layers": [
-   { "name": "Deco1", "opacity": 255, "blendMode": "normal" }
+   { "name": "Gun", "opacity": 255, "blendMode": "normal" }
   ],
   "slices": [
   ]
