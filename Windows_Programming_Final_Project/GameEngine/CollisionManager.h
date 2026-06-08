@@ -23,9 +23,9 @@ private:
 
 
 	//충돌 체크 추가한 것
-	//void CheckActorWallCollision(const std::vector<GameObject*>& actors, const std::vector<GameObject*>& walls);
+	void CheckActorWallCollision(const std::vector<GameObject*>& actors, const std::vector<GameObject*>& walls);
 
-	//void CheckProjectileCollision(const std::vector<GameObject*>& actors, const std::vector<GameObject*>& walls);
+	void CheckProjectileCollision(const std::vector<GameObject*>& actors, const std::vector<GameObject*>& walls);
 
 
 };
