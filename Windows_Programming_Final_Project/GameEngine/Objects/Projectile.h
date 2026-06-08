@@ -32,6 +32,13 @@ public:
 	//기억하는 포인터이다
 	void SetOwner(GameObject* owner);
 
+	//Projectile 추가 변수
+	GameObject* GetOwner() const { return _owner; }
+	//float GetDamage
+
+
+
+
 	virtual void SaveToData(ObjectSpawnData& outData) override;
 	virtual void LoadFromData(const ObjectSpawnData& spawnData) override;
 
