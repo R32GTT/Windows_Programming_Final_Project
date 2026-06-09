@@ -1,5 +1,6 @@
 ﻿#include "pch.h"
 #include "Player.h"
+#include "Weapon.h" //Weapon 헤더 포함
 #include "Managers.h"
 #include "../FileBase/FileTypes/Texture.h"
 #include "../FileBase/FileTypes/FlipBook.h"
@@ -27,6 +28,36 @@ WPTYPE Player::GetWeaponType() const
 {
     return currentWeapon_Player;
 }
+
+//무기 장착 함수들 구현
+void Player::EquipWeapon(Weapon* weapon)
+{
+    if (weapon == nullptr) return;
+
+    if (currentWeapon != nullptr) {
+        DropWeapon();
+    }
+
+    currentWeapon = weapon;
+    currentWeapon->SetOwner(this);
+
+    is_Item = true;
+    is_drop = false;
+}
+
+//무기 버리기 구현
+void Player::DropWeapon()
+{
+    if (currentWeapon != nullptr) {
+        currentWeapon->SetOwner(nullptr);
+        currentWeapon = nullptr;
+    }
+
+    is_Item = false;
+    is_drop = true;
+    currentWeapon_Player = WPTYPE::NONE;
+}
+
 
 void Player::Init()
 {
