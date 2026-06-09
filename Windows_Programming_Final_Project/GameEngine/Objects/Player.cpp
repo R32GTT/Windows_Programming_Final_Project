@@ -13,6 +13,7 @@ Player::Player()
 
     type = OBJECTTYPE::PLAYER;
     layer = Layers::ACTORS;
+    currentWeapon_Player = WPTYPE::CROWBAR;
 }
 
 Player::~Player()
@@ -91,7 +92,7 @@ void Player::Init()
     if (_anims[(int)AnimType::IDLE_GUN]->GetInfo().frames.empty() && _anims[(int)AnimType::ATTACK_GUN] != nullptr)
     {
         FlipbookInfo info;
-        info.name = L"MainCharAnim_Crowbar_Idle_Auto";
+        info.name = L"MainCharAnim_Gun_Idle_Auto";
         info.frames.push_back(_anims[(int)AnimType::ATTACK_GUN]->GetInfo().frames[0]);
         info.duration = 1.0f;
         info.loop = true;
@@ -105,7 +106,6 @@ void Player::Update()
 
     if (IsKilled())
     {
-        // 시체 상태일 때 데드 애니메이션 재생 로직이 필요하다면 여기에 작성
         PlayAnimation(_anims[(int)AnimType::DEAD]);
         return;
     }
@@ -118,7 +118,10 @@ void Player::Update()
         _rotationAngle = facingDir.Angle() * (180.0f / PI) + 90.0f; // Sprite가 위를 향하기 때문에 +90
     }
 
-    // 3. 들고 있는 무기(WPTYPE)에 따라 재생할 애니메이션 세팅 (캐싱된 배열 사용)
+
+    Move();
+
+
     AnimType targetIdle = AnimType::IDLE;
     AnimType targetMove = AnimType::MOVE;
     AnimType targetAttack = AnimType::ATTACK_FIST;
@@ -136,82 +139,104 @@ void Player::Update()
         targetAttack = AnimType::ATTACK_GUN;
     }
 
-    switch (status) 
+    switch (status)
     {
     case PlayerState::IDLE:
     case PlayerState::MOVE:
     {
-        if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::LeftMouse))
+        bool isAttackTriggered = false;
+
+        if (currentWeapon_Player == WPTYPE::RIFLE) {
+            isAttackTriggered = GET_SINGLE(InputManager)->GetButton(KeyType::LeftMouse);
+        }
+        else {
+            isAttackTriggered = GET_SINGLE(InputManager)->GetButton(KeyType::LeftMouse);
+        }
+
+        if (isAttackTriggered)
         {
             status = PlayerState::ATTACK;
             _projectileSpawned = false;
-            break; 
+
+
+            _currFrame = 0;
+            _animTimer = 0.0f;
+
+            break;
         }
 
-
-        Move();
-
-
-        if (movingDir.LengthSq() > 0.0f)
-        {
+        // 공격 중이 아닐 때만, 이동 여부에 따라 MOVE / IDLE 애니메이션 재생
+        if (movingDir.LengthSq() > 0.0f) {
             status = PlayerState::MOVE;
             PlayAnimation(_anims[(int)targetMove]);
         }
-        else
-        {
+        else {
             status = PlayerState::IDLE;
             PlayAnimation(_anims[(int)targetIdle]);
         }
         break;
     }
-
     case PlayerState::ATTACK:
     {
-        Move();
-
         PlayAnimation(_anims[(int)targetAttack]);
 
 
-        int targetFrame = 1; //타격이 들어가는 프레임 번호
+        int targetFrame = 2; // (수정 필요) 실제로 총알이 나가거나 빠루 타격이 들어가는 프레임 번호
         if (_currFrame == targetFrame && !_projectileSpawned)
         {
             _projectileSpawned = true;
+            /* TODO
 
-            // TODO: 투사체(Projectile) 또는 근접 히트박스 생성 로직 작성
+            // 1. 투사체 객체 생성
+            Projectile* proj = new Projectile();
+            proj->Init();
+
+            // 2. 발사 방향 및 위치 세팅 (플레이어 위치 + 바라보는 방향 * 총구 거리)
+            proj->SetDirection(facingDir);
+            proj->SetPos(pos + facingDir * 25.0f);
+
+            // 3. 투사체 정보 세팅 (데미지, 스피드 등 Projectile.h의 SetInfo 활용)
+            // proj->SetInfo(this, Projectile::ProjectileType::BULLET, 10.0f, 800.0f, 2.0f);
+
+            // 4. 씬 매니저에 투사체 등록 (화면에 렌더링되고 Update를 타게 됨)
+            GET_SINGLE(SceneManager)->GetCurrentScene()->AddObject(proj);
+
+            */
         }
 
-        // [크로우바 공격 캔슬 로직]
+
         if (currentWeapon_Player == WPTYPE::CROWBAR)
         {
-            // 마우스를 떼는 순간 공격 강제 종료 (캔슬)
-            if (GET_SINGLE(InputManager)->GetButtonUp(KeyType::LeftMouse))
+
+            int midFrame = 4;
+
+            if (_currFrame >= midFrame && !GET_SINGLE(InputManager)->GetButton(KeyType::LeftMouse))
             {
+
                 status = (movingDir.LengthSq() > 0.0f) ? PlayerState::MOVE : PlayerState::IDLE;
                 break;
             }
         }
 
-        // [애니메이션 정상 종료 체크]
-        if (_currAnim != nullptr)
+
+        if (_currAnim != nullptr && _currAnim == _anims[(int)targetAttack])
         {
             int maxFrame = _currAnim->GetInfo().frames.size() - 1;
-            // 애니메이션이 마지막 프레임에 도달했다면 (끝까지 다 휘둘렀다면)
+            // 끝까지 재생되었다면
             if (_currFrame >= maxFrame)
             {
+                // 공격이 끝난 시점에 계속 걷고 있다면 MOVE로, 멈췄다면 IDLE로 복귀
                 status = (movingDir.LengthSq() > 0.0f) ? PlayerState::MOVE : PlayerState::IDLE;
             }
         }
         break;
     }
-
     case PlayerState::EXECUTE:
-        // 처형 
+        // 처형 로직 등...
         break;
     }
 
-    // 애니메이션 시간 업데이트
-    float fixedDt = 1.0f / 60.0f;
-    UpdateAnimation(fixedDt);
+    UpdateAnimation(1.0f / 60.0f);
 }
 
 void Player::Render(ID2D1RenderTarget* renderTarget, float alpha)
@@ -244,7 +269,7 @@ void Player::OnCollision(GameObject* other)
         Enemy* enemy = static_cast<Enemy*>(other);
         if (enemy->GetEnemyState() == EnemyState::UNCONSCIOUS)
         {
-            if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::SpaceBar) && !_isAttacking);
+            if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::SpaceBar) && !_isAttacking)
             {
                 status = PlayerState::EXECUTE;
                 SetPos(enemy->GetPos());
@@ -272,28 +297,19 @@ void Player::LoadFromData(const ObjectSpawnData& spawnData)
     GameObject::LoadFromData(spawnData);
 }
 
-PlayerState Player::Move()
+void Player::Move()
 {
-    movingDir.x = 0.0f;
-    movingDir.y = 0.0f;
-
+    movingDir = { 0.0f, 0.0f };
     InputManager* input = GET_SINGLE(InputManager);
 
-    if (input->GetButton(KeyType::W)) 
-        movingDir.y -= 1.0f;
+    if (input->GetButton(KeyType::W)) movingDir.y -= 1.0f;
     if (input->GetButton(KeyType::S)) movingDir.y += 1.0f;
     if (input->GetButton(KeyType::A)) movingDir.x -= 1.0f;
     if (input->GetButton(KeyType::D)) movingDir.x += 1.0f;
 
-    if (movingDir.LengthSq() > 0.0f) {
+    if (movingDir.LengthSq() > 0.0f)
+    {
         movingDir = movingDir.Normalized();
-
-        pos = pos + (movingDir * speed);
-        status = PlayerState::MOVE;
+        pos = pos + movingDir * speed;
     }
-    else {
-        status = PlayerState::IDLE;
-    }
-
-    return status;
 }

@@ -26,7 +26,7 @@ public:
 	WPTYPE GetWeaponType() const;
 
 	
-	PlayerState Move();
+	void Move();
 
 	//무기 장착 및 해제를 위한 함수
 	void EquipWeapon(Weapon* weapon);
