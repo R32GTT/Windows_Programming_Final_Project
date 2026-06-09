@@ -3,6 +3,9 @@
 #include "GameObject.h"
 #include "Enums.h"
 
+//무기 클래스 전방 선언
+class Weapon;
+
 class Player : public GameObject {
 public:
 
@@ -20,16 +23,15 @@ public:
 	
 
 	void SetWeaponType(WPTYPE type);
-
-
 	WPTYPE GetWeaponType() const;
 
 	
 	PlayerState Move();
 
-	
-
-
+	//무기 장착 및 해제를 위한 함수
+	void EquipWeapon(Weapon* weapon);
+	void DropWeapon();
+	Weapon* GetCurrentWeapon() const { return currentWeapon; }
 
 	
 private:
@@ -44,6 +46,9 @@ private:
 
 	//어떤 무기를 가지고 있는지 변수(플레이어 용)
 	WPTYPE currentWeapon_Player = WPTYPE::NONE;
+
+	//실제 장착 중인 무기 객체를 가리키는 포인터 추가
+	Weapon* currentWeapon = nullptr;
 
 	PlayerState status = PlayerState::IDLE;
 	
