@@ -21,7 +21,6 @@ public:
 	
 
 	void SetWeaponType(WPTYPE type);
-
 	WPTYPE GetWeaponType() const;
 
 	
