@@ -18,6 +18,11 @@ void Weapon::Init()
 
 void Weapon::Update()
 {
+	if (owner != nullptr)
+	{
+
+	}
+
 }
 
 void Weapon::Render(ID2D1RenderTarget* renderTarget, float alpha)

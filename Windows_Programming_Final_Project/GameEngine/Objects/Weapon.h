@@ -9,6 +9,11 @@ class Weapon : public GameObject {
 
 private:
 
+	//무기 소유자(플레이어 또는 적)
+	//무기가 실제로 장착이 되게끔 구현 시작
+	GameObject* owner = nullptr;
+
+
 	bool is_RIFLE = false;
 	bool is_Meele = false;
 	bool is_Fist = true;
@@ -46,8 +51,12 @@ public:
 	virtual void SaveToData(ObjectSpawnData& outData) override;
 	virtual void LoadFromData(const ObjectSpawnData& spawnData) override;
 
-	//무기 체크 함수
-	//수정해서 하나로 합치기 
+	//무기 장착 및 해제를 위한 함수 추가
+	void SetOwner(GameObject* newOwner) { owner = newOwner; }
+	GameObject* GetOwner() const { return owner; }
+	
+	 
+
 
 	//어떤 무기인지 체크하는 함수(주먹인지 근접무기인지 원거리 무기인지)
 	//OBJECTTYPE를 이용하여 변경
@@ -75,6 +84,8 @@ public:
 			ammo--;
 			return (is_Shoot);
 		}
+		is_Shoot = false;
+		return is_Shoot;
 	}
 
 	//탄창 빈 유무 체크함수
@@ -84,8 +95,11 @@ public:
 	bool CheckAmo() {
 		if (ammo == 0) {
 			is_Shoot = false;
+			is_OUT = true;
 			return (is_OUT);
 		}
+		is_OUT = false;
+		return is_OUT;
 	}
 
 
