@@ -2,6 +2,7 @@
 #include "Player.h"
 #include "Weapon.h" //Weapon 헤더 포함
 #include "Managers.h"
+#include "Enemy.h"
 #include "../FileBase/FileTypes/Texture.h"
 #include "../FileBase/FileTypes/FlipBook.h"
 
@@ -61,51 +62,151 @@ void Player::DropWeapon()
 
 void Player::Init()
 {
-    FlipBook* idleAnim = GET_SINGLE(FileManager)->GetFlipBook(L"MainCharAnim_Idle");
-    PlayAnimation(idleAnim);
+    //FlipBook* idleAnim = GET_SINGLE(FileManager)->GetFlipBook(L"MainCharAnim_Idle");
+    //PlayAnimation(idleAnim);
+
+    FileManager* FM = GET_SINGLE(FileManager);
+
+    _anims[(int)AnimType::IDLE] = FM->GetFlipBook(L"MainCharAnim_Idle");
+    _anims[(int)AnimType::MOVE] = FM->GetFlipBook(L"MainCharAnim_Walking");
+    _anims[(int)AnimType::ATTACK_FIST] = FM->GetFlipBook(L"MainCharAnim_Punch");
+    _anims[(int)AnimType::ATTACK_CROWBAR] = FM->GetFlipBook(L"MainCharAnim_Crowbar");
+    _anims[(int)AnimType::ATTACK_GUN] = FM->GetFlipBook(L"MainCharAnim_Rifle Shooting");
+    _anims[(int)AnimType::EXECUTE] = FM->GetFlipBook(L"MainCharAnim_Execution");
+    _anims[(int)AnimType::DEAD] = FM->GetFlipBook(L"MainCharAnim_Dead");
+    //_anims[(int)AnimType::UNCONSCIOUS] = FM->GetFlipBook(L"MainCharAnim_Unconscious"); Mob 애들만 필요해서 굳이?
+
+    _anims[(int)AnimType::IDLE_CROWBAR] = FM->CreateFlipBook(L"MainCharAnim_Crowbar_Idle_Auto");
+    if (_anims[(int)AnimType::IDLE_CROWBAR]->GetInfo().frames.empty() && _anims[(int)AnimType::ATTACK_CROWBAR] != nullptr)
+    {
+        FlipbookInfo info;
+        info.name = L"MainCharAnim_Crowbar_Idle_Auto";
+        info.frames.push_back(_anims[(int)AnimType::ATTACK_CROWBAR]->GetInfo().frames[0]);
+        info.duration = 1.0f;
+        info.loop = true;
+        _anims[(int)AnimType::IDLE_CROWBAR]->SetInfo(info);
+    }
+
+    _anims[(int)AnimType::IDLE_GUN] = FM->CreateFlipBook(L"MainCharAnim_Gun_Idle_Auto");
+    if (_anims[(int)AnimType::IDLE_GUN]->GetInfo().frames.empty() && _anims[(int)AnimType::ATTACK_GUN] != nullptr)
+    {
+        FlipbookInfo info;
+        info.name = L"MainCharAnim_Crowbar_Idle_Auto";
+        info.frames.push_back(_anims[(int)AnimType::ATTACK_GUN]->GetInfo().frames[0]);
+        info.duration = 1.0f;
+        info.loop = true;
+        _anims[(int)AnimType::IDLE_GUN]->SetInfo(info);
+    }
 }
 
 void Player::Update()
 {
-	SavePrevPos();
-    if (IsKilled() && !GET_SINGLE(InputManager)->GetButtonDown(KeyType::R)) return;
-	Move();
+    SavePrevPos();
+
+    if (IsKilled())
+    {
+        // 시체 상태일 때 데드 애니메이션 재생 로직이 필요하다면 여기에 작성
+        PlayAnimation(_anims[(int)AnimType::DEAD]);
+        return;
+    }
 
     Vec2F mousePos = GET_SINGLE(InputManager)->GetMousePos();
     Vec2F dirToMouse = mousePos - GET_SINGLE(SceneManager)->ToRenderPos(pos);
 
     if (dirToMouse.LengthSq() > 0.0f) {
         facingDir = dirToMouse.Normalized();
-        _rotationAngle = facingDir.Angle() * (180.0f / PI) + 90.0f; // Spirte가 위를 향하기 때문에 +90
+        _rotationAngle = facingDir.Angle() * (180.0f / PI) + 90.0f; // Sprite가 위를 향하기 때문에 +90
     }
 
-    //TODO 근접 및 원거리 공격시 애니메이션 추가해야 함.
-    // 2. [애니메이션 상태 머신 해결]
-    FlipBook* punchAnim = GET_SINGLE(FileManager)->GetFlipBook(L"MainCharAnim_Punch");
-    FlipBook* idleAnim = GET_SINGLE(FileManager)->GetFlipBook(L"MainCharAnim_Idle");
+    // 3. 들고 있는 무기(WPTYPE)에 따라 재생할 애니메이션 세팅 (캐싱된 배열 사용)
+    AnimType targetIdle = AnimType::IDLE;
+    AnimType targetMove = AnimType::MOVE;
+    AnimType targetAttack = AnimType::ATTACK_FIST;
 
-    // 마우스를 클릭했고, 현재 공격 중이 아니라면 공격 시작!
-    // (InputManager에 GetButtonDown(한번 눌림 체크)가 있다면 그걸 쓰는게 더 좋습니다)
-    if (GET_SINGLE(InputManager)->GetButton(KeyType::LeftMouse) && !_isAttacking)
+    if (currentWeapon_Player == WPTYPE::CROWBAR)
     {
-        _isAttacking = true;
-        PlayAnimation(punchAnim);
+        targetIdle = AnimType::IDLE_CROWBAR;
+        targetMove = AnimType::IDLE_CROWBAR;
+        targetAttack = AnimType::ATTACK_CROWBAR;
+    }
+    else if (currentWeapon_Player == WPTYPE::RIFLE)
+    {
+        targetIdle = AnimType::IDLE_GUN;
+        targetMove = AnimType::IDLE_GUN;
+        targetAttack = AnimType::ATTACK_GUN;
     }
 
-    // 공격 중일 때의 처리 (애니메이션이 끝났는지 확인)
-    if (_isAttacking)
+    switch (status) 
     {
-        // 현재 펀치 애니메이션이고, 마지막 프레임에 도달했다면 공격 종료!
-        if (_currAnim == punchAnim && _currFrame >= punchAnim->GetInfo().frames.size() - 1)
+    case PlayerState::IDLE:
+    case PlayerState::MOVE:
+    {
+        if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::LeftMouse))
         {
-            _isAttacking = false;
+            status = PlayerState::ATTACK;
+            _projectileSpawned = false;
+            break; 
         }
+
+
+        Move();
+
+
+        if (movingDir.LengthSq() > 0.0f)
+        {
+            status = PlayerState::MOVE;
+            PlayAnimation(_anims[(int)targetMove]);
+        }
+        else
+        {
+            status = PlayerState::IDLE;
+            PlayAnimation(_anims[(int)targetIdle]);
+        }
+        break;
     }
 
-    // 공격 중이 아닐 때는 대기(Idle) 모션 유지
-    if (!_isAttacking)
+    case PlayerState::ATTACK:
     {
-        PlayAnimation(idleAnim);
+        Move();
+
+        PlayAnimation(_anims[(int)targetAttack]);
+
+
+        int targetFrame = 1; //타격이 들어가는 프레임 번호
+        if (_currFrame == targetFrame && !_projectileSpawned)
+        {
+            _projectileSpawned = true;
+
+            // TODO: 투사체(Projectile) 또는 근접 히트박스 생성 로직 작성
+        }
+
+        // [크로우바 공격 캔슬 로직]
+        if (currentWeapon_Player == WPTYPE::CROWBAR)
+        {
+            // 마우스를 떼는 순간 공격 강제 종료 (캔슬)
+            if (GET_SINGLE(InputManager)->GetButtonUp(KeyType::LeftMouse))
+            {
+                status = (movingDir.LengthSq() > 0.0f) ? PlayerState::MOVE : PlayerState::IDLE;
+                break;
+            }
+        }
+
+        // [애니메이션 정상 종료 체크]
+        if (_currAnim != nullptr)
+        {
+            int maxFrame = _currAnim->GetInfo().frames.size() - 1;
+            // 애니메이션이 마지막 프레임에 도달했다면 (끝까지 다 휘둘렀다면)
+            if (_currFrame >= maxFrame)
+            {
+                status = (movingDir.LengthSq() > 0.0f) ? PlayerState::MOVE : PlayerState::IDLE;
+            }
+        }
+        break;
+    }
+
+    case PlayerState::EXECUTE:
+        // 처형 
+        break;
     }
 
     // 애니메이션 시간 업데이트
@@ -139,8 +240,20 @@ void Player::OnCollision(GameObject* other)
         status = PlayerState::DEAD;
         break;
     case OBJECTTYPE::ENEMY:
-        if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::SpaceBar) && !_isAttacking);
+    {
+        Enemy* enemy = static_cast<Enemy*>(other);
+        if (enemy->GetEnemyState() == EnemyState::UNCONSCIOUS)
+        {
+            if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::SpaceBar) && !_isAttacking);
+            {
+                status = PlayerState::EXECUTE;
+                SetPos(enemy->GetPos());
+                //TODO
+
+            }
+        }
         break;
+    }
     case OBJECTTYPE::ENDPOINT:
         break;
     default:

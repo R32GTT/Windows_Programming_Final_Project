@@ -72,7 +72,7 @@ void FileManager::LoadAespriteJson(const std::wstring& path)
 	{
 		for (auto& frameData : j["frames"])
 		{
-			std::wstring sprKey = StrToWStr(frameData["filename"]);
+			std::wstring sprKey = texKey + L"_" + StrToWStr(frameData["filename"]);
 			float x = frameData["frame"]["x"];
 			float y = frameData["frame"]["y"];
 			float w = frameData["frame"]["w"];
@@ -87,7 +87,7 @@ void FileManager::LoadAespriteJson(const std::wstring& path)
 		for (auto it = j["frames"].begin(); it != j["frames"].end(); ++it)
 		{
 			auto& frameData = it.value();
-			std::wstring sprKey = StrToWStr(frameData["filename"]);
+			std::wstring sprKey = texKey + L"_" + StrToWStr(frameData["filename"]);
 			float x = frameData["frame"]["x"];
 			float y = frameData["frame"]["y"];
 			float w = frameData["frame"]["w"];

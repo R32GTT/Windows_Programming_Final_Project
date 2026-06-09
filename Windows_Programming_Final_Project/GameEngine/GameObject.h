@@ -92,6 +92,9 @@ protected:
 
 	Layers layer = Layers::ACTORS;
 	OBJECTTYPE type = OBJECTTYPE::NONE;
+	
+	FlipBook* _anims[(int)AnimType::TOTAL_COUNT] = { nullptr };
+
 
 	FlipBook*	_currAnim{};
 	int			_currFrame{};

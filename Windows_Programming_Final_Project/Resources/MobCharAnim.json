@@ -1,6 +1,6 @@
 { "frames": [
    {
-    "filename": "CharAnim-Recovered #Idle.aseprite",
+    "filename": "CharAnim #Idle.aseprite",
     "frame": { "x": 0, "y": 0, "w": 80, "h": 112 },
     "rotated": false,
     "trimmed": false,
@@ -9,7 +9,7 @@
     "duration": 100
    },
    {
-    "filename": "CharAnim-Recovered #Walking 0.aseprite",
+    "filename": "CharAnim #Walking 0.aseprite",
     "frame": { "x": 0, "y": 112, "w": 80, "h": 112 },
     "rotated": false,
     "trimmed": false,
@@ -18,7 +18,7 @@
     "duration": 100
    },
    {
-    "filename": "CharAnim-Recovered #Walking 1.aseprite",
+    "filename": "CharAnim #Walking 1.aseprite",
     "frame": { "x": 80, "y": 112, "w": 80, "h": 112 },
     "rotated": false,
     "trimmed": false,
@@ -27,7 +27,7 @@
     "duration": 100
    },
    {
-    "filename": "CharAnim-Recovered #Walking 2.aseprite",
+    "filename": "CharAnim #Walking 2.aseprite",
     "frame": { "x": 160, "y": 112, "w": 80, "h": 112 },
     "rotated": false,
     "trimmed": false,
@@ -36,7 +36,7 @@
     "duration": 100
    },
    {
-    "filename": "CharAnim-Recovered #Walking 3.aseprite",
+    "filename": "CharAnim #Walking 3.aseprite",
     "frame": { "x": 240, "y": 112, "w": 80, "h": 112 },
     "rotated": false,
     "trimmed": false,
@@ -45,7 +45,7 @@
     "duration": 100
    },
    {
-    "filename": "CharAnim-Recovered #Walking 4.aseprite",
+    "filename": "CharAnim #Walking 4.aseprite",
     "frame": { "x": 320, "y": 112, "w": 80, "h": 112 },
     "rotated": false,
     "trimmed": false,
@@ -54,7 +54,7 @@
     "duration": 100
    },
    {
-    "filename": "CharAnim-Recovered #Walking 5.aseprite",
+    "filename": "CharAnim #Walking 5.aseprite",
     "frame": { "x": 400, "y": 112, "w": 80, "h": 112 },
     "rotated": false,
     "trimmed": false,
@@ -63,7 +63,7 @@
     "duration": 100
    },
    {
-    "filename": "CharAnim-Recovered #Walking 6.aseprite",
+    "filename": "CharAnim #Walking 6.aseprite",
     "frame": { "x": 480, "y": 112, "w": 80, "h": 112 },
     "rotated": false,
     "trimmed": false,
@@ -72,7 +72,7 @@
     "duration": 100
    },
    {
-    "filename": "CharAnim-Recovered #Punch 0.aseprite",
+    "filename": "CharAnim #Punch 0.aseprite",
     "frame": { "x": 0, "y": 224, "w": 80, "h": 112 },
     "rotated": false,
     "trimmed": false,
@@ -81,7 +81,7 @@
     "duration": 100
    },
    {
-    "filename": "CharAnim-Recovered #Punch 1.aseprite",
+    "filename": "CharAnim #Punch 1.aseprite",
     "frame": { "x": 80, "y": 224, "w": 80, "h": 112 },
     "rotated": false,
     "trimmed": false,
@@ -90,7 +90,7 @@
     "duration": 100
    },
    {
-    "filename": "CharAnim-Recovered #Punch 2.aseprite",
+    "filename": "CharAnim #Punch 2.aseprite",
     "frame": { "x": 160, "y": 224, "w": 80, "h": 112 },
     "rotated": false,
     "trimmed": false,
@@ -99,7 +99,7 @@
     "duration": 100
    },
    {
-    "filename": "CharAnim-Recovered #Punch 3.aseprite",
+    "filename": "CharAnim #Punch 3.aseprite",
     "frame": { "x": 240, "y": 224, "w": 80, "h": 112 },
     "rotated": false,
     "trimmed": false,
@@ -108,7 +108,7 @@
     "duration": 100
    },
    {
-    "filename": "CharAnim-Recovered #Punch 4.aseprite",
+    "filename": "CharAnim #Punch 4.aseprite",
     "frame": { "x": 320, "y": 224, "w": 80, "h": 112 },
     "rotated": false,
     "trimmed": false,
@@ -117,7 +117,7 @@
     "duration": 100
    },
    {
-    "filename": "CharAnim-Recovered #Punch 5.aseprite",
+    "filename": "CharAnim #Punch 5.aseprite",
     "frame": { "x": 400, "y": 224, "w": 80, "h": 112 },
     "rotated": false,
     "trimmed": false,
@@ -126,7 +126,7 @@
     "duration": 100
    },
    {
-    "filename": "CharAnim-Recovered #Punch 6.aseprite",
+    "filename": "CharAnim #Punch 6.aseprite",
     "frame": { "x": 480, "y": 224, "w": 80, "h": 112 },
     "rotated": false,
     "trimmed": false,
@@ -135,7 +135,7 @@
     "duration": 100
    },
    {
-    "filename": "CharAnim-Recovered #Crowbar 0.aseprite",
+    "filename": "CharAnim #Crowbar 0.aseprite",
     "frame": { "x": 0, "y": 336, "w": 80, "h": 112 },
     "rotated": false,
     "trimmed": false,
@@ -144,7 +144,7 @@
     "duration": 50
    },
    {
-    "filename": "CharAnim-Recovered #Crowbar 1.aseprite",
+    "filename": "CharAnim #Crowbar 1.aseprite",
     "frame": { "x": 80, "y": 336, "w": 80, "h": 112 },
     "rotated": false,
     "trimmed": false,
@@ -153,7 +153,7 @@
     "duration": 50
    },
    {
-    "filename": "CharAnim-Recovered #Crowbar 2.aseprite",
+    "filename": "CharAnim #Crowbar 2.aseprite",
     "frame": { "x": 160, "y": 336, "w": 80, "h": 112 },
     "rotated": false,
     "trimmed": false,
@@ -162,7 +162,7 @@
     "duration": 50
    },
    {
-    "filename": "CharAnim-Recovered #Crowbar 3.aseprite",
+    "filename": "CharAnim #Crowbar 3.aseprite",
     "frame": { "x": 240, "y": 336, "w": 80, "h": 112 },
     "rotated": false,
     "trimmed": false,
@@ -171,7 +171,7 @@
     "duration": 50
    },
    {
-    "filename": "CharAnim-Recovered #Crowbar 4.aseprite",
+    "filename": "CharAnim #Crowbar 4.aseprite",
     "frame": { "x": 320, "y": 336, "w": 80, "h": 112 },
     "rotated": false,
     "trimmed": false,
@@ -180,7 +180,7 @@
     "duration": 80
    },
    {
-    "filename": "CharAnim-Recovered #Crowbar 5.aseprite",
+    "filename": "CharAnim #Crowbar 5.aseprite",
     "frame": { "x": 400, "y": 336, "w": 80, "h": 112 },
     "rotated": false,
     "trimmed": false,
@@ -189,7 +189,7 @@
     "duration": 50
    },
    {
-    "filename": "CharAnim-Recovered #Crowbar 6.aseprite",
+    "filename": "CharAnim #Crowbar 6.aseprite",
     "frame": { "x": 480, "y": 336, "w": 80, "h": 112 },
     "rotated": false,
     "trimmed": false,
@@ -198,7 +198,7 @@
     "duration": 50
    },
    {
-    "filename": "CharAnim-Recovered #Crowbar 7.aseprite",
+    "filename": "CharAnim #Crowbar 7.aseprite",
     "frame": { "x": 560, "y": 336, "w": 80, "h": 112 },
     "rotated": false,
     "trimmed": false,
@@ -207,7 +207,7 @@
     "duration": 50
    },
    {
-    "filename": "CharAnim-Recovered #Crowbar 8.aseprite",
+    "filename": "CharAnim #Crowbar 8.aseprite",
     "frame": { "x": 640, "y": 336, "w": 80, "h": 112 },
     "rotated": false,
     "trimmed": false,
@@ -216,7 +216,7 @@
     "duration": 80
    },
    {
-    "filename": "CharAnim-Recovered #Rifle Shooting 0.aseprite",
+    "filename": "CharAnim #Rifle Shooting 0.aseprite",
     "frame": { "x": 0, "y": 448, "w": 80, "h": 112 },
     "rotated": false,
     "trimmed": false,
@@ -225,7 +225,7 @@
     "duration": 50
    },
    {
-    "filename": "CharAnim-Recovered #Rifle Shooting 1.aseprite",
+    "filename": "CharAnim #Rifle Shooting 1.aseprite",
     "frame": { "x": 80, "y": 448, "w": 80, "h": 112 },
     "rotated": false,
     "trimmed": false,
@@ -234,7 +234,7 @@
     "duration": 50
    },
    {
-    "filename": "CharAnim-Recovered #Execution 0.aseprite",
+    "filename": "CharAnim #Execution 0.aseprite",
     "frame": { "x": 0, "y": 560, "w": 80, "h": 112 },
     "rotated": false,
     "trimmed": false,
@@ -243,7 +243,7 @@
     "duration": 30
    },
    {
-    "filename": "CharAnim-Recovered #Execution 1.aseprite",
+    "filename": "CharAnim #Execution 1.aseprite",
     "frame": { "x": 80, "y": 560, "w": 80, "h": 112 },
     "rotated": false,
     "trimmed": false,
@@ -252,7 +252,7 @@
     "duration": 30
    },
    {
-    "filename": "CharAnim-Recovered #Execution 2.aseprite",
+    "filename": "CharAnim #Execution 2.aseprite",
     "frame": { "x": 160, "y": 560, "w": 80, "h": 112 },
     "rotated": false,
     "trimmed": false,
@@ -261,7 +261,7 @@
     "duration": 30
    },
    {
-    "filename": "CharAnim-Recovered #Execution 3.aseprite",
+    "filename": "CharAnim #Execution 3.aseprite",
     "frame": { "x": 240, "y": 560, "w": 80, "h": 112 },
     "rotated": false,
     "trimmed": false,
@@ -270,7 +270,7 @@
     "duration": 30
    },
    {
-    "filename": "CharAnim-Recovered #Execution 4.aseprite",
+    "filename": "CharAnim #Execution 4.aseprite",
     "frame": { "x": 320, "y": 560, "w": 80, "h": 112 },
     "rotated": false,
     "trimmed": false,
@@ -279,7 +279,7 @@
     "duration": 30
    },
    {
-    "filename": "CharAnim-Recovered #Execution 5.aseprite",
+    "filename": "CharAnim #Execution 5.aseprite",
     "frame": { "x": 400, "y": 560, "w": 80, "h": 112 },
     "rotated": false,
     "trimmed": false,
@@ -288,7 +288,7 @@
     "duration": 30
    },
    {
-    "filename": "CharAnim-Recovered #Execution 6.aseprite",
+    "filename": "CharAnim #Execution 6.aseprite",
     "frame": { "x": 480, "y": 560, "w": 80, "h": 112 },
     "rotated": false,
     "trimmed": false,
@@ -297,7 +297,7 @@
     "duration": 100
    },
    {
-    "filename": "CharAnim-Recovered #Unconscious.aseprite",
+    "filename": "CharAnim #Unconscious.aseprite",
     "frame": { "x": 0, "y": 672, "w": 80, "h": 112 },
     "rotated": false,
     "trimmed": false,
@@ -306,7 +306,7 @@
     "duration": 100
    },
    {
-    "filename": "CharAnim-Recovered #Dead.aseprite",
+    "filename": "CharAnim #Dead.aseprite",
     "frame": { "x": 0, "y": 784, "w": 80, "h": 112 },
     "rotated": false,
     "trimmed": false,

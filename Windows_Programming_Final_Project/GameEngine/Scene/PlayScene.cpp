@@ -38,7 +38,7 @@ void PlayScene::Render(ID2D1RenderTarget* renderTarget, float alpha)
 }
 
 //CheckStageClear 추가됨
-void PlayScene::CheckStageClear()
+void PlayScene::CheckStageClear() // Scene으로 옮길지 고민중
 {
 	GameObject* player = GetPlayer();
 	if (player == nullptr) return;
@@ -47,23 +47,7 @@ void PlayScene::CheckStageClear()
 
 	for (GameObject* obj : allObjects)
 	{
-		//데이터 상에서 'ENDPOINT'로 지정된 오브젝트를 찾음
-		if (obj != nullptr && obj->GetObjectType() == OBJECTTYPE::ENDPOINT)
-		{
-			Vec2F pPos = player->GetPos();
-			Vec2F pHalf = player->GetHalfSize();
-
-			Vec2F ePos = obj->GetPos();
-			Vec2F eHalf = obj->GetHalfSize();
-
-			//AABB 충돌 판정(플레이어와 포탈이 겹쳤는지 확인)
-			if (abs(pPos.x - ePos.x) < (pHalf.x + eHalf.x) && abs(pPos.y - ePos.y) < (pHalf.y + eHalf.y))
-			{
-				OnStageClearTrigger();
-				break;
-			}
-		}
-
+		
 	}
 
 }

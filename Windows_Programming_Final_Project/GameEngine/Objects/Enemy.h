@@ -21,6 +21,7 @@ public:
 	virtual void Render(ID2D1RenderTarget* renderTarget, float alpha) override;
 	virtual bool IsKilled() override;
 	virtual void OnCollision(GameObject* other) override;
+	
 
 	virtual void SaveToData(ObjectSpawnData& outData) override;
 	virtual void LoadFromData(const ObjectSpawnData& spawnData) override;
@@ -37,6 +38,8 @@ public:
 	EnemyType What_Enemy();
 	EnemyType GetEType();
 
+	EnemyState GetEnemyState() { return _enemyState; };
+	void SetEnemyState(EnemyState state) { _enemyState = state; };
 
 
 };

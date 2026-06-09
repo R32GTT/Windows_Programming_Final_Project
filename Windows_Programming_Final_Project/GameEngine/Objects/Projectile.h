@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "pch.h"
 #include "GameObject.h"
 #include "Enums.h"
@@ -20,7 +20,7 @@ public:
 	virtual void Init() override;
 	virtual void Update() override;
 	virtual void Render(ID2D1RenderTarget* renderTarget, float alpha) override;
-	virtual bool CheckDead() override;
+	virtual bool CheckDead() override { return _isDead || (_elapsedTime >= _lifeTime); };
 	virtual void OnCollision(GameObject* other) override;
 
 	void SetDirection(Vec2<float> dir);
@@ -37,7 +37,7 @@ public:
 	GameObject* GetOwner() const { return _owner; }
 	//float GetDamage
 
-	bool CheckDead() { return _isDead || (_elapsedTime >= _lifeTime); };
+
 
 
 

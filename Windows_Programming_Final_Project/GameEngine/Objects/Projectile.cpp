@@ -47,11 +47,6 @@ void Projectile::Render(ID2D1RenderTarget* renderTarget, float alpha)
 
 }
 
-bool Projectile::CheckDead()
-{
-	return _elapsedTime >= _lifeTime;
-}
-
 void Projectile::OnCollision(GameObject* other)
 {
 	if (_isDead) return;

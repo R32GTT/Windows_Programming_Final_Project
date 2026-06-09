@@ -51,6 +51,8 @@ private:
 	Weapon* currentWeapon = nullptr;
 
 	PlayerState status = PlayerState::IDLE;
-	
-	FlipBook* _anims[static_cast<int>(PlayerState::DEAD) + 1]{};
+
+	bool _projectileSpawned = false;
+
+
 };

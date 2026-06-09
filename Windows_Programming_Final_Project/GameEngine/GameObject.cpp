@@ -80,11 +80,14 @@ Vec2<float> GameObject::GetRenderPos(float alpha)
 
 void GameObject::PlayAnimation(FlipBook* anim)
 {
-	if (anim == nullptr || _currAnim == anim)  return;
+	if (anim == nullptr) return;
 
-	_currAnim = anim;
-	_currFrame = 0;
-	_animTimer = 0.0f;
+	if (_currAnim != anim)
+	{
+		_currAnim = anim;
+		_currFrame = 0;
+		_animTimer = 0.0f;    
+	}
 }
 
 void GameObject::UpdateAnimation(float dt)
