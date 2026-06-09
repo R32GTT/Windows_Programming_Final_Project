@@ -13,7 +13,8 @@ public:
 
 	void SaveMapData(const std::wstring& filename, const std::vector<ObjectSpawnData>& mapDataList);
 
-	void GoToNextMap(std::string mapInfo);
+	//반환형을 bool로 변경함
+	bool GoToNextMap(std::string mapInfo);
 
 	//새로 추가된 함수
 	//챕터 넘어가는 함수와 종료함수 추가

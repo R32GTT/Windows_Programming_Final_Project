@@ -24,7 +24,8 @@ void DataManager::SaveMapData(const std::wstring& filename, const std::vector<Ob
 
 }
 
-void DataManager::GoToNextMap(std::string mapInfo)
+//성공적으로 맵을 이동했다면 true, 더 이상 맵이 없어서 챕터가 끝났다면 false반환으로 변경
+bool DataManager::GoToNextMap(std::string mapInfo)
 {
     int nextIdx = std::stoi(mapInfo);
 
@@ -45,10 +46,14 @@ void DataManager::GoToNextMap(std::string mapInfo)
 
 
         }
+        //맵 이동 성공시 true를 반환
+        return true;
     }
     else
     {
         // 챕터 클리어 처리 (결과창 띄우기, 메인화면 이동 등)
+        return false;
+
     }
 }
 
