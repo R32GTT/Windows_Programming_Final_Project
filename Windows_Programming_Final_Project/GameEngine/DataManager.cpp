@@ -52,6 +52,38 @@ void DataManager::GoToNextMap(std::string mapInfo)
     }
 }
 
+void DataManager::GoToNextChapter()
+{
+    _currentChapterIdx++;
+
+    //다음 챕터가 존재하는 경우
+    if (_currentChapterIdx <= _maxChapterCount)
+    {
+        std::wstring nextChapterFileName = L"Chapter" + std::to_wstring(_currentChapterIdx) + L".json";
+
+        LoadChaperData(nextChapterFileName);
+    }
+    //모든 챕터를 클리어한 경우
+    else {
+        EndGame();
+    }
+
+}
+
+void DataManager::EndGame()
+{
+    //최종 클리어 처리(결과창 띄우기, 메인 타이틀 이동 등)
+    Scene* curScene = GET_SINGLE(SceneManager)->GetCurrentScene();
+
+    if (curScene != nullptr)
+    {
+        //맵에 있는 적이다 투사체 등을 모두 정리
+        curScene->Clear();
+    }
+   
+}
+
+
 void DataManager::LoadMapData(const std::wstring& fileName)
 {
     _currentMap.objects.clear();
