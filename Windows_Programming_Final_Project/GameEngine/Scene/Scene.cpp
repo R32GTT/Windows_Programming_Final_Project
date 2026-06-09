@@ -42,6 +42,8 @@ void Scene::Update()
 		for (GameObject* object : objects)
 			object->Update();
 
+	GET_SINGLE(CollisionManager)->Update();
+
 	_cam.TickComp();
 }
 
@@ -68,6 +70,27 @@ void Scene::Clear()
 	}
 	_player = nullptr;
 	_objectMap.clear();
+}
+
+void Scene::PurgeDeadObjects()
+{
+	for (int i = 0; i < (int)Layers::LAYER_COUNT; ++i)
+	{
+		auto& layerVec = _objects[i];
+
+		// 조건(CheckDead)에 맞는 오브젝트들을 뒤로 밀고 지워버리는 가비지 컬렉션 메커니즘
+		auto it = std::remove_if(layerVec.begin(), layerVec.end(), [this](GameObject* obj) {
+			if (obj && obj->CheckDead())
+			{
+				_objectMap.erase(obj->GetID()); 
+				SAFE_DELETE(obj);               
+				return true;                    
+			}
+			return false;
+			});
+
+		layerVec.erase(it, layerVec.end());
+	}
 }
 
 GameObject* Scene::GetGameObjectByID(unsigned int ID)

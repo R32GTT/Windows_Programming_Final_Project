@@ -19,6 +19,7 @@ public:
 	void ChangeScene(SceneType sceneType);
 	void ChangeScene(SceneType sceneType, const std::wstring& mapFilePath);
 	void ChangeMap(const MapData& nextMapData);
+	void ResetCurrentMap();
 	Scene* GetCurrentScene() { return _scene; };
 
 	Vec2F GetCameraPos() { return cameraPos; };

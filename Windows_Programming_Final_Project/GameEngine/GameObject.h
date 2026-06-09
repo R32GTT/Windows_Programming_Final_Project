@@ -14,6 +14,9 @@ public:
 	virtual void Update();
 	virtual void Render(ID2D1RenderTarget* renderTarget, float alpha);
 	virtual bool CheckDead();
+	virtual bool IsKilled();
+	virtual void OnCollision(GameObject* other);
+	
 
 public:
 	bool operator==(const GameObject& rhs) { return _id == rhs._id; };
@@ -58,7 +61,6 @@ public:
 
 	//halfsize를 저장할 함수 추가
 	//void SetHalfSize(Vec2<float> halfsize);
-
 
 	void PlayAnimation(FlipBook* anim);
 	void UpdateAnimation(float dt);

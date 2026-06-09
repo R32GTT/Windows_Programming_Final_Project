@@ -81,6 +81,17 @@ void SceneManager::ChangeMap(const MapData& nextMapData)
 	_scene->BuildMapFromData(nextMapData);
 }
 
+void SceneManager::ResetCurrentMap()
+{
+	if (_scene == nullptr) return;
+
+	_scene->Clear();
+	MapData loadedMapData = GET_SINGLE(DataManager)->GetCurrentMapData();
+
+	_scene->BuildMapFromData(loadedMapData);
+	_scene->Init();
+}
+
 
 
 

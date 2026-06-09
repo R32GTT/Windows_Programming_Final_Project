@@ -12,6 +12,8 @@ public:
 	virtual void Init() override;
 	virtual void Update() override;
 	virtual void Render(ID2D1RenderTarget* renderTarget, float alpha) override;
+	virtual bool IsKilled() override;
+	virtual void OnCollision(GameObject* other) override;
 
 	virtual void SaveToData(ObjectSpawnData& outData) override;
 	virtual void LoadFromData(const ObjectSpawnData& spawnData) override;

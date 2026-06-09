@@ -52,6 +52,24 @@ bool Projectile::CheckDead()
 	return _elapsedTime >= _lifeTime;
 }
 
+void Projectile::OnCollision(GameObject* other)
+{
+	if (_isDead) return;
+
+	OBJECTTYPE otherType = other->GetObjectType();
+
+
+	if (otherType == OBJECTTYPE::WALL)
+	{
+		_isDead = true;
+	}
+
+	else if (otherType == OBJECTTYPE::ENEMY || otherType == OBJECTTYPE::PLAYER)
+	{
+		_isDead = true;
+	}
+}
+
 void Projectile::SetInfo(GameObject* owner, ProjectileType type, float damage, float speed, float lifeTime)
 {
 }

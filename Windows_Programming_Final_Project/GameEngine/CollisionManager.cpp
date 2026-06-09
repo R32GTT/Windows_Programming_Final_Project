@@ -2,6 +2,8 @@
 #include "Managers.h"
 #include "Scene/Scene.h"
 #include "CollisionManager.h"
+#include "Objects/Projectile.h"
+#include "Objects/Enemy.h"
 
 CollisionManager::~CollisionManager()
 {
@@ -13,8 +15,17 @@ void CollisionManager::Init()
 
 void CollisionManager::ResolveWallCollision(GameObject* movingObj, GameObject* wall)
 {
-	Vec2<float> safePos = movingObj->GetPrevPos();
-	movingObj->SetPos(safePos);
+	Vec2F objPos = movingObj->GetPos();
+	Vec2F diff = objPos - wall->GetPos();
+	Vec2F minDistance = movingObj->GetHalfSize() + wall->GetHalfSize();
+	Vec2F overlap = minDistance - diff.Abs();
+
+	if (overlap.x < overlap.y)
+		objPos.x += (diff.x > 0) ? overlap.x : -overlap.x;
+	else
+		objPos.y += (diff.y > 0) ? overlap.y : -overlap.y;
+
+	movingObj->SetPos(objPos);
 }
 
 bool CollisionManager::CheckAABB(GameObject* a, GameObject* b)
@@ -29,100 +40,226 @@ bool CollisionManager::CheckAABB(GameObject* a, GameObject* b)
 void CollisionManager::Update()
 {
 	Scene* currentScene = GET_SINGLE(SceneManager)->GetCurrentScene();
+	if (currentScene == nullptr) return;
 
-	const auto& actors = currentScene->GetObjectsByLayer(Layers::ACTORS);
+	_characters.clear();
+	_projectiles.clear();
+	_endPoints.clear();
+
+	const auto& allActors = currentScene->GetObjectsByLayer(Layers::ACTORS);
 	const auto& walls = currentScene->GetObjectsByLayer(Layers::WALL);
 
-	//wallCollision과 ProjectileCollision추가
-	CheckActorWallCollision(actors, walls);
-	//CheckProjectileCollision(actors, walls);
-
-
-	for (auto& actor : actors)
+	// 2. Scene이 관리하는 안전한 객체들만 분류
+	for (auto& obj : allActors)
 	{
-		for (auto& wall : walls)
+		if (obj == nullptr || obj->CheckDead()) continue;
+
+		OBJECTTYPE type = obj->GetObjectType();
+
+		if (type == OBJECTTYPE::PLAYER || type == OBJECTTYPE::ENEMY)
+			_characters.push_back(obj);
+		else if (type == OBJECTTYPE::PROJECTILE)
+			_projectiles.push_back(obj);
+		else if (type == OBJECTTYPE::ENDPOINT)
+			_endPoints.push_back(obj);
+	}
+	GameObject* player = currentScene->GetPlayer();
+		
+	CheckActorWallCollision(_characters, walls);
+	CheckProjectileCollision(_projectiles, _characters, walls);
+	CheckActorEndpointCollision(_characters, _endPoints);
+	if (player != nullptr && !player->IsKilled())
+		CheckPlayerEnemyCollision(player, _characters);
+
+}
+
+void CollisionManager::CheckActorWallCollision(const std::vector<GameObject*>& actors, const std::vector<GameObject*>& walls)
+{
+	for (auto* actor : actors)
+	{
+		if (actor == nullptr || actor->CheckDead()) continue;
+
+		for (auto* wall : walls)
 		{
-			if (CheckAABB(actor, wall))
+			if (wall == nullptr) continue;
+			if (actor->IsKilled()) continue;
+
+			float rA = actor->GetHalfSize().x + actor->GetHalfSize().y;
+			float rB = wall->GetHalfSize().x + wall->GetHalfSize().y;
+			float maxDist = rA + rB;
+
+			Vec2F diff = actor->GetPos() - wall->GetPos();
+			if (diff.LengthSq() > maxDist * maxDist) continue;
+
+			if (CheckOBB_AABB(actor, wall))
 			{
 				ResolveWallCollision(actor, wall);
-			}
-			else if (CheckOBB(actor, wall))
-			{
-				ResolveWallCollision(actor, wall);
+				actor->OnCollision(wall);
+				wall->OnCollision(actor);
 			}
 		}
 	}
 }
 
-void CollisionManager::CheckActorWallCollision(const std::vector<GameObject*>& actors, const std::vector<GameObject*>& walls)
+void CollisionManager::CheckProjectileCollision(const std::vector<GameObject*>& projectiles, const std::vector<GameObject*>& actors, const std::vector<GameObject*>& walls)
 {
+	for (auto* roj : projectiles)
+	{
+		if (roj == nullptr || roj->CheckDead()) continue;
 
+		Projectile* proj = static_cast<Projectile*>(roj);
+		GameObject* owner = proj->GetOwner(); 
 
+		for (auto* wall : walls)
+		{
+			if (wall == nullptr) continue;
+
+			Vec2F diff = proj->GetPos() - wall->GetPos();
+			float maxDist = (proj->GetHalfSize().x + proj->GetHalfSize().y) + (wall->GetHalfSize().x + wall->GetHalfSize().y);
+			if (diff.LengthSq() > maxDist * maxDist) continue;
+
+			if (CheckOBB_AABB(proj, wall))
+			{
+				proj->OnCollision(wall);
+				wall->OnCollision(proj);
+				break;
+			}
+		}
+
+		if (proj->CheckDead()) continue;
+
+		for (auto* actor : actors)
+		{
+			if (actor == nullptr || actor->CheckDead()) continue;
+
+			if (actor == owner) continue;
+			if (actor->IsKilled()) continue;
+
+			Vec2F diff = proj->GetPos() - actor->GetPos();
+			float maxDist = (proj->GetHalfSize().x + proj->GetHalfSize().y) + (actor->GetHalfSize().x + actor->GetHalfSize().y);
+			if (diff.LengthSq() > maxDist * maxDist) continue;
+
+			if (CheckOBB(proj, actor))
+			{
+				proj->OnCollision(actor);
+				actor->OnCollision(proj);
+				if (proj->CheckDead()) break; 
+			}
+		}
+	}
 }
 
-//void CollisionManager::CheckProjectileCollision(const std::vector<GameObject*>& actors, const std::vector<GameObject>& walls)
+void CollisionManager::CheckActorEndpointCollision(const std::vector<GameObject*>& actors, const std::vector<GameObject*>& endPoints)
+{
+	for (auto* actor : actors)
+	{
+		if (actor == nullptr || actor->CheckDead()) continue;
+		if (actor->GetObjectType() != OBJECTTYPE::PLAYER) continue;
+
+		for (auto* ep : endPoints)
+		{
+			if (ep == nullptr) continue;
+
+			Vec2F diff = actor->GetPos() - ep->GetPos();
+			float maxDist = (actor->GetHalfSize().x + actor->GetHalfSize().y) + (ep->GetHalfSize().x + ep->GetHalfSize().y);
+			if (diff.LengthSq() > maxDist * maxDist) continue;
+
+			if (CheckOBB_AABB(actor, ep))
+			{
+				actor->OnCollision(ep);
+				ep->OnCollision(actor);
+			}
+		}
+	}
+}
+
+
+void CollisionManager::CheckPlayerEnemyCollision(GameObject* player, const std::vector<GameObject*>& actors)
+{
+	for (auto* obj : actors)
+	{
+		if (obj == nullptr || obj->CheckDead()) continue;
+		if (obj->GetObjectType() != OBJECTTYPE::ENEMY) continue;
+
+
+		Enemy* enemy = static_cast<Enemy*>(obj);
+		if (enemy->IsKilled()) continue; 
+
+		Vec2F diff = player->GetPos() - enemy->GetPos();
+		float maxDist = (player->GetHalfSize().x + player->GetHalfSize().y) + (enemy->GetHalfSize().x + enemy->GetHalfSize().y);
+		if (diff.LengthSq() > maxDist * maxDist) continue;
+
+		if (CheckOBB(player, enemy))
+		{
+			player->OnCollision(enemy);
+			enemy->OnCollision(player);
+		}
+	}
+}
+
 
 
 //OBB충돌 체크 구현시작
 //혹시 문제가 있으면 삭제해도 괜찮음
 bool CollisionManager::CheckOBB(GameObject* a, GameObject* b)
 {
-
-	//Half Center
-	//Right Up
-	Vec2F aCenter = a->GetPos();
-	Vec2F bCenter = b->GetPos();
-
 	Vec2F aHalf = a->GetHalfSize();
 	Vec2F bHalf = b->GetHalfSize();
 
-	//a의 회전 축
-	//Normailize를 해야 함
-	Vec2F aRight = a->GetFacningDir().Normalized();
-	Vec2F aUp = Vec2F(-aRight.y, aRight.x);
+	Vec2F aFace = a->GetFacningDir();
+	if (aFace.LengthSq() == 0.f) aFace = { 1.0f, 0.0f };
+	Vec2F aUp = aFace.Normalized();
+	Vec2F aRight = { -aUp.y, aUp.x };
 
-	//b의 회전 축
-	Vec2F bRight = b->GetFacningDir().Normalized();
-	Vec2F bUp = Vec2F(-bRight.y, bRight.x);
+	Vec2F bFace = b->GetFacningDir();
+	if (bFace.LengthSq() == 0.f) bFace = { 1.0f, 0.0f };
+	Vec2F bUp = bFace.Normalized();
+	Vec2F bRight = { -bUp.y, bUp.x };
 
-	Vec2F ceterDiff = bCenter - aCenter;
+	Vec2F centerDiff = b->GetPos() - a->GetPos();
+	Vec2F axes[4] = { aRight, aUp, bRight, bUp };
 
-
-	Vec2F axes[4] = {
-
-		aRight,
-		aUp,
-		bRight,
-		bUp
-
-
-	};
-
-	//투영 부분
 	for (int i = 0; i < 4; i++)
 	{
 		Vec2F axis = axes[i];
 
-		//두 중심 사이 거리를 현재 축에 투영
-		float distance = fabs(ceterDiff.Dot(axis));
+		float distance = std::abs(centerDiff.Dot(axis));
 
-		//a의 반지름을 현재 축에 투영
-		float aRadius = aHalf.x * fabs(aRight.Dot(axis)) + aHalf.y * fabs(aUp.Dot(axis));
+		float aRadius = aHalf.x * std::abs(aRight.Dot(axis)) + aHalf.y * std::abs(aUp.Dot(axis));
+		float bRadius = bHalf.x * std::abs(bRight.Dot(axis)) + bHalf.y * std::abs(bUp.Dot(axis));
 
-		//b의 반지름을 현재 축에 투영
-		float bRadius = bHalf.x * fabs(bRight.Dot(axis)) + bHalf.y * fabs(bUp.Dot(axis));
-
-		//이 축에서 만약 떨어져 있다면 충돌이 아니다
-		if (distance > aRadius + bRadius)
-		{
-			return false;
-		}
-
-
+	
+		if (distance >= aRadius + bRadius) return false;
 	}
+	return true;
+}
+
+bool CollisionManager::CheckOBB_AABB(GameObject* obbObj, GameObject* aabbObj)
+{
+	Vec2F oHalf = obbObj->GetHalfSize();
+	Vec2F aHalf = aabbObj->GetHalfSize();
+
+	Vec2F oFace = obbObj->GetFacningDir();
+	if (oFace.LengthSq() == 0.f) oFace = { 0.0f, -1.0f };
+	Vec2F oUp = oFace.Normalized();
+	Vec2F oRight = { -oUp.y, oUp.x };
+
+	Vec2F centerDiff = aabbObj->GetPos() - obbObj->GetPos();
+
+	Vec2F axes[4] = { oRight, oUp, {1.0f, 0.0f}, {0.0f, 1.0f} };
+
+	for (int i = 0; i < 4; i++)
+	{
+		Vec2F axis = axes[i];
 
 
-	//그런데 모든 축에서 겹치면 충돌이라고 한다
+		float distance = std::abs(centerDiff.Dot(axis));
+
+		float oRadius = oHalf.x * std::abs(oRight.Dot(axis)) + oHalf.y * std::abs(oUp.Dot(axis));
+		float aRadius = aHalf.x * std::abs(axis.x) + aHalf.y * std::abs(axis.y);
+
+		if (distance >= oRadius + aRadius) return false;
+	}
 	return true;
 }
 

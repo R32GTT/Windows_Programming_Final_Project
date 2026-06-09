@@ -8,6 +8,8 @@ public:
 	EndPoint();
 	virtual ~EndPoint();
 
+	virtual void OnCollision(GameObject* other) override;
+
 	virtual void SaveToData(ObjectSpawnData& outData) override;
 	virtual void LoadFromData(const ObjectSpawnData& spawnData) override;
 };

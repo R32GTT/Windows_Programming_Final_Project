@@ -47,6 +47,15 @@ bool GameObject::CheckDead()
 	return false;
 }
 
+bool GameObject::IsKilled()
+{
+	return false;
+}
+
+void GameObject::OnCollision(GameObject* other)
+{
+}
+
 Vec2<float> GameObject::GetRenderPos(float alpha)
 {
 	return prevPos * (1.0f - alpha) + pos * alpha;

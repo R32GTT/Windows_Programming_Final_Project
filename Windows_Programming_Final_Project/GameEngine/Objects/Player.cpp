@@ -37,13 +37,8 @@ void Player::Init()
 void Player::Update()
 {
 	SavePrevPos();
-
+    if (IsKilled() && !GET_SINGLE(InputManager)->GetButtonDown(KeyType::R)) return;
 	Move();
-
-    //Vec2F camPos = GET_SINGLE(SceneManager)->GetCameraPos();
-    //Vec2F halfSize = Vec2F(WinSizeX, WinSizeY) / 2.0f;
-    //Vec2F myScreenPos = pos - camPos + halfSize;
-    
 
     Vec2F mousePos = GET_SINGLE(InputManager)->GetMousePos();
     Vec2F dirToMouse = mousePos - GET_SINGLE(SceneManager)->ToRenderPos(pos);
@@ -91,16 +86,35 @@ void Player::Render(ID2D1RenderTarget* renderTarget, float alpha)
 {
     if (!renderTarget) return;
 
-  //Vec2F camPos = GET_SINGLE(SceneManager)->GetCameraPos();
     Vec2F screenPos = GetRenderPos(alpha);
 
-   //Vec2F screenPos2 = GetScreenPos(alpha);
     Vec2F ToRenderPos = GET_SINGLE(SceneManager)->ToRenderPos(screenPos);
 
-    //float renderX = screenPos.x - camPos.x + WinSizeX / 2.0f;
-    //float renderY = screenPos.y - camPos.y + WinSizeY / 2.0f;
-
     RenderAnimation(renderTarget, ToRenderPos.x, ToRenderPos.y);
+}
+
+bool Player::IsKilled()
+{
+    return status == PlayerState::DEAD;
+}
+
+void Player::OnCollision(GameObject* other)
+{
+    if (IsKilled()) return;
+
+    switch (other->GetObjectType())
+    {
+    case OBJECTTYPE::PROJECTILE:
+        status = PlayerState::DEAD;
+        break;
+    case OBJECTTYPE::ENEMY:
+        if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::SpaceBar) && !_isAttacking);
+        break;
+    case OBJECTTYPE::ENDPOINT:
+        break;
+    default:
+            break;
+    }
 }
 
 void Player::SaveToData(ObjectSpawnData& outData)

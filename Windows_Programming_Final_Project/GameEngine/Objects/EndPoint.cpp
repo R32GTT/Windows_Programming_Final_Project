@@ -12,6 +12,10 @@ EndPoint::~EndPoint()
 {
 }
 
+void EndPoint::OnCollision(GameObject* other)
+{
+}
+
 void EndPoint::SaveToData(ObjectSpawnData& outData)
 {
 	GameObject::SaveToData(outData);

@@ -22,6 +22,9 @@ void Enemy::Init()
 
 void Enemy::Update()
 {
+	if (IsKilled())	return;
+
+
 }
 
 void Enemy::Render(ID2D1RenderTarget* renderTarget, float alpha)
@@ -33,6 +36,24 @@ void Enemy::Render(ID2D1RenderTarget* renderTarget, float alpha)
 	Vec2F ToRenderPos = GET_SINGLE(SceneManager)->ToRenderPos(screenPos);
 
 	RenderAnimation(renderTarget, ToRenderPos.x, ToRenderPos.y);
+}
+
+bool Enemy::IsKilled()
+{
+	return _enemyState == EnemyState::DEAD;
+}
+
+void Enemy::OnCollision(GameObject* other)
+{
+	if (IsKilled()) return;
+
+	switch (other->GetObjectType())
+	{
+	case OBJECTTYPE::PROJECTILE:
+		_enemyState = EnemyState::DEAD;
+	default:
+		break;
+	}
 }
 
 void Enemy::SaveToData(ObjectSpawnData& outData)

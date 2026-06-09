@@ -19,7 +19,9 @@ public:
 	virtual void Render(ID2D1RenderTarget* renderTarget, float alpha) abstract;
 
 	void Clear();
+	void PurgeDeadObjects();
 
+public:
 	GameObject* GetGameObjectByID(unsigned int ID);
 
 	std::vector<GameObject*> GetGameObjectLayer(GameObject* object) {

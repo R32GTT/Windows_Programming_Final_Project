@@ -17,15 +17,19 @@ public:
 
 private:
 	bool CheckAABB(GameObject* a, GameObject* b);
-
-	//OBB 충돌 체크 추가하기
 	bool CheckOBB(GameObject* a, GameObject* b);
+	bool CheckOBB_AABB(GameObject* obbObj, GameObject* aabbObj);
 
 
-	//충돌 체크 추가한 것
+	
 	void CheckActorWallCollision(const std::vector<GameObject*>& actors, const std::vector<GameObject*>& walls);
+	void CheckProjectileCollision(const std::vector<GameObject*>& projectiles, const std::vector<GameObject*>& actors, const std::vector<GameObject*>& walls);
+	void CheckActorEndpointCollision(const std::vector<GameObject*>& actors, const std::vector<GameObject*>& endPoints);
+	void CheckPlayerEnemyCollision(GameObject* player, const std::vector<GameObject*>& actors);
 
-	//void CheckProjectileCollision(const std::vector<GameObject*>& actors, const std::vector<GameObject*>& walls);
+	std::vector<GameObject*> _characters;
+	std::vector<GameObject*> _projectiles;
+	std::vector<GameObject*> _endPoints;
 
 
 };

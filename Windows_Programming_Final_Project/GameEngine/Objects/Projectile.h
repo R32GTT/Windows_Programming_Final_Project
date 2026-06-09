@@ -21,6 +21,7 @@ public:
 	virtual void Update() override;
 	virtual void Render(ID2D1RenderTarget* renderTarget, float alpha) override;
 	virtual bool CheckDead() override;
+	virtual void OnCollision(GameObject* other) override;
 
 	void SetDirection(Vec2<float> dir);
 
@@ -36,6 +37,7 @@ public:
 	GameObject* GetOwner() const { return _owner; }
 	//float GetDamage
 
+	bool CheckDead() { return _isDead || (_elapsedTime >= _lifeTime); };
 
 
 
