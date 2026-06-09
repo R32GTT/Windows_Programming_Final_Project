@@ -15,6 +15,11 @@ public:
 
 	void GoToNextMap(std::string mapInfo);
 
+	//새로 추가된 함수
+	//챕터 넘어가는 함수와 종료함수 추가
+	void GoToNextChapter();
+	void EndGame();
+
 	void LoadMapData(const std::wstring& fileName);
 	void LoadChaperData(const std::wstring& fileName);
 
@@ -28,4 +33,10 @@ private:
 	MapData _currentMap;
 	ChaperData _currentChapter;
 	int _currentMapIdx = 0;
+
+	//새로 추가된 변수
+	//시작 챕터 번호와 총 챕터 개수 번호변수
+	int _currentChapterIdx = 1;
+	int _maxChapterCount = 3;
+
 };
