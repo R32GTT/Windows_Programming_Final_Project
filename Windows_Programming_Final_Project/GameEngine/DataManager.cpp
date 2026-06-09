@@ -57,7 +57,7 @@ bool DataManager::GoToNextMap(std::string mapInfo)
     }
 }
 
-void DataManager::GoToNextChapter()
+bool DataManager::GoToNextChapter()
 {
     _currentChapterIdx++;
 
@@ -67,10 +67,17 @@ void DataManager::GoToNextChapter()
         std::wstring nextChapterFileName = L"Chapter" + std::to_wstring(_currentChapterIdx) + L".json";
 
         LoadChaperData(nextChapterFileName);
+
+        //챕터 이동 성공
+        return true;
+
     }
     //모든 챕터를 클리어한 경우
     else {
-        EndGame();
+        //EndGame을 직접 호출하지 않는다
+        //더 이상 챕터가 없음을 알린다
+        return false;
+        //EndGame();
     }
 
 }

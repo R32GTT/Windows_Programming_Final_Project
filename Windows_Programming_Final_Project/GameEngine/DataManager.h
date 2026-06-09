@@ -18,7 +18,8 @@ public:
 
 	//새로 추가된 함수
 	//챕터 넘어가는 함수와 종료함수 추가
-	void GoToNextChapter();
+	//챕터 넘어가는 함수도 bool 반환으로
+	bool GoToNextChapter();
 	void EndGame();
 
 	void LoadMapData(const std::wstring& fileName);
