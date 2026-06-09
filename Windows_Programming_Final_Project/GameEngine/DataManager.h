@@ -27,6 +27,9 @@ public:
 
 	const MapData& GetCurrentMapData() { return _currentMap; };
 
+	//추가된 것
+	int GetCurrentMapIdx() const { return _currentMapIdx; }
+
 private:
 
 	json SerializeMapObjects(const std::vector<ObjectSpawnData>& mapDataList);
