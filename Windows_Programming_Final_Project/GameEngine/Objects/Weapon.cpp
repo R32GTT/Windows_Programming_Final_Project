@@ -20,7 +20,7 @@ void Weapon::Update()
 {
 	if (owner != nullptr)
 	{
-		//this->pos = owner->GetPos();
+		this->pos = owner->GetPos();
 	}
 
 }
@@ -31,7 +31,7 @@ void Weapon::Render(ID2D1RenderTarget* renderTarget, float alpha)
 
 	Vec2<float> renderPos = GetRenderPos(alpha);
 
-	//임시로 가로 20 세로 10 크기의 사각형(총 모양처럼) 그려본다
+	//임시로 가로 20 세로 10 크기의 사각형을 그려본다
 	D2D1_RECT_F rect = D2D1::RectF(renderPos.x - 10.0f, renderPos.y - 5.0f, renderPos.x + 10.0f, renderPos.y + 5.0f);
 
 	ID2D1SolidColorBrush* brush = nullptr;
