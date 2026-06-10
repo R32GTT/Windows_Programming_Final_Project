@@ -54,6 +54,8 @@ public:
 	void BuildMapFromData(const MapData& mapData);
 	void LinkObjectReferences(const MapData& mapData, const std::unordered_map<unsigned int, unsigned int>& idMap);
 
+	//무기 생성 함수 만들어 보기
+	void SpawnWeapon(Vec2<float> pos);
 
 
 protected:

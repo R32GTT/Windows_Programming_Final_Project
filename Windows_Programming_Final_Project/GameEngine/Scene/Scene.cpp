@@ -6,6 +6,8 @@
 #include "../Utility/Vec2.h"
 #include "../LevelData/LevelData.h"	
 
+
+
 Scene::Scene()
 {
 
@@ -161,6 +163,18 @@ void Scene::LinkObjectReferences(const MapData& mapData, const std::unordered_ma
 	}
 	*/
 }
+
+//무기 스폰 함수
+void Scene::SpawnWeapon(Vec2<float> pos) {
+
+	Weapon* weapon = new Weapon();
+
+	weapon->SetPos(pos);
+	weapon->Init();
+
+	AddObject(weapon);
+}
+
 
 GameObject* Scene::CreateObjectFromData(const ObjectSpawnData& data)
 {

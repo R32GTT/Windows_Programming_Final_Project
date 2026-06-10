@@ -23,6 +23,14 @@ void DevScene::Init()
 
 	_cam.SetOwner(pp);*/
 	Super::Init();
+
+	Weapon* weapon = new Weapon();
+
+	weapon->SetPos(Vec2<float>(300.0f, 300.0f));
+	weapon->SavePrevPos();
+	weapon->Init();
+	AddObject(weapon);
+
 	if (Super::GetPlayer() != nullptr)
 	{
 		Super::SetCamOwner(Super::GetPlayer());
