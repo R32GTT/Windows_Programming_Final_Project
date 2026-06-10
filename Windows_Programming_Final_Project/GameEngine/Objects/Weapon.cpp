@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Weapon.h"
 #include "../LevelData/LevelData.h"
+#include "Managers.h"
 
 Weapon::Weapon()
 {
@@ -14,38 +15,31 @@ Weapon::~Weapon()
 
 void Weapon::Init()
 {
+	FileManager* FM = GET_SINGLE(FileManager);
+	_anims[(int)AnimType::IDLE] = FM->GetFlipBook(L"GunCharAnim_Idle");
+	PlayAnimation(_anims[(int)AnimType::IDLE]);
 }
 
 void Weapon::Update()
 {
-	if (owner != nullptr)
+	/*if (owner != nullptr)
 	{
 		
 		this->pos = owner->GetPos();
-	}
+	}*/
 
+	PlayAnimation(_anims[(int)AnimType::IDLE]);
 }
 
 void Weapon::Render(ID2D1RenderTarget* renderTarget, float alpha)
 {
 	if (!renderTarget) return;
 
-	Vec2<float> renderPos = GetRenderPos(alpha);
+	Vec2F screenPos = GetRenderPos(alpha);
 
-	//임시로 가로 20 세로 10 크기의 사각형을 그려본다
-	D2D1_RECT_F rect = D2D1::RectF(renderPos.x - 10.0f, renderPos.y - 5.0f, renderPos.x + 10.0f, renderPos.y + 5.0f);
+	Vec2F ToRenderPos = GET_SINGLE(SceneManager)->ToRenderPos(screenPos);
 
-	ID2D1SolidColorBrush* brush = nullptr;
-
-	renderTarget->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::Orange), &brush);
-
-	if (brush != nullptr)
-	{
-		renderTarget->FillRectangle(rect, brush);
-		brush->Release();
-	}
-
-
+	RenderAnimation(renderTarget, ToRenderPos.x, ToRenderPos.y);
 
 }
 

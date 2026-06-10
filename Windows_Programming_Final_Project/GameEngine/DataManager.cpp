@@ -24,38 +24,58 @@ void DataManager::SaveMapData(const std::wstring& filename, const std::vector<Ob
 
 }
 
+void DataManager::SaveChaperData(const std::wstring& filename, const ChapterData& chapterData)
+{
+    json chapterJson;
+
+    chapterJson["ChapterID"] = chapterData.chapterID;
+
+    // 맵의 '데이터'가 아니라 '파일 이름'만 배열로 저장
+    json mapsArray = json::array();
+    for (const std::wstring& mapFileName : chapterData.mapFileNames)
+    {
+        // nlohmann/json은 보통 std::string을 사용하므로 변환 필요
+        mapsArray.push_back(WStrToStr(mapFileName));
+    }
+
+    chapterJson["MapFiles"] = mapsArray;
+
+    GET_SINGLE(FileManager)->SaveMapJson(filename, chapterJson);
+}
+
 //성공적으로 맵을 이동했다면 true, 더 이상 맵이 없어서 챕터가 끝났다면 false반환으로 변경
 bool DataManager::GoToNextMap(std::string mapInfo)
 {
     int nextIdx = std::stoi(mapInfo);
 
-    if (nextIdx < _currentChapter.maps.size())
+    if (nextIdx < _currentChapter.mapFileNames.size())
     {
         _currentMapIdx = nextIdx;
 
-        // 다음 맵 데이터를 가져옴
-        const MapData& nextMapData = _currentChapter.maps[_currentMapIdx];
-
-        // 현재 씬(PlayScene)의 맵을 갈아끼움
-        Scene* curScene = GET_SINGLE(SceneManager)->GetCurrentScene();
-        if (curScene != nullptr)
+        if (_mapCache.find(_currentMapIdx) != _mapCache.end())
         {
-           //TODO
-            curScene->Clear();
-            curScene->BuildMapFromData(nextMapData);
+            const MapData& nextMapData = _mapCache[_currentMapIdx];
 
+            Scene* curScene = GET_SINGLE(SceneManager)->GetCurrentScene();
+            if (curScene != nullptr)
+            {
+                curScene->Clear();
+                curScene->BuildMapFromData(nextMapData);
+            }
 
+            // [성공] 성공적으로 다음 맵으로 이동함
+            return true;
         }
-        //맵 이동 성공시 true를 반환
-        return true;
+
+        return false;
     }
     else
     {
-        // 챕터 클리어 처리 (결과창 띄우기, 메인화면 이동 등)
+        // [챕터 종료] 더 이상 갈 수 있는 다음 맵 인덱스가 없음! (예: 3개 중 4번째 맵을 요구함)
         return false;
-
     }
 }
+
 
 bool DataManager::GoToNextChapter()
 {
@@ -108,32 +128,39 @@ void DataManager::LoadMapData(const std::wstring& fileName)
 
 void DataManager::LoadChaperData(const std::wstring& fileName)
 {
+    _mapCache.clear();
+    _currentChapter.mapFileNames.clear();
+
     json chapterJson = GET_SINGLE(FileManager)->LoadMapJson(fileName);
     if (chapterJson.is_null() || chapterJson.empty()) return;
 
-    _currentChapter.maps.clear();
     if (chapterJson.contains("ChapterID")) _currentChapter.chapterID = chapterJson["ChapterID"];
 
-    if (chapterJson.contains("Maps"))
+    if (chapterJson.contains("MapFiles"))
     {
-        for (const auto& mapJson : chapterJson["Maps"])
+        int mapIdx = 0;
+        for (const auto& mapFileName : chapterJson["MapFiles"])
         {
-            MapData mData{};
-            if (mapJson.contains("MapIDX")) mData.mapIDX = mapJson["MapIDX"];
+            std::wstring wMapName = StrToWStr(mapFileName.get<std::string>());
+            _currentChapter.mapFileNames.push_back(wMapName);
 
-            // 여기서 헬퍼 함수를 재사용해서 깔끔하게 처리!
+            // 개별 맵 데이터를 로드해서 메모리에 적재
+            json mapJson = GET_SINGLE(FileManager)->LoadMapJson(wMapName);
+            MapData mData{};
+            mData.mapIDX = mapIdx;
             DeserializeMapObjects(mapJson, mData);
 
-            _currentChapter.maps.push_back(mData);
+            _mapCache[mapIdx] = mData;
+            mapIdx++;
         }
     }
 
     _currentMapIdx = 0;
     Scene* currentScene = GET_SINGLE(SceneManager)->GetCurrentScene();
-    if (currentScene != nullptr && !_currentChapter.maps.empty())
+    if (currentScene != nullptr && !_mapCache.empty())
     {
         currentScene->Clear();
-        currentScene->BuildMapFromData(_currentChapter.maps[_currentMapIdx]);
+        currentScene->BuildMapFromData(_mapCache[_currentMapIdx]);
     }
 }
 

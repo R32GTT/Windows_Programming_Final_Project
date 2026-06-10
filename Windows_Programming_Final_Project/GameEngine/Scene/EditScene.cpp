@@ -9,29 +9,17 @@
 
 EditScene::EditScene()
 {
-	//생성자
-	//안전한 기본값만 넣기
-	//mouse
-	//camera
-	//메모리 이미지 DC 펜 브러시 리소스 해제
 
 }
 
 EditScene::~EditScene()
 {
 
-	//소멸자
-	//Release();
-	//예시 커밋하기
-
 }
 
 void EditScene::Init()
 {
-	//Scene 시작 시 필요한 데이터 준비
-	//처음 플레이어 상태 IDLE
-	//무기는 처음에는 주먹 
-	//OBJECTTYPE::WEAPON;
+
 	Super::Init();
 
 }
@@ -40,7 +28,7 @@ void EditScene::Update()
 {
 	_cam.SavePrevPos();
 
-	float speed = 300.f * GET_SINGLE(TimeManager)->GetDeltaTime();
+	float speed = 3000.f * GET_SINGLE(TimeManager)->GetDeltaTime();
 	Vec2F camPos = _cam.GetPos();
 
 	if (GET_SINGLE(InputManager)->GetButton(KeyType::W)) camPos.y -= speed;
@@ -216,6 +204,13 @@ void EditScene::Update()
 	if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::F1))
 	{
 		LoadMap(L"TestMap1.json");
+	}
+
+	if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::F5))
+	{
+		SaveMap(L"TestMap1.json");
+
+		GET_SINGLE(SceneManager)->ChangeScene(SceneType::DEVSCENE, L"TestMap1.json");
 	}
 }
 

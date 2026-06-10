@@ -98,6 +98,7 @@ void Player::Init()
         info.loop = true;
         _anims[(int)AnimType::IDLE_GUN]->SetInfo(info);
     }
+    PlayAnimation(_anims[(int)AnimType::IDLE]);
 }
 
 void Player::Update()

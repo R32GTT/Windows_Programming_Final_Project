@@ -29,10 +29,10 @@ struct MapData
 	std::vector<ObjectSpawnData> objects;
 };
 
-struct ChaperData
+struct ChapterData
 {
 	int chapterID;
 	std::wstring chapterName;
 
-	std::vector<MapData> maps;
+	std::vector<std::wstring> mapFileNames; // 파일명 목록만 저장
 };

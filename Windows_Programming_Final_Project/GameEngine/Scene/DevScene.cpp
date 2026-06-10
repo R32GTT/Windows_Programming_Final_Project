@@ -71,6 +71,10 @@ void DevScene::Init()
 void DevScene::Update()
 {
 	Super::Update();
+	if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::F5))
+	{
+		GET_SINGLE(SceneManager)->ChangeScene(SceneType::EDITSCENE, L"TestMap1.json");
+	}
 }
 
 void DevScene::Render(ID2D1RenderTarget* renderTarget,float alpha)

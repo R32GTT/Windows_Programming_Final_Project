@@ -55,6 +55,7 @@ void SceneManager::ChangeScene(SceneType sceneType, const std::wstring& mapFileP
 		break;
 	}
 
+	if (_scene != nullptr) _scene->Clear();
 	SAFE_DELETE(_scene);
 
 	_scene = newScene;

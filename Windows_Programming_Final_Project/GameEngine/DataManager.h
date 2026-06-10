@@ -3,6 +3,7 @@
 #include "FileBase/json.hpp"
 
 using json = nlohmann::json;
+
 class DataManager
 {
 public:
@@ -12,6 +13,7 @@ public:
 	void Clear();
 
 	void SaveMapData(const std::wstring& filename, const std::vector<ObjectSpawnData>& mapDataList);
+	void SaveChaperData(const std::wstring& filename, const ChapterData& chapterData);
 
 	//반환형을 bool로 변경함
 	bool GoToNextMap(std::string mapInfo);
@@ -37,6 +39,8 @@ private:
 
 	MapData _currentMap;
 	ChaperData _currentChapter;
+	std::unordered_map<int, MapData> _mapCache;
+
 	int _currentMapIdx = 0;
 
 	//새로 추가된 변수
