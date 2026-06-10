@@ -20,6 +20,7 @@ void Weapon::Update()
 {
 	if (owner != nullptr)
 	{
+		
 		this->pos = owner->GetPos();
 	}
 

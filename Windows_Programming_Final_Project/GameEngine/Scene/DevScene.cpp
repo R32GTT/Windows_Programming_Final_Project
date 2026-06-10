@@ -22,6 +22,9 @@ void DevScene::Init()
 	AddObject(pp);
 
 	_cam.SetOwner(pp);*/
+
+	OutputDebugString(L"DevScene Init 실행됨\n");
+
 	Super::Init();
 
 	Vec2<float> basePos = Vec2<float>(300.0f, 300.0f);

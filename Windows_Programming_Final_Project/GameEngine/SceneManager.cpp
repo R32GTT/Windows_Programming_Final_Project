@@ -9,6 +9,7 @@
 
 void SceneManager::init()
 {
+	ChangeScene(SceneType::DEVSCENE);
 }
 
 void SceneManager::Update()
@@ -30,8 +31,11 @@ void SceneManager::Clear()
 
 void SceneManager::ChangeScene(SceneType sceneType)
 {
-	if (_sceneType == sceneType)
-		return;
+	//if (_sceneType == sceneType)
+		//return;
+
+	ChangeScene(sceneType, L"");
+
 }
 
 void SceneManager::ChangeScene(SceneType sceneType, const std::wstring& mapFilePath)

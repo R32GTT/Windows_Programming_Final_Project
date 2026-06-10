@@ -169,6 +169,7 @@ void Scene::SpawnWeapon(Vec2<float> pos) {
 
 	Weapon* weapon = new Weapon();
 
+	weapon->Init();
 	weapon->SetPos(pos);
 	weapon->Init();
 
