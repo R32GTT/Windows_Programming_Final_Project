@@ -15,6 +15,7 @@ private:
 public:
 
 	Enemy();
+	Enemy(EnemyType type);
 	virtual ~Enemy();
 	virtual void Init() override;
 	virtual void Update() override;

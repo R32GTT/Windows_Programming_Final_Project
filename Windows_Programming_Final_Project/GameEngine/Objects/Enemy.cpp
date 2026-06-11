@@ -5,8 +5,23 @@
 
 Enemy::Enemy()
 {
+	speed = baseEnemySpeed;
+	_halfSize = Vec2F(25.0f, 10.0f);
+
 	type = OBJECTTYPE::ENEMY;
 	layer = Layers::ACTORS;
+}
+
+Enemy::Enemy(EnemyType etype)
+{
+	_halfSize = Vec2F(25.0f, 10.0f);
+	type = OBJECTTYPE::ENEMY;
+	layer = Layers::ACTORS;
+
+	if (etype == EnemyType::NORMAL)
+		speed = baseEnemySpeed;
+	else
+		speed = armoredEnemySpeed;
 }
 
 Enemy::~Enemy()
@@ -17,6 +32,7 @@ void Enemy::Init()
 {
 	FlipBook* idleAnim = GET_SINGLE(FileManager)->GetFlipBook(L"MobCharAnim_Idle");
 	FlipBook* idleAnimF = GET_SINGLE(FileManager)->GetFlipBook(L"FMobCharAnim_Idle");
+	
 	PlayAnimation(idleAnim);
 }
 

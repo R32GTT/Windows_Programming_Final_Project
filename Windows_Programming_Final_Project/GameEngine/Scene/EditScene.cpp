@@ -257,6 +257,7 @@ void EditScene::Update()
 				// _selectedObject->ChangeNextSprite();
 			}
 		}
+	}
 
 		if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::Return))
 		{
@@ -286,9 +287,10 @@ void EditScene::Update()
 		{
 			SaveMap(L"TestMap1.json");
 
+
 			GET_SINGLE(SceneManager)->ChangeScene(SceneType::DEVSCENE, L"TestMap1.json");
 		}
-	}
+	
 }
 
 void EditScene::Render(ID2D1RenderTarget* renderTarget, float alpha)

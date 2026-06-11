@@ -9,7 +9,7 @@
 Player::Player()
 {
     speed = playerSpeed;
-    _halfSize = Vec2F(20.0f, 20.0f);
+    _halfSize = Vec2F(25.0f, 10.0f);
 
     type = OBJECTTYPE::PLAYER;
     layer = Layers::ACTORS;
