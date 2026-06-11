@@ -30,6 +30,12 @@ void PlayScene::Update()
 	//매 프레임마다 플레이어가 도착점에 닿았는지 검사
 	CheckStageClear();
 
+	//플레이 도중 F5를 누르면 다시 EditScene으로 복귀
+	if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::F5))
+	{
+		GET_SINGLE(SceneManager)->ChangeScene(SceneType::EDITSCENE, L"TestMap1.json");
+	}
+
 }
 
 void PlayScene::Render(ID2D1RenderTarget* renderTarget, float alpha)
