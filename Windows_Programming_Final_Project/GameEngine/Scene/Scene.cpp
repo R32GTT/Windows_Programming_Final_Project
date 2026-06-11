@@ -38,7 +38,7 @@ void Scene::Init()
 void Scene::Update()
 {
 	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
-
+	
 	_cam.SavePrevPos();
 
 	for (const std::vector<GameObject*>& objects : _objects)
@@ -47,6 +47,8 @@ void Scene::Update()
 
 	GET_SINGLE(CollisionManager)->Update();
 
+	PurgeDeadObjects();
+	FlushSpawnQueue();
 	_cam.TickComp();
 }
 
@@ -126,9 +128,21 @@ void Scene::AddObject(GameObject* object)
 {
 	if (object == nullptr)
 		return;
+	_spawnQueue.push_back(object);
+}
 
-	_objects[(int)object->GetLayer()].push_back(object);
-	_objectMap[object->GetID()] = object;
+void Scene::FlushSpawnQueue()
+{
+	if (_spawnQueue.empty())
+		return;
+
+	for (GameObject* newObj : _spawnQueue)
+	{
+		_objects[(int)newObj->GetLayer()].push_back(newObj);
+		_objectMap[newObj->GetID()] = newObj;
+	}
+
+	_spawnQueue.clear();
 }
 
 void Scene::RemoveObject(GameObject* object)
@@ -160,7 +174,7 @@ void Scene::BuildMapFromData(const MapData& mapData)
 			idMap[spawnData.fileID] = newObj->GetID();
 		}
 	}
-
+	FlushSpawnQueue();
 }
 
 void Scene::LinkObjectReferences(const MapData& mapData, const std::unordered_map<unsigned int, unsigned int>& idMap)

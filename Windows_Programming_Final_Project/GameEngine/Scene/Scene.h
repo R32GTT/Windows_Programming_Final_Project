@@ -50,6 +50,7 @@ public:
 	bool CheckSceneCleared();
 
 	void AddObject(GameObject* object);
+	void FlushSpawnQueue();
 	void RemoveObject(GameObject* object);
 
 	void BuildMapFromData(const MapData& mapData);
@@ -65,6 +66,7 @@ protected:
 
 private:
 	std::vector<GameObject*> _objects[(int)Layers::LAYER_COUNT];
+	std::vector<GameObject*> _spawnQueue;
 	std::unordered_map<unsigned int, GameObject*> _objectMap;
 	GameObject* _player{};
 };

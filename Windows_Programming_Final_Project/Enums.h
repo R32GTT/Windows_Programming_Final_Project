@@ -89,3 +89,10 @@ enum class AnimType
 	DEAD,
 	TOTAL_COUNT
 };
+
+
+enum class ProjectileType
+{
+	BULLET,
+	MELEE
+};

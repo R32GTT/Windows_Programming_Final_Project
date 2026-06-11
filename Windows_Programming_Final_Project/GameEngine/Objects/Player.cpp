@@ -3,6 +3,7 @@
 #include "Weapon.h" //Weapon 헤더 포함
 #include "Managers.h"
 #include "Enemy.h"
+#include "../Scene/Scene.h"
 #include "../FileBase/FileTypes/Texture.h"
 #include "../FileBase/FileTypes/FlipBook.h"
 
@@ -171,10 +172,11 @@ void Player::Update()
         PlayAnimation(_anims[(int)targetAttack]);
 
 
-        int targetFrame = 2; // (수정 필요) 실제로 총알이 나가거나 빠루 타격이 들어가는 프레임 번호
+        int targetFrame = 1; // (수정 필요) 실제로 총알이 나가거나 빠루 타격이 들어가는 프레임 번호
         if (_currFrame == targetFrame && !_projectileSpawned)
         {
             _projectileSpawned = true;
+            Fire();
             /* TODO
 
             // 1. 투사체 객체 생성
@@ -280,6 +282,26 @@ void Player::OnCollision(GameObject* other)
     default:
             break;
     }
+}
+
+void Player::Fire()
+{
+
+    Projectile* proj = new Projectile(this, currentWeapon_Player);
+    proj->Init();
+
+
+    //proj->SetDirection(facingDir);
+    //proj->SetPos(pos + facingDir * 25.0f);
+
+    // 3. 투사체 정보 세팅 (데미지, 스피드 등 Projectile.h의 SetInfo 활용)
+    // proj->SetInfo(this, Projectile::ProjectileType::BULLET, 10.0f, 800.0f, 2.0f);
+
+    // 4. 씬 매니저에 투사체 등록 (화면에 렌더링되고 Update를 타게 됨)
+    GET_SINGLE(SceneManager)->GetCurrentScene()->AddObject(proj);
+
+
+
 }
 
 void Player::SaveToData(ObjectSpawnData& outData)

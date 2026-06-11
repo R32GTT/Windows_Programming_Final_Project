@@ -16,7 +16,7 @@ public:
 	virtual bool CheckDead();
 	virtual bool IsKilled();
 	virtual void OnCollision(GameObject* other);
-	
+	virtual void Fire() {};
 
 public:
 	bool operator==(const GameObject& rhs) { return _id == rhs._id; };
@@ -65,6 +65,8 @@ public:
 	void PlayAnimation(FlipBook* anim);
 	void UpdateAnimation(float dt);
 	void RenderAnimation(ID2D1RenderTarget* renderTarget, float renderX, float renderY);
+
+
 public:
 
 	virtual void SaveToData(ObjectSpawnData& outData);

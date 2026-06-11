@@ -13,7 +13,7 @@ struct WeaponInfo
 	float						projectile_Speed = 0.0f;
 	int							projectile_Count = 1; // 나중에 샷건 만든다면 이거 쓸거.
 	float						projectile_Deviation = 0.0f; // 근접 쓸땐 0이지만, 원거리 무기는 탄퍼짐이 있어야 하니... 라디안 값임(ATAN 쓰니)
-	Projectile::ProjectileType	projType = Projectile::ProjectileType::MELEE;
+	ProjectileType				__projType = ProjectileType::MELEE;
 	bool						isLethal = true;
 	
 	int							maxAmmo{};

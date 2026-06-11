@@ -1,20 +1,17 @@
 ﻿#pragma once
 #include "pch.h"
 #include "GameObject.h"
+#include "Weapon.h"
 #include "Enums.h"
 
 class Projectile : public GameObject
 {
 public:
 
-	enum class ProjectileType
-	{
-		BULLET,
-		MELEE
-	};
+
 
 	Projectile();
-	Projectile(GameObject* owner, bool islethal, float s);
+	Projectile(GameObject* owner,WPTYPE wpType);
 	virtual ~Projectile();
 
 	//Projectile 만들기 시작
@@ -36,11 +33,6 @@ public:
 
 	//Projectile 추가 변수
 	GameObject* GetOwner() const { return _owner; }
-	//float GetDamage
-
-
-
-
 
 	virtual void SaveToData(ObjectSpawnData& outData) override;
 	virtual void LoadFromData(const ObjectSpawnData& spawnData) override;
@@ -54,8 +46,8 @@ public:
 	ProjectileType GetProjType() { return _projType; }
 
 private:
-	GameObject* _owner;         // 누가 발사/공격했는가 (자신이 맞지 않기 위해)
-	ProjectileType _projType;   // 총알인지 근접인지
+	GameObject* _owner{ nullptr };         // 누가 발사/공격했는가 (자신이 맞지 않기 위해)
+	ProjectileType _projType = ProjectileType::BULLET;   // 총알인지 근접인지
 
 	//발사체 방향
 	Vec2<float> _dir{};
@@ -64,10 +56,10 @@ private:
 	float _elapsedTime = 0.0f;
 
 	bool  _isLethal{ true };	// 살상용
-	float _lifeTime;            // 최대 생존 시간 (초)
-	float _currentTimer;        // 현재 생존 시간 계산용
+	float _lifeTime{};            // 최대 생존 시간 (초)
+	float _currentTimer{};        // 현재 생존 시간 계산용
 
 	
 
-	bool _isDead;               // 삭제 대기 상태인지 확인
+	bool _isDead = false;               // 삭제 대기 상태인지 확인
 };

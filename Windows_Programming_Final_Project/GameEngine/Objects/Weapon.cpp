@@ -25,7 +25,7 @@ constexpr float longMelee{ 150.0f };
 static const WeaponInfo g_WeaponTable[(int)WPTYPE::TOTAL_COUNT] =
 {
 	// [0] WPTYPE::NONE
-	{ 0, 0, 0.0f, 0, 0.0f, Projectile::ProjectileType::MELEE, false, 0, Vec2F(0.0f, 0.0f) },
+	{ 0, 0, 0.0f, 0, 0.0f, ProjectileType::MELEE, false, 0, Vec2F(0.0f, 0.0f) },
 
 	// [1] WPTYPE::FIST
 	{
@@ -34,7 +34,7 @@ static const WeaponInfo g_WeaponTable[(int)WPTYPE::TOTAL_COUNT] =
 		0.0f,
 		1,
 		0.0f,
-		Projectile::ProjectileType::MELEE,
+		ProjectileType::MELEE,
 		false,
 		-1,//inf ammo
 		Vec2F(shortMelee * 0.5f, 25.0f)
@@ -47,7 +47,7 @@ static const WeaponInfo g_WeaponTable[(int)WPTYPE::TOTAL_COUNT] =
 		0.0f,
 		1,
 		0.0f,
-		Projectile::ProjectileType::MELEE,
+		ProjectileType::MELEE,
 		true,
 		-1,
 		Vec2F(midMelee * 0.5f, 35.0f)
@@ -60,7 +60,7 @@ static const WeaponInfo g_WeaponTable[(int)WPTYPE::TOTAL_COUNT] =
 		1500.0f,                        // projectile_Speed
 		1,
 		0.06f,                          // projectile_Deviation (라디안 탄퍼짐)
-		Projectile::ProjectileType::BULLET,
+		ProjectileType::BULLET,
 		true,
 		26,
 		Vec2F(2.5f, 2.5f)               // projectile_Size (총알 투사체 크기)
