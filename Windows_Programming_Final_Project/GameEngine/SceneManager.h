@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include <string>
 class Scene;
 
 struct MapData;
@@ -31,6 +32,14 @@ public:
 	
 	Vec2F ToRenderPos(Vec2F alphaPos);
 
+	//점수 시스템 로직
+	void ResetAllScore();
+	void OnEnemyKilled();
+	int GetTotalScore() { return static_cast<int>(_totalScore); }
+	int GetCurrentCombo() { return _currentCombo; }
+
+
+
 private:
 	void ExecuteMapChange();
 
@@ -43,5 +52,21 @@ private:
 	Vec2F cameraPos{};
 	Vec2F winSizeV{ WinSizeX,WinSizeY };
 	static constexpr Vec2F halfWinSizeV{ WinSizeX / 2.0f,WinSizeY / 2.0f };
+
+	//점수 및 상태 시스텝 변수
+	bool _isGameEnded = false; //게임이 모두 끝나고 정산창을 띄울지 여부
+
+	float _totalScore = 0.f;
+	float _savedScore = 0.f;
+
+	int _currentCombo = 0;
+	float _comboTimer = 0.f;
+
+	static constexpr float COMBO_TIME_LIMIT = 3.0f;
+	static constexpr float SCORE_TIME_PENALTY = 3.0f;
+	static constexpr float BASE_KILL_SCORE = 3.0f;
+	static constexpr float COMBO_BONUS_SCORE = 3.0f;
+
+
 };
 
