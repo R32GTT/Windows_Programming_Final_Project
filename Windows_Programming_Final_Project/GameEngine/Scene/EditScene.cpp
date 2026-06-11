@@ -350,8 +350,17 @@ void EditScene::Update()
 		SaveMap(L"TestMap1.json");
 
 
-		GET_SINGLE(SceneManager)->ChangeScene(SceneType::DEVSCENE, L"TestMap1.json");
-	}
+			GET_SINGLE(SceneManager)->ChangeScene(SceneType::DEVSCENE, L"TestMap1.json");
+		}
+
+
+		//추가된 코드: F2를 누르면 PlayScene으로 이동
+		if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::F2))
+		{
+			GET_SINGLE(SceneManager)->ChangeScene(SceneType::PLAYSCENE);
+		}
+
+	
 }
 
 void EditScene::Render(ID2D1RenderTarget* renderTarget, float alpha)

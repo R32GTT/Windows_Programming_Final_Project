@@ -6,6 +6,7 @@
 #include "Scene/PlayScene.h"
 #include "LevelData/LevelData.h"
 #include "DataManager.h"
+#include "TimeManager.h"
 
 void SceneManager::init()
 {
@@ -14,19 +15,42 @@ void SceneManager::init()
 
 void SceneManager::Update()
 {
-	if (_scene)
-		_scene->Update();
+	float dt = GET_SINGLE(TimeManager)->GetDeltaTime();
+
+	if (!_isGameEnded)
+	{
+		if (_totalScore > 0.f)
+		{
+			_totalScore = SCORE_TIME_PENALTY * dt;
+			if (_totalScore < 0.f) _totalScore = 0.f;
+		}
+
+		if (_currentCombo > 0)
+		{
+			_comboTimer -= dt;
+			if (_comboTimer <= 0.f)
+			{
+				_currentCombo = 0;
+			}
+
+		}
+	}
+
+	if (_scene) _scene->Update();
 
 	if (_isMapChangeRequested)
 	{
 		ExecuteMapChange();
 	}
+
 }
 
 void SceneManager::Render(ID2D1RenderTarget* renderTarget, float alpha)
 {
+	//현재 씬을 먼저 그립니다
 	if (_scene)
 		_scene->Render(renderTarget, alpha);
+
 }
 
 void SceneManager::Clear()
@@ -171,6 +195,10 @@ void SceneManager::ExecuteMapChange()
 
 	_isMapChangeRequested = false;
 
+	_currentCombo = 0;
+	_comboTimer = 0.f;
+	_savedScore = _totalScore;
+
 	bool hasNextMap = GET_SINGLE(DataManager)->GoToNextMap(_nextMapName);
 
 	if (hasNextMap)
@@ -187,7 +215,30 @@ void SceneManager::ExecuteMapChange()
 		else
 		{
 			GET_SINGLE(DataManager)->EndGame();
+
+			_isGameEnded = true;
 		}
 	}
+}
+
+//점수 처리를 위한 함수 구현
+void SceneManager::OnEnemyKilled()
+{
+	if (_isGameEnded) return;
+
+	_currentCombo++;
+	_comboTimer = COMBO_TIME_LIMIT;
+
+	float earnedScore = BASE_KILL_SCORE + ((_currentCombo - 1) * COMBO_BONUS_SCORE);
+	_totalScore += earnedScore;
+}
+
+void SceneManager::ResetAllScore()
+{
+	_totalScore = 0.f;
+	_savedScore = 0.f;
+	_currentCombo = 0;
+	_comboTimer = 0.f;
+	_isGameEnded = false;
 }
 
