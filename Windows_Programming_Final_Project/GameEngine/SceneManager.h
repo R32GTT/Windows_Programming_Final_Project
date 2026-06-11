@@ -38,6 +38,9 @@ public:
 	int GetTotalScore() { return static_cast<int>(_totalScore); }
 	int GetCurrentCombo() { return _currentCombo; }
 
+	//PlayScene에서 점수를 그리기 위해 필요한 정보
+	float GetComboTimer() { return _comboTimer; }
+	bool GetIsGameEnded() { return _isGameEnded; }
 
 
 private:

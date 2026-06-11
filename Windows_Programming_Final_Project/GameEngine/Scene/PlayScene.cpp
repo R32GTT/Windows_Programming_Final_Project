@@ -21,6 +21,12 @@ void PlayScene::Init()
 	Super::BuildMapFromData(mapData);
 
 	Super::Init();
+
+	if (Super::GetPlayer() != nullptr)
+	{
+		Super::SetCamOwner(Super::GetPlayer());
+	}
+
 }
 
 void PlayScene::Update()
@@ -40,7 +46,112 @@ void PlayScene::Update()
 
 void PlayScene::Render(ID2D1RenderTarget* renderTarget, float alpha)
 {
+	//Super::Render(renderTarget, alpha);
+	// 1. 기존 게임 화면(맵, 플레이어, 적 등)을 먼저 그립니다.
 	Super::Render(renderTarget, alpha);
+
+	// 2. SceneManager에서 점수 및 상태 정보 가져오기
+	int currentScore = GET_SINGLE(SceneManager)->GetTotalScore();
+	int currentCombo = GET_SINGLE(SceneManager)->GetCurrentCombo();
+	float comboTimer = GET_SINGLE(SceneManager)->GetComboTimer();
+	bool isGameEnded = GET_SINGLE(SceneManager)->GetIsGameEnded();
+
+	std::wstring scoreText;
+
+	if (!isGameEnded)
+	{
+		// [인게임 상태] 점수와 콤보 표시
+		scoreText = L"SCORE: " + std::to_wstring(currentScore);
+		if (currentCombo > 0)
+		{
+			scoreText += L"\nCOMBO: " + std::to_wstring(currentCombo) + L" ( " + std::to_wstring((int)comboTimer) + L"s )";
+		}
+	}
+	else
+	{
+		// [게임 종료 상태] 최종 점수 표시
+		scoreText = L"=== STAGE CLEAR ===\n\nFINAL SCORE: " + std::to_wstring(currentScore);
+	}
+
+	// 3.폰트 설정을 따로 안 만들었을 때 사용하는 자체 폰트 생성 로직 (static 활용)
+	static IDWriteFactory* dwriteFactory = nullptr;
+	static IDWriteTextFormat* textFormat = nullptr;
+
+	// 게임 실행 후 처음 이 함수가 실행될 때 딱 한 번만 폰트를 생성합니다.
+	if (dwriteFactory == nullptr)
+	{
+		// DirectWrite 팩토리 생성
+		DWriteCreateFactory(
+			DWRITE_FACTORY_TYPE_SHARED,
+			__uuidof(IDWriteFactory),
+			reinterpret_cast<IUnknown**>(&dwriteFactory)
+		);
+
+		if (dwriteFactory)
+		{
+			// 폰트 포맷 생성 (맑은 고딕, 크기 22.0f, 굵게 설정)
+			dwriteFactory->CreateTextFormat(
+				L"맑은 고딕",					// 폰트 이름
+				nullptr,						// 폰트 컬렉션 (기본)
+				DWRITE_FONT_WEIGHT_BOLD,		// 글자 두께 (굵게)
+				DWRITE_FONT_STYLE_NORMAL,		// 스타일
+				DWRITE_FONT_STRETCH_NORMAL,		// 늘림 상태
+				22.0f,							// 폰트 크기 (원하는 크기로 변경 가능)
+				L"ko-kr",						// 국가 언어 설정
+				&textFormat
+			);
+		}
+	}
+
+	// 4. 생성된 폰트와 브러시를 사용하여 화면에 텍스트 출력
+	if (textFormat)
+	{
+		ID2D1SolidColorBrush* textBrush = nullptr;
+		// 글자 색상을 흰색(White)으로 지정하여 브러시 생성
+		renderTarget->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::White), &textBrush);
+
+		if (textBrush)
+		{
+			//renderTarget에서 현재 화면의 전체 크기를 가져옵니다.
+			D2D1_SIZE_F renderSize = renderTarget->GetSize();
+
+			D2D1_RECT_F rect;
+
+			if (!isGameEnded)
+			{
+				// [인게임 상태] 우측 상단 배치
+				// 사각형을 화면 전체 너비로 잡고, 오른쪽 끝에서 20픽셀 여백을 둡니다.
+				rect = D2D1::RectF(0.0f, 20.0f, renderSize.width - 20.0f, 200.0f);
+
+				//가로: 우측 정렬 / 세로: 상단 정렬
+				textFormat->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_TRAILING);
+				textFormat->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_NEAR);
+			}
+			else
+			{
+				// [게임 종료 상태] 화면 정중앙 배치
+				// 사각형을 화면 전체 크기와 동일하게 꽉 채웁니다.
+				rect = D2D1::RectF(0.0f, 0.0f, renderSize.width, renderSize.height);
+
+				//가로: 중앙 정렬 / 세로: 중앙 정렬
+				textFormat->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_CENTER);
+				textFormat->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_CENTER);
+			}
+
+			// 화면에 텍스트 그리기 명령어 실행!
+			renderTarget->DrawTextW(
+				scoreText.c_str(),
+				scoreText.length(),
+				textFormat,
+				rect,
+				textBrush
+			);
+
+			// 사용이 끝난 브러시 메모리 해제
+			textBrush->Release();
+		}
+	}
+
 }
 
 //CheckStageClear 추가됨

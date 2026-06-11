@@ -2,7 +2,7 @@
     "objects": [
         {
             "EnemyType": "NORMAL",
-            "Id": 22,
+            "Id": 1,
             "Layer": "WALL",
             "ObjectType": "WALL",
             "SpriteName": "",
@@ -18,7 +18,7 @@
         },
         {
             "EnemyType": "NORMAL",
-            "Id": 23,
+            "Id": 2,
             "Layer": "ACTORS",
             "ObjectType": "PLAYER",
             "SpriteName": "",
@@ -34,7 +34,7 @@
         },
         {
             "EnemyType": "NORMAL",
-            "Id": 24,
+            "Id": 3,
             "Layer": "ACTORS",
             "ObjectType": "ENEMY",
             "SpriteName": "",
