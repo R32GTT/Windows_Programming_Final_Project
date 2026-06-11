@@ -18,8 +18,10 @@ public:
 
 	void ChangeScene(SceneType sceneType);
 	void ChangeScene(SceneType sceneType, const std::wstring& mapFilePath);
+	void ChangeScene(SceneType sceneType, const std::wstring& mapFilePath, const std::wstring& chapterFilePath);
 	void ChangeMap(const MapData& nextMapData);
 	void ResetCurrentMap();
+	void RequestMapChange(const std::string& targetMapName = "");
 	Scene* GetCurrentScene() { return _scene; };
 
 	Vec2F GetCameraPos() { return cameraPos; };
@@ -30,6 +32,11 @@ public:
 	Vec2F ToRenderPos(Vec2F alphaPos);
 
 private:
+	void ExecuteMapChange();
+
+	bool _isMapChangeRequested = false;
+	std::string _nextMapName = "";
+
 	Scene* _scene;
 	SceneType _sceneType = SceneType::NONE;
 

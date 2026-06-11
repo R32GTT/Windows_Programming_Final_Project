@@ -4,7 +4,66 @@
 #include "Camera.h"
 #include "../LevelData/LevelData.h"
 #include <fstream>
+#include <commdlg.h>
+#include <filesystem>
 #include "../Objects/Objects.h"
+
+
+// 1. [저장] 다이얼로그: 유저가 파일 이름을 지정해서 저장할 때 사용
+std::wstring SaveMapFileDialog(HWND hWnd)
+{
+	wchar_t szFile[260] = { 0 };
+	OPENFILENAMEW ofn;
+	ZeroMemory(&ofn, sizeof(ofn));
+
+	ofn.lStructSize = sizeof(ofn);
+	ofn.hwndOwner = hWnd;
+	ofn.lpstrFile = szFile;
+	ofn.nMaxFile = sizeof(szFile) / sizeof(wchar_t);
+	ofn.lpstrFilter = L"JSON Files (*.json)\0*.json\0All Files (*.*)\0*.*\0";
+	ofn.nFilterIndex = 1;
+
+	// 기본 디렉토리를 에셋 폴더로 강제 지정
+	std::wstring initialDir = GET_SINGLE(FileManager)->GetFilePath().wstring();
+	ofn.lpstrInitialDir = initialDir.c_str();
+
+	// OFN_OVERWRITEPROMPT: 이미 있는 파일이면 덮어쓸지 물어봄
+	ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_OVERWRITEPROMPT | OFN_NOCHANGEDIR;
+
+	if (GetSaveFileNameW(&ofn) == TRUE)
+	{
+		return std::wstring(szFile); // 절대 경로 반환
+	}
+	return L"";
+}
+
+// 2. [불러오기] 다이얼로그: 이미 만들어진 맵을 에디터로 로드할 때 사용
+std::wstring LoadMapFileDialog(HWND hWnd)
+{
+	wchar_t szFile[260] = { 0 };
+	OPENFILENAMEW ofn;
+	ZeroMemory(&ofn, sizeof(ofn));
+
+	ofn.lStructSize = sizeof(ofn);
+	ofn.hwndOwner = hWnd;
+	ofn.lpstrFile = szFile;
+	ofn.nMaxFile = sizeof(szFile) / sizeof(wchar_t);
+	ofn.lpstrFilter = L"JSON Files (*.json)\0*.json\0All Files (*.*)\0*.*\0";
+	ofn.nFilterIndex = 1;
+
+	// 기본 디렉토리를 에셋 폴더로 강제 지정
+	std::wstring initialDir = GET_SINGLE(FileManager)->GetFilePath().wstring();
+	ofn.lpstrInitialDir = initialDir.c_str();
+
+	// 로드할 때는 당연히 파일이 실제로 존재해야 하므로 덮어쓰기 프롬프트 없이 필수 체크만 진행
+	ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR;
+
+	if (GetOpenFileNameW(&ofn) == TRUE)
+	{
+		return std::wstring(szFile); // 절대 경로 반환
+	}
+	return L"";
+}
 
 
 EditScene::EditScene()
@@ -21,7 +80,8 @@ void EditScene::Init()
 {
 
 	Super::Init();
-
+	if (GetPlayer() != nullptr)
+		_playerSpawned = true;
 }
 
 void EditScene::Update()
@@ -37,7 +97,7 @@ void EditScene::Update()
 	if (GET_SINGLE(InputManager)->GetButton(KeyType::D)) camPos.x += speed;
 
 	_cam.SetPos(camPos);
-	_cam.TickComp(); 
+	_cam.TickComp();
 	GET_SINGLE(SceneManager)->SetCameraPos(camPos);
 
 	if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::KEY_1)) _currentEntity = EntityType::PlayerSpawn;
@@ -60,20 +120,22 @@ void EditScene::Update()
 
 	if (_currentEntity == EntityType::Wall)
 	{
-		// [Wall 전용] 마우스를 누를 때 시작점 저장
+
 		if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::LeftMouse))
 		{
 			_wallStart = { snapX, snapY };
 			_isDraggingWall = true;
 		}
-		// 마우스를 뗄 때 끝점 저장 후 생성!
 		else if (GET_SINGLE(InputManager)->GetButtonUp(KeyType::LeftMouse) && _isDraggingWall)
 		{
 			POINT wallEnd = { snapX, snapY };
 
-			// 1칸짜리를 클릭만 해도 생성되도록 방어 코드 추가
-			if (wallEnd.x == _wallStart.x && wallEnd.y == _wallStart.y) {
+			if (wallEnd.x == _wallStart.x)
+			{
 				wallEnd.x += _gridSize;
+			}
+			if (wallEnd.y == _wallStart.y)
+			{
 				wallEnd.y += _gridSize;
 			}
 
@@ -140,29 +202,30 @@ void EditScene::Update()
 	if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::Delete))
 	{
 		Vec2F mouseWorldPos{ worldX, worldY };
+		float padding = 8.0f;
 
 		for (GameObject* obj : GetAllObjects())
 		{
 			Vec2F objPos = obj->GetPos();
 			Vec2F halfSize = obj->GetHalfSize();
 
-			if (mouseWorldPos.x >= objPos.x - halfSize.x &&
-				mouseWorldPos.x <= objPos.x + halfSize.x &&
-				mouseWorldPos.y >= objPos.y - halfSize.y &&
-				mouseWorldPos.y <= objPos.y + halfSize.y)
+			if (mouseWorldPos.x >= objPos.x - halfSize.x - padding &&
+				mouseWorldPos.x <= objPos.x + halfSize.x + padding &&
+				mouseWorldPos.y >= objPos.y - halfSize.y - padding &&
+				mouseWorldPos.y <= objPos.y + halfSize.y + padding)
 			{
-				
+
 				if (_selectedObject == obj)
 				{
 					if (_selectedObject->GetObjectType() == OBJECTTYPE::PLAYER)
 					{
-						Super::SetPlayer(nullptr); _playerSpawned = false;
+						Super::SetPlayer(nullptr);
+						_playerSpawned = false;
 					}
 					_selectedObject = nullptr;
+					RemoveObject(obj);
+					break;
 				}
-				
-				RemoveObject(obj);
-				break;
 			}
 		}
 	}
@@ -170,47 +233,61 @@ void EditScene::Update()
 	if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::RightMouse))
 	{
 		Vec2F mouseWorldPos{ worldX, worldY };
+		float padding = 8.0f;
 		_selectedObject = nullptr; // 일단 선택 해제
 
 		for (GameObject* obj : GetAllObjects())
 		{
-			// 오브젝트 클릭 시 해당 오브젝트를 선택 처리
-			if (mouseWorldPos.x >= obj->GetPos().x - obj->GetHalfSize().x &&
-				mouseWorldPos.x <= obj->GetPos().x + obj->GetHalfSize().x &&
-				mouseWorldPos.y >= obj->GetPos().y - obj->GetHalfSize().y &&
-				mouseWorldPos.y <= obj->GetPos().y + obj->GetHalfSize().y)
+			if (mouseWorldPos.x >= obj->GetPos().x - obj->GetHalfSize().x - padding &&
+				mouseWorldPos.x <= obj->GetPos().x + obj->GetHalfSize().x + padding &&
+				mouseWorldPos.y >= obj->GetPos().y - obj->GetHalfSize().y - padding &&
+				mouseWorldPos.y <= obj->GetPos().y + obj->GetHalfSize().y + padding)
 			{
 				_selectedObject = obj;
 				break;
 			}
 		}
-	}
 
-	// 선택된 상태에서 스프라이트(속성) 변경 (예: Q키를 누르면)
-	if (_selectedObject != nullptr && GET_SINGLE(InputManager)->GetButtonDown(KeyType::Q))
-	{
-		if (_selectedObject->GetObjectType() == OBJECTTYPE::DECO)
+		// 선택된 상태에서 스프라이트(속성) 변경 (예: Q키를 누르면)
+		if (_selectedObject != nullptr && GET_SINGLE(InputManager)->GetButtonDown(KeyType::Q))
 		{
-			// TODO: Deco의 스프라이트 종류를 순환시키는 함수 호출
-			// _selectedObject->ChangeNextSprite();
+			if (_selectedObject->GetObjectType() == OBJECTTYPE::DECO)
+			{
+				// TODO: Deco의 스프라이트 종류를 순환시키는 함수 호출
+				// _selectedObject->ChangeNextSprite();
+			}
 		}
-	}
 
-	if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::Return))
-	{
-		SaveMap(L"TestMap1.json");
-	}
+		if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::Return))
+		{
+			std::wstring fullPath = SaveMapFileDialog(nullptr);
 
-	if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::F1))
-	{
-		LoadMap(L"TestMap1.json");
-	}
+			if (!fullPath.empty())
+			{
+				std::wstring fileName = std::filesystem::path(fullPath).filename().wstring();
+				SaveMap(fileName);
+			}
+		}
 
-	if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::F5))
-	{
-		SaveMap(L"TestMap1.json");
+		if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::F1))
+		{
+			// 다이얼로그를 띄워 파일 경로를 받아옴
+			std::wstring fullPath = LoadMapFileDialog(nullptr);
 
-		GET_SINGLE(SceneManager)->ChangeScene(SceneType::DEVSCENE, L"TestMap1.json");
+			if (!fullPath.empty())
+			{
+				// 이름만 추출해서 LoadMap 호출
+				std::wstring fileName = std::filesystem::path(fullPath).filename().wstring();
+				LoadMap(fileName);
+			}
+		}
+
+		if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::F5))
+		{
+			SaveMap(L"TestMap1.json");
+
+			GET_SINGLE(SceneManager)->ChangeScene(SceneType::DEVSCENE, L"TestMap1.json");
+		}
 	}
 }
 
@@ -264,6 +341,34 @@ void EditScene::Render(ID2D1RenderTarget* renderTarget, float alpha)
 		renderTarget->FillRectangle(rect, previewBrush);
 		previewBrush->Release();
 	}
+
+	if (_selectedObject != nullptr)
+	{
+		Vec2F objPos = _selectedObject->GetPos();
+		Vec2F halfSize = _selectedObject->GetHalfSize();
+
+		// 월드 좌표를 화면(렌더링) 좌표로 변환
+		Vec2F screenCenter = GET_SINGLE(SceneManager)->ToRenderPos(objPos);
+
+		// 사각형 영역 계산
+		D2D1_RECT_F outlineRect = D2D1::RectF(
+			screenCenter.x - halfSize.x,
+			screenCenter.y - halfSize.y,
+			screenCenter.x + halfSize.x,
+			screenCenter.y + halfSize.y
+		);
+
+		ID2D1SolidColorBrush* outlineBrush = nullptr;
+		renderTarget->CreateSolidColorBrush(D2D1::ColorF(0.0f, 0.8f, 0.8f, 1.0f), &outlineBrush);
+
+		if (outlineBrush)
+		{
+			// 두께 2.0f 로 빈 사각형(테두리) 그리기
+			renderTarget->DrawRectangle(outlineRect, outlineBrush, 2.0f);
+			outlineBrush->Release();
+		}
+	}
+
 	Super::Render(renderTarget, alpha); // 객체들 렌더링
 }
 

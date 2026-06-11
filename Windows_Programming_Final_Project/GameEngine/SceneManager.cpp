@@ -9,13 +9,18 @@
 
 void SceneManager::init()
 {
-	ChangeScene(SceneType::DEVSCENE);
+	//GET_SINGLE(DataManager)->LoadChaperData(L"Chapter1.json");
 }
 
 void SceneManager::Update()
 {
 	if (_scene)
 		_scene->Update();
+
+	if (_isMapChangeRequested)
+	{
+		ExecuteMapChange();
+	}
 }
 
 void SceneManager::Render(ID2D1RenderTarget* renderTarget, float alpha)
@@ -31,8 +36,7 @@ void SceneManager::Clear()
 
 void SceneManager::ChangeScene(SceneType sceneType)
 {
-	//if (_sceneType == sceneType)
-		//return;
+	
 
 	ChangeScene(sceneType, L"");
 
@@ -76,6 +80,51 @@ void SceneManager::ChangeScene(SceneType sceneType, const std::wstring& mapFileP
 	}
 }
 
+void SceneManager::ChangeScene(SceneType sceneType, const std::wstring& mapFilePath, const std::wstring& chapterFilePath)
+{
+	Scene* newScene = nullptr;
+
+	switch (sceneType)
+	{
+	case SceneType::DEVSCENE:
+		newScene = new DevScene();
+		break;
+	case SceneType::EDITSCENE:
+		newScene = new EditScene();
+		break;
+	case SceneType::PLAYSCENE:
+		newScene = new PlayScene();
+		break;
+	}
+
+	if (_scene != nullptr) _scene->Clear();
+	SAFE_DELETE(_scene);
+
+	_scene = newScene;
+	_sceneType = sceneType;
+	if (!chapterFilePath.empty())
+	{
+		GET_SINGLE(DataManager)->LoadChaperData(chapterFilePath);
+	}
+
+	if (_scene != nullptr && !mapFilePath.empty())
+	{
+		GET_SINGLE(DataManager)->LoadMapData(mapFilePath);
+		MapData loadedMapData = GET_SINGLE(DataManager)->GetCurrentMapData();
+		_scene->BuildMapFromData(loadedMapData);
+	}
+	else if (_scene != nullptr && !chapterFilePath.empty())
+	{
+		MapData chapterFirstMap = GET_SINGLE(DataManager)->GetCurrentMapData();
+		_scene->BuildMapFromData(chapterFirstMap);
+	}
+
+	if (_scene)
+	{
+		_scene->Init();
+	}
+}
+
 void SceneManager::ChangeMap(const MapData& nextMapData)
 {
 	if (_scene == nullptr) return;
@@ -97,6 +146,12 @@ void SceneManager::ResetCurrentMap()
 	_scene->Init();
 }
 
+void SceneManager::RequestMapChange(const std::string& targetMapName)
+{
+	_isMapChangeRequested = true;
+	_nextMapName = targetMapName;
+}
+
 
 
 
@@ -109,5 +164,30 @@ Vec2F SceneManager::ToRenderPos(Vec2F alphaPos)
 {
 	Vec2F renderPos = alphaPos - cameraPos + halfWinSizeV;
 	return renderPos;
+}
+
+void SceneManager::ExecuteMapChange()
+{
+
+	_isMapChangeRequested = false;
+
+	bool hasNextMap = GET_SINGLE(DataManager)->GoToNextMap(_nextMapName);
+
+	if (hasNextMap)
+	{
+		ChangeMap(GET_SINGLE(DataManager)->GetCurrentMapData());
+	}
+	else
+	{
+		bool hasNextChapter = GET_SINGLE(DataManager)->GoToNextChapter();
+		if (hasNextChapter)
+		{
+			ChangeMap(GET_SINGLE(DataManager)->GetCurrentMapData());
+		}
+		else
+		{
+			GET_SINGLE(DataManager)->EndGame();
+		}
+	}
 }
 

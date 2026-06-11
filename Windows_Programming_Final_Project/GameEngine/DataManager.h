@@ -38,7 +38,7 @@ private:
 	void DeserializeMapObjects(const json& mapJson, MapData& outMapData);
 
 	MapData _currentMap;
-	ChaperData _currentChapter;
+	ChapterData _currentChapter;
 	std::unordered_map<int, MapData> _mapCache;
 
 	int _currentMapIdx = 0;

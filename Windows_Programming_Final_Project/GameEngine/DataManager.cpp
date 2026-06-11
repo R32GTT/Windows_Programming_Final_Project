@@ -56,6 +56,8 @@ bool DataManager::GoToNextMap(std::string mapInfo)
         {
             const MapData& nextMapData = _mapCache[_currentMapIdx];
 
+            _currentMap = nextMapData;
+
             Scene* curScene = GET_SINGLE(SceneManager)->GetCurrentScene();
             if (curScene != nullptr)
             {
@@ -154,13 +156,16 @@ void DataManager::LoadChaperData(const std::wstring& fileName)
             mapIdx++;
         }
     }
-
-    _currentMapIdx = 0;
-    Scene* currentScene = GET_SINGLE(SceneManager)->GetCurrentScene();
-    if (currentScene != nullptr && !_mapCache.empty())
+    if (!_mapCache.empty())
     {
-        currentScene->Clear();
-        currentScene->BuildMapFromData(_mapCache[_currentMapIdx]);
+        _currentMap = _mapCache[_currentMapIdx];
+
+        Scene* currentScene = GET_SINGLE(SceneManager)->GetCurrentScene();
+        if (currentScene != nullptr)
+        {
+            currentScene->Clear();
+            currentScene->BuildMapFromData(_currentMap);
+        }
     }
 }
 

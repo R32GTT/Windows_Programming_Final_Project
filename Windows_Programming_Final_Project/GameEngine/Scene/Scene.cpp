@@ -106,6 +106,22 @@ GameObject* Scene::GetGameObjectByID(unsigned int ID)
 	return nullptr;
 }
 
+bool Scene::CheckSceneCleared()
+{
+	std::vector<GameObject*> enemies = GetObjectsByLayer(Layers::ACTORS);
+
+	for (GameObject* obj : enemies)
+	{
+		if (obj->GetObjectType() == OBJECTTYPE::ENEMY)
+		{
+			if (!obj->IsKilled())
+				return false;
+		}
+	}
+
+	return true;
+}
+
 void Scene::AddObject(GameObject* object)
 {
 	if (object == nullptr)

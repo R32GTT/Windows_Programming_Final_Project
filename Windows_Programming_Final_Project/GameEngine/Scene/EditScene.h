@@ -34,7 +34,7 @@ private:
 
 	bool _setOrigin = true;
 	bool _playerSpawned = false;
-	POINT _lastPos{};
+	POINT _lastPos{ -9999, -9999 };
 	POINT _prevMousePos{};
 
 	POINT _wallStart{};

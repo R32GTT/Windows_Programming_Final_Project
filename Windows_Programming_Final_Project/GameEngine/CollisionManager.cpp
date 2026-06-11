@@ -166,8 +166,9 @@ void CollisionManager::CheckActorEndpointCollision(const std::vector<GameObject*
 
 			if (CheckOBB_AABB(actor, ep))
 			{
-				actor->OnCollision(ep);
+				//actor->OnCollision(ep);
 				ep->OnCollision(actor);
+				return;
 			}
 		}
 	}

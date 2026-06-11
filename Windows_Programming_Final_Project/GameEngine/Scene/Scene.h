@@ -47,6 +47,7 @@ public:
 	GameObject* GetPlayer() { return _player; };
 	void SetCamOwner(GameObject* object) { _cam.SetOwner(object); };
 
+	bool CheckSceneCleared();
 
 	void AddObject(GameObject* object);
 	void RemoveObject(GameObject* object);
