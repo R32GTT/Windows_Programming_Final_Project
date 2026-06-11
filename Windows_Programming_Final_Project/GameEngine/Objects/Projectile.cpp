@@ -42,12 +42,9 @@ Projectile::Projectile(GameObject* owner, WPTYPE wpType)
 		Vec2F rightDir = Vec2F(-facingDir.y, facingDir.x);
 		float offsetDistance = 11.0f;
 		pos = pos + (rightDir * offsetDistance);
-		prevPos = pos = pos + _dir * 65.0f;
+		
 	}
-	else
-	{
-		prevPos = pos = pos + _dir * 65.0f;
-	}
+	prevPos = pos = pos + _dir * 65.0f;
 }
 
 Projectile::~Projectile()
@@ -68,7 +65,8 @@ void Projectile::Update()
 	pos = pos + _dir * speed * deltaTime;
 
 	_elapsedTime += deltaTime;
-
+	if (_elapsedTime >= _lifeTime)
+		_isDead = true;
 }
 
 void Projectile::Render(ID2D1RenderTarget* renderTarget, float alpha)

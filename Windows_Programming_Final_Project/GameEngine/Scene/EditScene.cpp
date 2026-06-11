@@ -358,7 +358,7 @@ void EditScene::Update()
 		GET_SINGLE(SceneManager)->ChangeScene(SceneType::PLAYSCENE);
 	}
 
-	
+	Super::FlushSpawnQueue(); // 넣어둠. 다른거 해도 돼.
 }
 
 void EditScene::Render(ID2D1RenderTarget* renderTarget, float alpha)

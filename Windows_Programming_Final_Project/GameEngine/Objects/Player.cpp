@@ -14,7 +14,8 @@ Player::Player()
 
     type = OBJECTTYPE::PLAYER;
     layer = Layers::ACTORS;
-    currentWeapon_Player = WPTYPE::CROWBAR;
+    currentWeapon_Player = WPTYPE::RIFLE;
+    _currentAmmo = 26;
 }
 
 Player::~Player()
@@ -169,7 +170,10 @@ void Player::Update()
     }
     case PlayerState::ATTACK:
     {
-        PlayAnimation(_anims[(int)targetAttack]);
+        if (_currentAmmo > 0 || _currentAmmo <= -1)
+            PlayAnimation(_anims[(int)targetAttack]);
+        else
+            status = PlayerState::IDLE;
 
 
         int targetFrame = 1; // (수정 필요) 실제로 총알이 나가거나 빠루 타격이 들어가는 프레임 번호
@@ -286,7 +290,11 @@ void Player::OnCollision(GameObject* other)
 
 void Player::Fire()
 {
-
+    if (_currentAmmo == 0)
+        return;
+    
+    if (!(_currentAmmo <= -1))
+        _currentAmmo--;
     Projectile* proj = new Projectile(this, currentWeapon_Player);
     proj->Init();
 

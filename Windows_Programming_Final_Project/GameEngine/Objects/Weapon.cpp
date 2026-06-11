@@ -30,7 +30,7 @@ static const WeaponInfo g_WeaponTable[(int)WPTYPE::TOTAL_COUNT] =
 	// [1] WPTYPE::FIST
 	{
 		200,
-		50,
+		0.05,
 		0.0f,
 		1,
 		0.0f,
@@ -43,7 +43,7 @@ static const WeaponInfo g_WeaponTable[(int)WPTYPE::TOTAL_COUNT] =
 	// [2] WPTYPE::CROWBAR (빠루)
 	{
 		300,                            // attack_Speed (0.3초 쿨타임)
-		80,                             // projectile_Life (0.08초 유지)
+		0.08,                             // projectile_Life (0.08초 유지)
 		0.0f,
 		1,
 		0.0f,
@@ -56,7 +56,7 @@ static const WeaponInfo g_WeaponTable[(int)WPTYPE::TOTAL_COUNT] =
 	// [3] WPTYPE::RIFLE (라이플)
 	{
 		50,
-		20000,                           // projectile_Life (최대 2초 동안 총알 날아감)
+		20,                           // projectile_Life (최대 2초 동안 총알 날아감)
 		1500.0f,                        // projectile_Speed
 		1,
 		0.06f,                          // projectile_Deviation (라디안 탄퍼짐)
