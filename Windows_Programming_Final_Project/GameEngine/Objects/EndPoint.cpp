@@ -22,7 +22,6 @@ void EndPoint::OnCollision(GameObject* other)
 
 		if (currentScene != nullptr && currentScene->CheckSceneCleared())
 		{
-			// 3. 조건이 모두 맞으면 맵 전환 요청!
 			GET_SINGLE(SceneManager)->RequestMapChange(_targetMapName);
 		}
 		else

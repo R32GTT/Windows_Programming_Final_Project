@@ -13,6 +13,9 @@ public:
 	virtual void SaveToData(ObjectSpawnData& outData) override;
 	virtual void LoadFromData(const ObjectSpawnData& spawnData) override;
 
+	std::string GetMapName() { return _targetMapName; }
+	void SetMapName(const std::string& str) { _targetMapName = str; }
+
 
 private:
 	std::string _targetMapName = "";

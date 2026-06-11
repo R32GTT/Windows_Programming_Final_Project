@@ -26,10 +26,12 @@ private:
 	void CheckProjectileCollision(const std::vector<GameObject*>& projectiles, const std::vector<GameObject*>& actors, const std::vector<GameObject*>& walls);
 	void CheckActorEndpointCollision(const std::vector<GameObject*>& actors, const std::vector<GameObject*>& endPoints);
 	void CheckPlayerEnemyCollision(GameObject* player, const std::vector<GameObject*>& actors);
+	void CheckActorWeaponCollision(const std::vector<GameObject*>& actors, const std::vector<GameObject*>& weapons);
 
 	std::vector<GameObject*> _characters;
 	std::vector<GameObject*> _projectiles;
 	std::vector<GameObject*> _endPoints;
+	std::vector<GameObject*> _weapons;
 
 
 };

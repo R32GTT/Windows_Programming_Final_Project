@@ -12,6 +12,8 @@ private:
 	EnemyType _enemyType = EnemyType::NORMAL;
 	EnemyState _enemyState = EnemyState::IDLE; // 상태는 이걸로 체크
 
+	int _currentAmmo{};
+
 	bool _projectileSpawned = false;
 	float AC = 0.0f; //accumulator 몇초동안 기절해 있게 할건지
 	FlipBook* _Fanims[(int)AnimType::TOTAL_COUNT] = { nullptr }; // 장갑인 놈 바꾸는거 할때마다 새로 할당하기 귀찮다
@@ -39,10 +41,10 @@ public:
 
 
 	EnemyType GetEType() { return _enemyType; }
-	void SetEnemyType(EnemyType etype) { _enemyType = etype;  };
+	void SetEnemyType(EnemyType etype);
 
 	WPTYPE GetWPTYPE() { return currentWeapon_Enemy; };
-	void SetWPTYPE(WPTYPE wType) { currentWeapon_Enemy = wType; };
+	void SetWPTYPE(WPTYPE wType);
 
 	EnemyState GetEnemyState() { return _enemyState; };
 	void SetEnemyState(EnemyState state) { _enemyState = state; };

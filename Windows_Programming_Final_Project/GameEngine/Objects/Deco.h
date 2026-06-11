@@ -2,12 +2,24 @@
 #include "pch.h"
 #include "GameObject.h"
 #include "Enums.h"
+enum class DecoType
+{
+	Fridge = 0,
+	Burner,
+	Deco_Count,
+};
 
 class DECO : public GameObject {
 
 private:
 	D2D1_RECT_F decoCoords{};
+
+	FlipBook* _Danims[(int)DecoType::Deco_Count] = { nullptr };
+	DecoType _decoType;
+
 public:
+
+	
 
 	virtual ~DECO();
 	virtual void Init() override;
@@ -25,7 +37,7 @@ public:
 		GameObject::LoadFromData(spawnData);
 	}
 
-
+	void ChangeDecoType(DecoType type);
 
 	DECO() {
 		type = OBJECTTYPE::DECO;

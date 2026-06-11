@@ -77,7 +77,7 @@ void Enemy::Init()
 		_Fanims[(int)AnimType::UNCONSCIOUS] = FM->GetFlipBook(L"FMobCharAnim_Unconscious");
 	}
 	
-	if (currentWeapon_Enemy != WPTYPE::FIST && _enemyType != EnemyType::ARMORED)
+	if (_enemyType != EnemyType::ARMORED)
 	{
 		switch (currentWeapon_Enemy)
 		{
@@ -95,13 +95,12 @@ void Enemy::Init()
 		}
 	}
 	else
-		PlayAnimation(_anims[(int)AnimType::IDLE]);
+		PlayAnimation(_Fanims[(int)AnimType::IDLE]);
 }
 
 void Enemy::Update()
 {
 	if (IsKilled())	return;
-
 
 }
 
@@ -145,16 +144,85 @@ void Enemy::SaveToData(ObjectSpawnData& outData)
 {
 	GameObject::SaveToData(outData);
 	outData.enemyType = _enemyType;
-
+	outData.weaponType = currentWeapon_Enemy;
 }
 
 void Enemy::LoadFromData(const ObjectSpawnData& spawnData)
 {
 	GameObject::LoadFromData(spawnData);
 	_enemyType = spawnData.enemyType;
+	currentWeapon_Enemy = spawnData.weaponType;
 }
 
 void Enemy::EmMove()
 {
+}
+
+void Enemy::SetEnemyType(EnemyType etype)
+{
+	_enemyType = etype;
+	switch (etype)
+	{
+	case EnemyType::NORMAL:
+		speed = baseEnemySpeed;
+		switch (currentWeapon_Enemy)
+		{
+		case WPTYPE::FIST:
+			PlayAnimation(_anims[(int)AnimType::IDLE]);
+			break;
+		case WPTYPE::CROWBAR:
+			PlayAnimation(_anims[(int)AnimType::IDLE_CROWBAR]);
+			break;
+		case WPTYPE::RIFLE:
+			PlayAnimation(_anims[(int)AnimType::IDLE_GUN]);
+			break;
+		default:
+			break;
+		}
+		break;
+	case EnemyType::ARMORED:
+		currentWeapon_Enemy = WPTYPE::FIST;
+		_currentAmmo = -1;
+		speed = armoredEnemySpeed;
+		switch (currentWeapon_Enemy)
+		{
+		case WPTYPE::FIST:
+			PlayAnimation(_Fanims[(int)AnimType::IDLE]);
+			break;
+		default:
+			break;
+		}
+		break;
+	default:
+		break;
+	}
+	
+
+}
+
+void Enemy::SetWPTYPE(WPTYPE wType)
+{
+	if (_enemyType != EnemyType::NORMAL)
+		return;
+	switch (wType)
+	{
+	case WPTYPE::FIST:
+		currentWeapon_Enemy = wType;
+		_currentAmmo = GetWeaponInfo(currentWeapon_Enemy).maxAmmo;
+		PlayAnimation(_anims[(int)AnimType::IDLE]);
+		break;
+	case WPTYPE::CROWBAR:
+		currentWeapon_Enemy = wType;
+		_currentAmmo = GetWeaponInfo(currentWeapon_Enemy).maxAmmo;
+		PlayAnimation(_anims[(int)AnimType::IDLE_CROWBAR]);
+		break;
+	case WPTYPE::RIFLE:
+		currentWeapon_Enemy = wType;
+		_currentAmmo = GetWeaponInfo(currentWeapon_Enemy).maxAmmo;
+		PlayAnimation(_anims[(int)AnimType::IDLE_GUN]);
+		break;
+	default:
+		break;
+	}
 }
 

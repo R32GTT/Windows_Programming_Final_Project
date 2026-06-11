@@ -133,9 +133,11 @@ void Weapon::SetWeaponType(WPTYPE type)
 	{
 	case WPTYPE::CROWBAR:
 		_currentAmmo = GetWeaponInfo(type).maxAmmo;
+		PlayAnimation(_anims[(int)AnimType::IDLE_CROWBAR]);
 		break;
 	case WPTYPE::RIFLE:
 		_currentAmmo = GetWeaponInfo(type).maxAmmo;
+		PlayAnimation(_anims[(int)AnimType::IDLE_GUN]);
 		break;
 	default:
 		break;

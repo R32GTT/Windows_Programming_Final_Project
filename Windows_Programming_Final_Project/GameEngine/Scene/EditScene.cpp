@@ -147,7 +147,7 @@ void EditScene::Update()
 	}
 	else // Wall이 아닌 일반 엔티티들 (Point 스폰 + 홀드 드래그 가능)
 	{
-		if (GET_SINGLE(InputManager)->GetButton(KeyType::LeftMouse))
+		if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::LeftMouse))
 		{
 			if (snapX != _lastPos.x || snapY != _lastPos.y)
 			{
@@ -283,18 +283,16 @@ void EditScene::Update()
 			{
 				if (_indexCursor == 0)
 				{
-					// EnemyType 변경 (Enum 순회)
 					int currentEType = static_cast<int>(enemy->GetEType());
 					int maxCount = static_cast<int>(EnemyType::ETYPE_COUNT);
 
-					// 음수 처리를 포함한 안전한 순환 공식
+
 					currentEType = (currentEType + adjustDir + maxCount) % maxCount;
 
 					enemy->SetEnemyType(static_cast<EnemyType>(currentEType));
 				}
 				else if (_indexCursor == 1)
 				{
-					// 무기(WPTYPE) 변경 로직 (함수명은 구현하신 것에 맞게 수정하세요)
 					int currentWType = static_cast<int>(enemy->GetWPTYPE());
 					int maxCount = static_cast<int>(WPTYPE::TOTAL_COUNT);
 
@@ -351,14 +349,14 @@ void EditScene::Update()
 
 
 			GET_SINGLE(SceneManager)->ChangeScene(SceneType::DEVSCENE, L"TestMap1.json");
-		}
+	}
 
 
-		//추가된 코드: F2를 누르면 PlayScene으로 이동
-		if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::F2))
-		{
-			GET_SINGLE(SceneManager)->ChangeScene(SceneType::PLAYSCENE);
-		}
+	//추가된 코드: F2를 누르면 PlayScene으로 이동
+	if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::F2))
+	{
+		GET_SINGLE(SceneManager)->ChangeScene(SceneType::PLAYSCENE);
+	}
 
 	
 }
@@ -463,6 +461,7 @@ void EditScene::LoadMap(const std::wstring& fileName)
 
 	GET_SINGLE(DataManager)->LoadMapData(fileName);
 	BuildMapFromData(GET_SINGLE(DataManager)->GetCurrentMapData());
+	Super::Init();
 }
 
 
