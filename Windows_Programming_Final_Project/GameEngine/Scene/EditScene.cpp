@@ -248,15 +248,15 @@ void EditScene::Update()
 			}
 		}
 
-		// 선택된 상태에서 스프라이트(속성) 변경 (예: Q키를 누르면)
-		if (_selectedObject != nullptr && GET_SINGLE(InputManager)->GetButtonDown(KeyType::Q))
-		{
-			if (_selectedObject->GetObjectType() == OBJECTTYPE::DECO)
-			{
-				// TODO: Deco의 스프라이트 종류를 순환시키는 함수 호출
-				// _selectedObject->ChangeNextSprite();
-			}
-		}
+		//// 선택된 상태에서 스프라이트(속성) 변경 (예: Q키를 누르면)
+		//if (_selectedObject != nullptr && GET_SINGLE(InputManager)->GetButtonDown(KeyType::Q))
+		//{
+		//	if (_selectedObject->GetObjectType() == OBJECTTYPE::DECO)
+		//	{
+		//		// TODO: Deco의 스프라이트 종류를 순환시키는 함수 호출
+		//		// _selectedObject->ChangeNextSprite();
+		//	}
+		//}
 	}
 
 
@@ -285,33 +285,38 @@ void EditScene::Update()
 				{
 					// EnemyType 변경 (Enum 순회)
 					int currentEType = static_cast<int>(enemy->GetEType());
-					currentEType += adjustDir;
+					int maxCount = static_cast<int>(EnemyType::ETYPE_COUNT);
 
-					// 범위를 벗어나면 순환되도록 처리 (ENEMY_TYPE_COUNT는 Enums.h에 맞게 수정)
-					// if (currentEType < 0) currentEType = (int)EnemyType::ENEMY_TYPE_COUNT - 1;
-					// else if (currentEType >= (int)EnemyType::ENEMY_TYPE_COUNT) currentEType = 0;
+					// 음수 처리를 포함한 안전한 순환 공식
+					currentEType = (currentEType + adjustDir + maxCount) % maxCount;
 
 					enemy->SetEnemyType(static_cast<EnemyType>(currentEType));
 				}
 				else if (_indexCursor == 1)
 				{
-					// 무기(WPTYPE) 변경 로직
-					// (Enemy.h에 SetWeaponType / GetWeaponType 함수가 있다면 동일한 방식으로 구현)
+					// 무기(WPTYPE) 변경 로직 (함수명은 구현하신 것에 맞게 수정하세요)
+					int currentWType = static_cast<int>(enemy->GetWPTYPE());
+					int maxCount = static_cast<int>(WPTYPE::TOTAL_COUNT);
+
+					currentWType = (currentWType + adjustDir + maxCount) % maxCount;
+
+					enemy->SetWPTYPE(static_cast<WPTYPE>(currentWType));
 				}
 			}
 		}
 		else if (objType == OBJECTTYPE::WEAPON)
 		{
 			Weapon* weapon = static_cast<Weapon*>(_selectedObject);
-			_indexCursor = 0; // 무기는 WPTYPE 하나만 건드리므로 고정
+			_indexCursor = 0;
 
 			if (adjustDir != 0)
 			{
-				// WPTYPE 변경 (Enum 순회)
-				// int currentWType = static_cast<int>(weapon->GetWeaponType());
-				// currentWType += adjustDir;
-				// ... 범위 체크 ...
-				// weapon->SetWeaponType(static_cast<WPTYPE>(currentWType));
+				int currentWType = static_cast<int>(weapon->GetWeaponType());
+				int maxCount = static_cast<int>(WPTYPE::TOTAL_COUNT);
+
+				currentWType = (currentWType + adjustDir + maxCount) % maxCount;
+
+				weapon->SetWeaponType(static_cast<WPTYPE>(currentWType));
 			}
 		}
 	}

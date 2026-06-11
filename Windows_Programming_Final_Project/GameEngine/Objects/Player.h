@@ -31,7 +31,7 @@ public:
 	//무기 장착 및 해제를 위한 함수
 	void EquipWeapon(Weapon* weapon);
 	void DropWeapon();
-	Weapon* GetCurrentWeapon() const { return currentWeapon; }
+	
 
 	
 private:
@@ -46,6 +46,7 @@ private:
 
 	//어떤 무기를 가지고 있는지 변수(플레이어 용)
 	WPTYPE currentWeapon_Player = WPTYPE::FIST;
+	int _currentAmmo = 0;
 
 	//실제 장착 중인 무기 객체를 가리키는 포인터 추가
 	//Weapon* currentWeapon = nullptr;

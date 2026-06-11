@@ -14,7 +14,7 @@ public:
 	};
 
 	Projectile();
-	Projectile(GameObject* owner, bool islethal, )
+	Projectile(GameObject* owner, bool islethal, float s);
 	virtual ~Projectile();
 
 	//Projectile 만들기 시작

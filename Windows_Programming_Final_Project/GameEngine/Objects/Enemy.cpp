@@ -34,7 +34,7 @@ Enemy::~Enemy()
 void Enemy::Init()
 {
 	FileManager* FM = GET_SINGLE(FileManager);
-	if(_enemyType == EnemyType::NORMAL)
+
 	{
 		_anims[(int)AnimType::IDLE] = FM->GetFlipBook(L"MobCharAnim_Idle");
 		_anims[(int)AnimType::MOVE] = FM->GetFlipBook(L"MobCharAnim_Walking");
@@ -67,14 +67,14 @@ void Enemy::Init()
 			_anims[(int)AnimType::IDLE_GUN]->SetInfo(info);
 		}
 	}
-	else
+	
 	{
-		_anims[(int)AnimType::IDLE] = FM->GetFlipBook(L"FMobCharAnim_Idle");
-		_anims[(int)AnimType::MOVE] = FM->GetFlipBook(L"FMobCharAnim_Walking");
-		_anims[(int)AnimType::ATTACK_FIST] = FM->GetFlipBook(L"FMobCharAnim_Punch");
-		_anims[(int)AnimType::EXECUTE] = FM->GetFlipBook(L"FMobCharAnim_Execution");
-		_anims[(int)AnimType::DEAD] = FM->GetFlipBook(L"FMobCharAnim_Dead");
-		_anims[(int)AnimType::UNCONSCIOUS] = FM->GetFlipBook(L"FMobCharAnim_Unconscious");
+		_Fanims[(int)AnimType::IDLE] = FM->GetFlipBook(L"FMobCharAnim_Idle");
+		_Fanims[(int)AnimType::MOVE] = FM->GetFlipBook(L"FMobCharAnim_Walking");
+		_Fanims[(int)AnimType::ATTACK_FIST] = FM->GetFlipBook(L"FMobCharAnim_Punch");
+		_Fanims[(int)AnimType::EXECUTE] = FM->GetFlipBook(L"FMobCharAnim_Execution");
+		_Fanims[(int)AnimType::DEAD] = FM->GetFlipBook(L"FMobCharAnim_Dead");
+		_Fanims[(int)AnimType::UNCONSCIOUS] = FM->GetFlipBook(L"FMobCharAnim_Unconscious");
 	}
 	
 	if (currentWeapon_Enemy != WPTYPE::FIST && _enemyType != EnemyType::ARMORED)
@@ -128,8 +128,13 @@ void Enemy::OnCollision(GameObject* other)
 	switch (other->GetObjectType())
 	{
 	case OBJECTTYPE::PROJECTILE:
-		Projectile static_cast
-		_enemyState = EnemyState::DEAD;
+	{
+		Projectile* Proj = static_cast<Projectile*>(other);
+		if (Proj->IsLetal())
+			_enemyState = EnemyState::DEAD;
+		else
+			_enemyState = EnemyState::UNCONSCIOUS;
+	}
 		break;
 	default:
 		break;
