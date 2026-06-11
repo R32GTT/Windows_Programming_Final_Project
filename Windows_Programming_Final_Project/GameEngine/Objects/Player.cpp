@@ -35,12 +35,9 @@ WPTYPE Player::GetWeaponType() const
 void Player::EquipWeapon(Weapon* weapon)
 {
     if (weapon == nullptr) return;
-
-   
-
-
-
-
+    
+    SetWeaponType(weapon->GetWeaponType());
+    _currentAmmo = weapon->GetAmmo();
 }
 
 //무기 버리기 구현
@@ -272,6 +269,12 @@ void Player::OnCollision(GameObject* other)
         }
         break;
     }
+    case OBJECTTYPE::WEAPON:
+    {
+        Weapon* weapon = static_cast<Weapon*>(other);
+
+    }
+        break;
     case OBJECTTYPE::ENDPOINT:
         break;
     default:

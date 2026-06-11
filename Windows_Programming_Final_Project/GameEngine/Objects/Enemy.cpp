@@ -130,9 +130,36 @@ void Enemy::OnCollision(GameObject* other)
 	{
 		Projectile* Proj = static_cast<Projectile*>(other);
 		if (Proj->IsLetal())
-			_enemyState = EnemyState::DEAD;
+		{
+			if (_enemyType == EnemyType::NORMAL)
+			{
+				_enemyState = EnemyState::DEAD;
+				PlayAnimation(_anims[(int)AnimType::DEAD]);
+			}
+			else
+			{
+				if (_isHit)
+					PlayAnimation(_Fanims[(int)AnimType::DEAD]);
+				else
+				{
+					_isHit = true;
+					_enemyState = EnemyState::UNCONSCIOUS;
+					PlayAnimation(_Fanims[(int)AnimType::UNCONSCIOUS]);
+				}
+			}
+		}
 		else
+		{
 			_enemyState = EnemyState::UNCONSCIOUS;
+			if (_enemyType == EnemyType::NORMAL)
+			{
+				PlayAnimation(_anims[(int)AnimType::UNCONSCIOUS]);
+			}
+			else
+			{
+				PlayAnimation(_Fanims[(int)AnimType::UNCONSCIOUS]);
+			}
+		}
 	}
 		break;
 	default:

@@ -15,6 +15,7 @@ private:
 	int _currentAmmo{};
 
 	bool _projectileSpawned = false;
+	bool _isHit = false; // 장갑용
 	float AC = 0.0f; //accumulator 몇초동안 기절해 있게 할건지
 	FlipBook* _Fanims[(int)AnimType::TOTAL_COUNT] = { nullptr }; // 장갑인 놈 바꾸는거 할때마다 새로 할당하기 귀찮다
 
