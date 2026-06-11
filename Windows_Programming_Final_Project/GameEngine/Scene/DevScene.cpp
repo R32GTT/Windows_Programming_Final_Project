@@ -22,9 +22,6 @@ void DevScene::Init()
 	AddObject(pp);
 
 	_cam.SetOwner(pp);*/
-
-	OutputDebugString(L"DevScene Init 실행됨\n");
-
 	Super::Init();
 
 	Vec2<float> basePos = Vec2<float>(300.0f, 300.0f);
@@ -32,34 +29,6 @@ void DevScene::Init()
 	if (Super::GetPlayer() != nullptr)
 	{
 		basePos = Super::GetPlayer()->GetPos();
-	}
-
-	std::vector<Vec2<float>> weaponOffSets = {
-
-		Vec2<float>(-200.0f, -100.0f),
-		Vec2<float>(-100.0f, -100.0f),
-		Vec2<float>(0.0f, -100.0f),
-		Vec2<float>(100.0f, -100.0f),
-		Vec2<float>(200.0f, -100.0f),
-
-		Vec2<float>(-200.0f, 100.0f),
-		Vec2<float>(-100.0f, 100.0f),
-		Vec2<float>(0.0f, 100.0f),
-		Vec2<float>(100.0f, 100.0f),
-		Vec2<float>(200.0f, 100.0f),
-	};
-
-	for (const Vec2<float>& offset : weaponOffSets)
-	{
-		Weapon* weapon = new Weapon();
-
-		Vec2<float> spawnPos = basePos + offset;
-
-		weapon->SetPos(spawnPos);
-		weapon->SavePrevPos();
-		weapon->Init();
-		AddObject(weapon);
-
 	}
 
 	if (Super::GetPlayer() != nullptr)
