@@ -259,38 +259,94 @@ void EditScene::Update()
 		}
 	}
 
-		if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::Return))
-		{
-			std::wstring fullPath = SaveMapFileDialog(nullptr);
 
-			if (!fullPath.empty())
+	if (_selectedObject != nullptr)
+	{
+		OBJECTTYPE objType = _selectedObject->GetObjectType();
+
+		int adjustDir = 0;
+		if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::Left))  adjustDir = -1;
+		if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::Right)) adjustDir = 1;
+
+		
+		if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::Up) ||
+			GET_SINGLE(InputManager)->GetButtonDown(KeyType::Down))
+		{
+			_indexCursor = (_indexCursor == 0) ? 1 : 0;
+		}
+
+		if (objType == OBJECTTYPE::ENEMY)
+		{
+			Enemy* enemy = static_cast<Enemy*>(_selectedObject);
+
+			if (adjustDir != 0)
 			{
-				std::wstring fileName = std::filesystem::path(fullPath).filename().wstring();
-				SaveMap(fileName);
+				if (_indexCursor == 0)
+				{
+					// EnemyType 변경 (Enum 순회)
+					int currentEType = static_cast<int>(enemy->GetEType());
+					currentEType += adjustDir;
+
+					// 범위를 벗어나면 순환되도록 처리 (ENEMY_TYPE_COUNT는 Enums.h에 맞게 수정)
+					// if (currentEType < 0) currentEType = (int)EnemyType::ENEMY_TYPE_COUNT - 1;
+					// else if (currentEType >= (int)EnemyType::ENEMY_TYPE_COUNT) currentEType = 0;
+
+					enemy->SetEnemyType(static_cast<EnemyType>(currentEType));
+				}
+				else if (_indexCursor == 1)
+				{
+					// 무기(WPTYPE) 변경 로직
+					// (Enemy.h에 SetWeaponType / GetWeaponType 함수가 있다면 동일한 방식으로 구현)
+				}
 			}
 		}
-
-		if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::F1))
+		else if (objType == OBJECTTYPE::WEAPON)
 		{
-			// 다이얼로그를 띄워 파일 경로를 받아옴
-			std::wstring fullPath = LoadMapFileDialog(nullptr);
+			Weapon* weapon = static_cast<Weapon*>(_selectedObject);
+			_indexCursor = 0; // 무기는 WPTYPE 하나만 건드리므로 고정
 
-			if (!fullPath.empty())
+			if (adjustDir != 0)
 			{
-				// 이름만 추출해서 LoadMap 호출
-				std::wstring fileName = std::filesystem::path(fullPath).filename().wstring();
-				LoadMap(fileName);
+				// WPTYPE 변경 (Enum 순회)
+				// int currentWType = static_cast<int>(weapon->GetWeaponType());
+				// currentWType += adjustDir;
+				// ... 범위 체크 ...
+				// weapon->SetWeaponType(static_cast<WPTYPE>(currentWType));
 			}
 		}
+	}
 
-		if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::F5))
+	if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::Return))
+	{
+		std::wstring fullPath = SaveMapFileDialog(nullptr);
+
+		if (!fullPath.empty())
 		{
-			SaveMap(L"TestMap1.json");
-
-
-			GET_SINGLE(SceneManager)->ChangeScene(SceneType::DEVSCENE, L"TestMap1.json");
+			std::wstring fileName = std::filesystem::path(fullPath).filename().wstring();
+			SaveMap(fileName);
 		}
-	
+	}
+
+	if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::F1))
+	{
+		// 다이얼로그를 띄워 파일 경로를 받아옴
+		std::wstring fullPath = LoadMapFileDialog(nullptr);
+
+		if (!fullPath.empty())
+		{
+			// 이름만 추출해서 LoadMap 호출
+			std::wstring fileName = std::filesystem::path(fullPath).filename().wstring();
+			LoadMap(fileName);
+		}
+	}
+
+	if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::F5))
+	{
+		SaveMap(L"TestMap1.json");
+
+
+		GET_SINGLE(SceneManager)->ChangeScene(SceneType::DEVSCENE, L"TestMap1.json");
+	}
 }
 
 void EditScene::Render(ID2D1RenderTarget* renderTarget, float alpha)
@@ -301,7 +357,6 @@ void EditScene::Render(ID2D1RenderTarget* renderTarget, float alpha)
 	float halfWinX = WinSizeX / 2.0f;
 	float halfWinY = WinSizeY / 2.0f;
 
-	// --- 1. 그리드(Grid) 그리기 ---
 	ID2D1SolidColorBrush* gridBrush = nullptr;
 	renderTarget->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::Gray, 0.5f), &gridBrush);
 

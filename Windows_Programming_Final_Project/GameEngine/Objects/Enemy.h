@@ -7,10 +7,14 @@ class Enemy : public GameObject {
 
 private:
 	//어떤 무기를 가지고 있는지 변수(적용)
-	WPTYPE currentWeapon_Enemy = WPTYPE::NONE;
+	WPTYPE currentWeapon_Enemy = WPTYPE::FIST;
 
 	EnemyType _enemyType = EnemyType::NORMAL;
 	EnemyState _enemyState = EnemyState::IDLE; // 상태는 이걸로 체크
+
+	bool _projectileSpawned = false;
+	float AC = 0.0f; //accumulator 몇초동안 기절해 있게 할건지
+
 
 public:
 
@@ -32,12 +36,13 @@ public:
 	//보류
 	void EmMove();
 
-	void SetEnemyType(EnemyType etype);
 
-	//일반적인지 덩치인지 구분하는 함수
-	//? GetEnemyType 만들면 더 편하지 않을까?
-	EnemyType What_Enemy();
-	EnemyType GetEType();
+
+	EnemyType GetEType() { return _enemyType; }
+	void SetEnemyType(EnemyType etype) { _enemyType = etype;  };
+
+	WPTYPE GetWPTYPE() { return currentWeapon_Enemy; };
+	void SetWPTYPE(WPTYPE wType) { currentWeapon_Enemy = wType; };
 
 	EnemyState GetEnemyState() { return _enemyState; };
 	void SetEnemyState(EnemyState state) { _enemyState = state; };

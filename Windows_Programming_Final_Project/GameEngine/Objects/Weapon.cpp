@@ -46,9 +46,11 @@ void Weapon::Render(ID2D1RenderTarget* renderTarget, float alpha)
 void Weapon::SaveToData(ObjectSpawnData& outData)
 {
 	GameObject::SaveToData(outData);
+	outData.weaponType = _weaponType;
 }
 
 void Weapon::LoadFromData(const ObjectSpawnData& spawnData)
 {
 	GameObject::LoadFromData(spawnData);
+	_weaponType = spawnData.weaponType;
 }

@@ -45,10 +45,10 @@ private:
 	bool _isAttacking = false; // 공격 중인지 체크하는 플래그
 
 	//어떤 무기를 가지고 있는지 변수(플레이어 용)
-	WPTYPE currentWeapon_Player = WPTYPE::NONE;
+	WPTYPE currentWeapon_Player = WPTYPE::FIST;
 
 	//실제 장착 중인 무기 객체를 가리키는 포인터 추가
-	Weapon* currentWeapon = nullptr;
+	//Weapon* currentWeapon = nullptr;
 
 	PlayerState status = PlayerState::IDLE;
 

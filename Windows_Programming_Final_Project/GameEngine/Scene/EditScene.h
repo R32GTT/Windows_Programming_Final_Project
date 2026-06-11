@@ -43,5 +43,7 @@ private:
 
 	EntityType _currentEntity = EntityType::Wall;
 
+	int _indexCursor = 0;
+
 	const int _gridSize = 16;
 };

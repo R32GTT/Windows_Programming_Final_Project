@@ -14,6 +14,7 @@ public:
 	};
 
 	Projectile();
+	Projectile(GameObject* owner, bool islethal, )
 	virtual ~Projectile();
 
 	//Projectile 만들기 시작
@@ -45,10 +46,11 @@ public:
 	virtual void LoadFromData(const ObjectSpawnData& spawnData) override;
 
 
-	void SetInfo(GameObject* owner, ProjectileType type, float damage, float speed, float lifeTime);
+	// setinfo 만들어야 함.
+	void SetLethal(bool lethal) { _isLethal = lethal; };
 
 	GameObject* GetOwner() { return _owner; }
-	float GetDamage() { return _damage; }
+	bool IsLetal() { return _isLethal; };
 	ProjectileType GetProjType() { return _projType; }
 
 private:
@@ -61,9 +63,11 @@ private:
 	//발사체가 생성된 후 실제로 지난 시간
 	float _elapsedTime = 0.0f;
 
-	float _damage;              // 공격력
+	bool  _isLethal{ true };	// 살상용
 	float _lifeTime;            // 최대 생존 시간 (초)
 	float _currentTimer;        // 현재 생존 시간 계산용
+
+	
 
 	bool _isDead;               // 삭제 대기 상태인지 확인
 };

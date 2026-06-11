@@ -47,7 +47,8 @@ enum class EnemyType
 {
 	NORMAL = 0,
 	// Dog,
-	ARMORED
+	ARMORED,
+	ETYPE_COUNT
 };
 
 enum class Layers

@@ -36,28 +36,20 @@ void Player::EquipWeapon(Weapon* weapon)
 {
     if (weapon == nullptr) return;
 
-    if (currentWeapon != nullptr) {
-        DropWeapon();
-    }
+   
 
-    currentWeapon = weapon;
-    currentWeapon->SetOwner(this);
 
-    is_Item = true;
-    is_drop = false;
+
+
 }
 
 //무기 버리기 구현
 void Player::DropWeapon()
 {
-    if (currentWeapon != nullptr) {
-        currentWeapon->SetOwner(nullptr);
-        currentWeapon = nullptr;
-    }
+  
 
-    is_Item = false;
-    is_drop = true;
-    currentWeapon_Player = WPTYPE::NONE;
+
+    currentWeapon_Player = WPTYPE::FIST;
 }
 
 

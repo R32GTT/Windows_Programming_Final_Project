@@ -65,9 +65,7 @@ void Projectile::OnCollision(GameObject* other)
 	}
 }
 
-void Projectile::SetInfo(GameObject* owner, ProjectileType type, float damage, float speed, float lifeTime)
-{
-}
+
 
 void Projectile::SetDirection(Vec2<float> dir)
 {

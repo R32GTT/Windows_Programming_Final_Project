@@ -1,7 +1,9 @@
 #include "pch.h"
 #include "Enemy.h"
 #include "Managers.h"
+#include "Objects.h"
 #include "../LevelData/LevelData.h"
+#include "../FileBase/FileTypes/FlipBook.h"
 
 Enemy::Enemy()
 {
@@ -22,6 +24,7 @@ Enemy::Enemy(EnemyType etype)
 		speed = baseEnemySpeed;
 	else
 		speed = armoredEnemySpeed;
+	_enemyType = etype;
 }
 
 Enemy::~Enemy()
@@ -30,10 +33,69 @@ Enemy::~Enemy()
 
 void Enemy::Init()
 {
-	FlipBook* idleAnim = GET_SINGLE(FileManager)->GetFlipBook(L"MobCharAnim_Idle");
-	FlipBook* idleAnimF = GET_SINGLE(FileManager)->GetFlipBook(L"FMobCharAnim_Idle");
+	FileManager* FM = GET_SINGLE(FileManager);
+	if(_enemyType == EnemyType::NORMAL)
+	{
+		_anims[(int)AnimType::IDLE] = FM->GetFlipBook(L"MobCharAnim_Idle");
+		_anims[(int)AnimType::MOVE] = FM->GetFlipBook(L"MobCharAnim_Walking");
+		_anims[(int)AnimType::ATTACK_FIST] = FM->GetFlipBook(L"MobCharAnim_Punch");
+		_anims[(int)AnimType::ATTACK_CROWBAR] = FM->GetFlipBook(L"MobCharAnim_Crowbar");
+		_anims[(int)AnimType::ATTACK_GUN] = FM->GetFlipBook(L"MobCharAnim_Rifle Shooting");
+		_anims[(int)AnimType::EXECUTE] = FM->GetFlipBook(L"MobCharAnim_Execution");
+		_anims[(int)AnimType::DEAD] = FM->GetFlipBook(L"MobCharAnim_Dead");
+		_anims[(int)AnimType::UNCONSCIOUS] = FM->GetFlipBook(L"MobCharAnim_Unconscious");
+
+		_anims[(int)AnimType::IDLE_CROWBAR] = FM->CreateFlipBook(L"MobCharAnim_Crowbar_Idle_Auto");
+		if (_anims[(int)AnimType::IDLE_CROWBAR]->GetInfo().frames.empty() && _anims[(int)AnimType::ATTACK_CROWBAR] != nullptr)
+		{
+			FlipbookInfo info;
+			info.name = L"MobCharAnim_Crowbar_Idle_Auto";
+			info.frames.push_back(_anims[(int)AnimType::ATTACK_CROWBAR]->GetInfo().frames[0]);
+			info.duration = 1.0f;
+			info.loop = true;
+			_anims[(int)AnimType::IDLE_CROWBAR]->SetInfo(info);
+		}
+
+		_anims[(int)AnimType::IDLE_GUN] = FM->CreateFlipBook(L"MobCharAnim_Gun_Idle_Auto");
+		if (_anims[(int)AnimType::IDLE_GUN]->GetInfo().frames.empty() && _anims[(int)AnimType::ATTACK_GUN] != nullptr)
+		{
+			FlipbookInfo info;
+			info.name = L"MobCharAnim_Gun_Idle_Auto";
+			info.frames.push_back(_anims[(int)AnimType::ATTACK_GUN]->GetInfo().frames[0]);
+			info.duration = 1.0f;
+			info.loop = true;
+			_anims[(int)AnimType::IDLE_GUN]->SetInfo(info);
+		}
+	}
+	else
+	{
+		_anims[(int)AnimType::IDLE] = FM->GetFlipBook(L"FMobCharAnim_Idle");
+		_anims[(int)AnimType::MOVE] = FM->GetFlipBook(L"FMobCharAnim_Walking");
+		_anims[(int)AnimType::ATTACK_FIST] = FM->GetFlipBook(L"FMobCharAnim_Punch");
+		_anims[(int)AnimType::EXECUTE] = FM->GetFlipBook(L"FMobCharAnim_Execution");
+		_anims[(int)AnimType::DEAD] = FM->GetFlipBook(L"FMobCharAnim_Dead");
+		_anims[(int)AnimType::UNCONSCIOUS] = FM->GetFlipBook(L"FMobCharAnim_Unconscious");
+	}
 	
-	PlayAnimation(idleAnim);
+	if (currentWeapon_Enemy != WPTYPE::FIST && _enemyType != EnemyType::ARMORED)
+	{
+		switch (currentWeapon_Enemy)
+		{
+		case WPTYPE::FIST:
+			PlayAnimation(_anims[(int)AnimType::IDLE]);
+			break;
+		case WPTYPE::CROWBAR:
+			PlayAnimation(_anims[(int)AnimType::IDLE_CROWBAR]);
+			break;
+		case WPTYPE::RIFLE:
+			PlayAnimation(_anims[(int)AnimType::IDLE_GUN]);
+			break;
+		default:
+			break;
+		}
+	}
+	else
+		PlayAnimation(_anims[(int)AnimType::IDLE]);
 }
 
 void Enemy::Update()
@@ -66,7 +128,9 @@ void Enemy::OnCollision(GameObject* other)
 	switch (other->GetObjectType())
 	{
 	case OBJECTTYPE::PROJECTILE:
+		Projectile static_cast
 		_enemyState = EnemyState::DEAD;
+		break;
 	default:
 		break;
 	}
@@ -76,6 +140,7 @@ void Enemy::SaveToData(ObjectSpawnData& outData)
 {
 	GameObject::SaveToData(outData);
 	outData.enemyType = _enemyType;
+
 }
 
 void Enemy::LoadFromData(const ObjectSpawnData& spawnData)
@@ -88,23 +153,3 @@ void Enemy::EmMove()
 {
 }
 
-void Enemy::SetEnemyType(EnemyType etype)
-{
-	_enemyType = etype;
-}
-
-EnemyType Enemy::What_Enemy()
-{
-	if (_enemyType != EnemyType::NORMAL) {
-		_enemyType = EnemyType::ARMORED;
-		return (_enemyType);
-	}
-	else {
-		return (_enemyType);
-	}
-}
-
-EnemyType Enemy::GetEType()
-{
-	return _enemyType;
-}
