@@ -14,7 +14,7 @@ Player::Player()
 
     type = OBJECTTYPE::PLAYER;
     layer = Layers::ACTORS;
-    currentWeapon_Player = WPTYPE::RIFLE;
+    currentWeapon_Player = WPTYPE::FIST;
     _currentAmmo = 26;
 }
 
@@ -181,23 +181,6 @@ void Player::Update()
         {
             _projectileSpawned = true;
             Fire();
-            /* TODO
-
-            // 1. 투사체 객체 생성
-            Projectile* proj = new Projectile();
-            proj->Init();
-
-            // 2. 발사 방향 및 위치 세팅 (플레이어 위치 + 바라보는 방향 * 총구 거리)
-            proj->SetDirection(facingDir);
-            proj->SetPos(pos + facingDir * 25.0f);
-
-            // 3. 투사체 정보 세팅 (데미지, 스피드 등 Projectile.h의 SetInfo 활용)
-            // proj->SetInfo(this, Projectile::ProjectileType::BULLET, 10.0f, 800.0f, 2.0f);
-
-            // 4. 씬 매니저에 투사체 등록 (화면에 렌더링되고 Update를 타게 됨)
-            GET_SINGLE(SceneManager)->GetCurrentScene()->AddObject(proj);
-
-            */
         }
 
 

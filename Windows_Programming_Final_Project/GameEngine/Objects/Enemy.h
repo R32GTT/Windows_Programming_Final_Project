@@ -29,7 +29,7 @@ public:
 	virtual void Render(ID2D1RenderTarget* renderTarget, float alpha) override;
 	virtual bool IsKilled() override;
 	virtual void OnCollision(GameObject* other) override;
-	
+	virtual void OnHit_Recoil(bool isLethal, Vec2F dir) override;
 
 	virtual void SaveToData(ObjectSpawnData& outData) override;
 	virtual void LoadFromData(const ObjectSpawnData& spawnData) override;

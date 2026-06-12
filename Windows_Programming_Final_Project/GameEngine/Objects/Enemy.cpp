@@ -129,43 +129,67 @@ void Enemy::OnCollision(GameObject* other)
 	case OBJECTTYPE::PROJECTILE:
 	{
 		Projectile* Proj = static_cast<Projectile*>(other);
-		if (Proj->IsLetal())
-		{
-			if (_enemyType == EnemyType::NORMAL)
-			{
-				_enemyState = EnemyState::DEAD;
-				PlayAnimation(_anims[(int)AnimType::DEAD]);
-			}
-			else
-			{
-				if (_isHit)
-					PlayAnimation(_Fanims[(int)AnimType::DEAD]);
-				else
-				{
-					_isHit = true;
-					_enemyState = EnemyState::UNCONSCIOUS;
-					PlayAnimation(_Fanims[(int)AnimType::UNCONSCIOUS]);
-				}
-			}
-		}
-		else
-		{
-			_enemyState = EnemyState::UNCONSCIOUS;
-			if (_enemyType == EnemyType::NORMAL)
-			{
-				PlayAnimation(_anims[(int)AnimType::UNCONSCIOUS]);
-			}
-			else
-			{
-				PlayAnimation(_Fanims[(int)AnimType::UNCONSCIOUS]);
-			}
-		}
+		OnHit_Recoil(Proj->IsLethal(), Proj->GetDir());
 	}
 		break;
 	default:
 		break;
 	}
 }
+
+void Enemy::OnHit_Recoil(bool isLethal, Vec2F dir)
+{
+	switch (_enemyType)
+	{
+	case EnemyType::NORMAL:
+	{
+		if (isLethal)
+		{
+			_enemyState = EnemyState::DEAD;
+			_rotationAngle = dir.Angle() * (180.0f / PI) + 90.0f; // Sprite가 위를 향하기 때문에 +90
+			PlayAnimation(_anims[(int)AnimType::DEAD]);
+		}
+		else
+		{
+			_enemyState = EnemyState::UNCONSCIOUS;
+			_rotationAngle = dir.Angle() * (180.0f / PI) + 90.0f; // Sprite가 위를 향하기 때문에 +90
+			PlayAnimation(_anims[(int)AnimType::UNCONSCIOUS]);
+		}
+	}
+	break;
+	case EnemyType::ARMORED:
+	{
+		if (isLethal) //최소 한대는 맞았어야 함
+		{
+			if (_isHit)
+			{
+				_enemyState = EnemyState::DEAD;
+				_rotationAngle = dir.Angle() * (180.0f / PI) + 90.0f; // Sprite가 위를 향하기 때문에 +90
+				PlayAnimation(_Fanims[(int)AnimType::DEAD]);
+			}
+			else
+			{
+				_isHit = true;
+				_enemyState = EnemyState::UNCONSCIOUS;
+				_rotationAngle = dir.Angle() * (180.0f / PI) + 90.0f; // Sprite가 위를 향하기 때문에 +90
+				PlayAnimation(_Fanims[(int)AnimType::UNCONSCIOUS]);
+			}
+		}
+		else
+		{
+			_isHit = true;
+			_enemyState = EnemyState::UNCONSCIOUS;
+			_rotationAngle = dir.Angle() * (180.0f / PI) + 90.0f; // Sprite가 위를 향하기 때문에 +90
+			PlayAnimation(_Fanims[(int)AnimType::UNCONSCIOUS]);
+		}
+	}
+	break;
+	default:
+		break;
+	}
+}
+
+
 
 void Enemy::SaveToData(ObjectSpawnData& outData)
 {

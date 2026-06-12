@@ -56,6 +56,11 @@ void GameObject::OnCollision(GameObject* other)
 {
 }
 
+void GameObject::OnHit_Recoil(bool isLethal, Vec2F dir)
+{
+}
+
+
 Vec2<float> GameObject::GetRenderPos(float alpha)
 {
 	return prevPos * (1.0f - alpha) + pos * alpha;

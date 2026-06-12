@@ -42,8 +42,9 @@ public:
 	void SetLethal(bool lethal) { _isLethal = lethal; };
 
 	GameObject* GetOwner() { return _owner; }
-	bool IsLetal() { return _isLethal; };
+	bool IsLethal() { return _isLethal; };
 	ProjectileType GetProjType() { return _projType; }
+	Vec2F GetDir() { return _dir; };
 
 private:
 	GameObject* _owner{ nullptr };         // 누가 발사/공격했는가 (자신이 맞지 않기 위해)
