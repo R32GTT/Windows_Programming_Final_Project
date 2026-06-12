@@ -1,0 +1,257 @@
+{ "frames": [
+   {
+    "filename": "CharAnim-Recovered #Idle.aseprite",
+    "frame": { "x": 0, "y": 0, "w": 80, "h": 112 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 112 },
+    "sourceSize": { "w": 80, "h": 112 },
+    "duration": 100
+   },
+   {
+    "filename": "CharAnim-Recovered #Walking 0.aseprite",
+    "frame": { "x": 0, "y": 112, "w": 80, "h": 112 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 112 },
+    "sourceSize": { "w": 80, "h": 112 },
+    "duration": 100
+   },
+   {
+    "filename": "CharAnim-Recovered #Walking 1.aseprite",
+    "frame": { "x": 80, "y": 112, "w": 80, "h": 112 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 112 },
+    "sourceSize": { "w": 80, "h": 112 },
+    "duration": 100
+   },
+   {
+    "filename": "CharAnim-Recovered #Walking 2.aseprite",
+    "frame": { "x": 160, "y": 112, "w": 80, "h": 112 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 112 },
+    "sourceSize": { "w": 80, "h": 112 },
+    "duration": 100
+   },
+   {
+    "filename": "CharAnim-Recovered #Walking 3.aseprite",
+    "frame": { "x": 240, "y": 112, "w": 80, "h": 112 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 112 },
+    "sourceSize": { "w": 80, "h": 112 },
+    "duration": 100
+   },
+   {
+    "filename": "CharAnim-Recovered #Walking 4.aseprite",
+    "frame": { "x": 320, "y": 112, "w": 80, "h": 112 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 112 },
+    "sourceSize": { "w": 80, "h": 112 },
+    "duration": 100
+   },
+   {
+    "filename": "CharAnim-Recovered #Walking 5.aseprite",
+    "frame": { "x": 400, "y": 112, "w": 80, "h": 112 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 112 },
+    "sourceSize": { "w": 80, "h": 112 },
+    "duration": 100
+   },
+   {
+    "filename": "CharAnim-Recovered #Walking 6.aseprite",
+    "frame": { "x": 480, "y": 112, "w": 80, "h": 112 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 112 },
+    "sourceSize": { "w": 80, "h": 112 },
+    "duration": 100
+   },
+   {
+    "filename": "CharAnim-Recovered #Punch 0.aseprite",
+    "frame": { "x": 0, "y": 224, "w": 80, "h": 112 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 112 },
+    "sourceSize": { "w": 80, "h": 112 },
+    "duration": 100
+   },
+   {
+    "filename": "CharAnim-Recovered #Punch 1.aseprite",
+    "frame": { "x": 80, "y": 224, "w": 80, "h": 112 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 112 },
+    "sourceSize": { "w": 80, "h": 112 },
+    "duration": 100
+   },
+   {
+    "filename": "CharAnim-Recovered #Punch 2.aseprite",
+    "frame": { "x": 160, "y": 224, "w": 80, "h": 112 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 112 },
+    "sourceSize": { "w": 80, "h": 112 },
+    "duration": 100
+   },
+   {
+    "filename": "CharAnim-Recovered #Punch 3.aseprite",
+    "frame": { "x": 240, "y": 224, "w": 80, "h": 112 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 112 },
+    "sourceSize": { "w": 80, "h": 112 },
+    "duration": 100
+   },
+   {
+    "filename": "CharAnim-Recovered #Punch 4.aseprite",
+    "frame": { "x": 320, "y": 224, "w": 80, "h": 112 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 112 },
+    "sourceSize": { "w": 80, "h": 112 },
+    "duration": 100
+   },
+   {
+    "filename": "CharAnim-Recovered #Punch 5.aseprite",
+    "frame": { "x": 400, "y": 224, "w": 80, "h": 112 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 112 },
+    "sourceSize": { "w": 80, "h": 112 },
+    "duration": 100
+   },
+   {
+    "filename": "CharAnim-Recovered #Punch 6.aseprite",
+    "frame": { "x": 480, "y": 224, "w": 80, "h": 112 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 112 },
+    "sourceSize": { "w": 80, "h": 112 },
+    "duration": 100
+   },
+   {
+    "filename": "CharAnim-Recovered #Crowbar 0.aseprite",
+    "frame": { "x": 0, "y": 336, "w": 80, "h": 112 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 112 },
+    "sourceSize": { "w": 80, "h": 112 },
+    "duration": 50
+   },
+   {
+    "filename": "CharAnim-Recovered #Crowbar 1.aseprite",
+    "frame": { "x": 80, "y": 336, "w": 80, "h": 112 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 112 },
+    "sourceSize": { "w": 80, "h": 112 },
+    "duration": 50
+   },
+   {
+    "filename": "CharAnim-Recovered #Crowbar 2.aseprite",
+    "frame": { "x": 160, "y": 336, "w": 80, "h": 112 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 112 },
+    "sourceSize": { "w": 80, "h": 112 },
+    "duration": 50
+   },
+   {
+    "filename": "CharAnim-Recovered #Crowbar 3.aseprite",
+    "frame": { "x": 240, "y": 336, "w": 80, "h": 112 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 112 },
+    "sourceSize": { "w": 80, "h": 112 },
+    "duration": 50
+   },
+   {
+    "filename": "CharAnim-Recovered #Crowbar 4.aseprite",
+    "frame": { "x": 320, "y": 336, "w": 80, "h": 112 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 112 },
+    "sourceSize": { "w": 80, "h": 112 },
+    "duration": 80
+   },
+   {
+    "filename": "CharAnim-Recovered #Crowbar 5.aseprite",
+    "frame": { "x": 400, "y": 336, "w": 80, "h": 112 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 112 },
+    "sourceSize": { "w": 80, "h": 112 },
+    "duration": 50
+   },
+   {
+    "filename": "CharAnim-Recovered #Crowbar 6.aseprite",
+    "frame": { "x": 480, "y": 336, "w": 80, "h": 112 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 112 },
+    "sourceSize": { "w": 80, "h": 112 },
+    "duration": 50
+   },
+   {
+    "filename": "CharAnim-Recovered #Crowbar 7.aseprite",
+    "frame": { "x": 560, "y": 336, "w": 80, "h": 112 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 112 },
+    "sourceSize": { "w": 80, "h": 112 },
+    "duration": 50
+   },
+   {
+    "filename": "CharAnim-Recovered #Crowbar 8.aseprite",
+    "frame": { "x": 640, "y": 336, "w": 80, "h": 112 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 112 },
+    "sourceSize": { "w": 80, "h": 112 },
+    "duration": 80
+   },
+   {
+    "filename": "CharAnim-Recovered #Rifle Shooting 0.aseprite",
+    "frame": { "x": 0, "y": 448, "w": 80, "h": 112 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 112 },
+    "sourceSize": { "w": 80, "h": 112 },
+    "duration": 50
+   },
+   {
+    "filename": "CharAnim-Recovered #Rifle Shooting 1.aseprite",
+    "frame": { "x": 80, "y": 448, "w": 80, "h": 112 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 112 },
+    "sourceSize": { "w": 80, "h": 112 },
+    "duration": 50
+   }
+ ],
+ "meta": {
+  "app": "https://www.aseprite.org/",
+  "version": "1.3.18-beta1-dev",
+  "image": "Deco2CharAnim.png",
+  "format": "RGBA8888",
+  "size": { "w": 720, "h": 560 },
+  "scale": "1",
+  "frameTags": [
+   { "name": "Idle", "from": 0, "to": 0, "direction": "forward", "color": "#000000ff" },
+   { "name": "Walking", "from": 1, "to": 7, "direction": "forward", "color": "#000000ff" },
+   { "name": "Punch", "from": 8, "to": 14, "direction": "forward", "color": "#000000ff" },
+   { "name": "Crowbar", "from": 15, "to": 23, "direction": "forward", "color": "#000000ff" },
+   { "name": "Rifle Shooting", "from": 24, "to": 25, "direction": "forward", "color": "#000000ff" }
+  ],
+  "layers": [
+   { "name": "Deco2", "opacity": 255, "blendMode": "normal" }
+  ],
+  "slices": [
+  ]
+ }
+}
