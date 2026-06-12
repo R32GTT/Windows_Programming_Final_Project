@@ -203,7 +203,7 @@ void SceneManager::ExecuteMapChange()
 
 	if (hasNextMap)
 	{
-		ChangeMap(GET_SINGLE(DataManager)->GetCurrentMapData());
+		//ChangeMap(GET_SINGLE(DataManager)->GetCurrentMapData()); // 왜 있는거야 도데체
 	}
 	else
 	{

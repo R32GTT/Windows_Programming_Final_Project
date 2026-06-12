@@ -65,6 +65,34 @@ std::wstring LoadMapFileDialog(HWND hWnd)
 	return L"";
 }
 
+std::string SelectMapFileDialog(HWND hWnd)
+{
+	wchar_t szFile[260] = { 0 };
+	OPENFILENAMEW ofn;
+	ZeroMemory(&ofn, sizeof(ofn));
+
+	ofn.lStructSize = sizeof(ofn);
+	ofn.hwndOwner = hWnd; // NULL로 넘겨도 정상 작동함
+	ofn.lpstrFile = szFile;
+	ofn.nMaxFile = sizeof(szFile) / sizeof(wchar_t);
+	ofn.lpstrFilter = L"JSON Files (*.json)\0*.json\0All Files (*.*)\0*.*\0";
+	ofn.nFilterIndex = 1;
+
+	// 기본 디렉토리를 에셋 폴더로 강제 지정
+	std::wstring initialDir = GET_SINGLE(FileManager)->GetFilePath().wstring();
+	ofn.lpstrInitialDir = initialDir.c_str();
+
+	// 파일이 실제로 존재하는지 필수 체크
+	ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_NOCHANGEDIR;
+
+	if (GetOpenFileNameW(&ofn) == TRUE)
+	{
+		std::filesystem::path filePath(szFile);
+		return filePath.stem().string();
+	}
+	return "";
+}
+
 
 EditScene::EditScene()
 {
@@ -319,7 +347,7 @@ void EditScene::Update()
 		}
 	}
 
-	if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::Return))
+	if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::F8))
 	{
 		std::wstring fullPath = SaveMapFileDialog(nullptr);
 
@@ -345,10 +373,24 @@ void EditScene::Update()
 
 	if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::F5))
 	{
-		SaveMap(L"TestMap1.json");
+		/*SaveMap(L"TestMap1.json");
+		GET_SINGLE(SceneManager)->ChangeScene(SceneType::DEVSCENE, L"TestMap1.json");*/
 
+		std::wstring fullPath = LoadMapFileDialog(nullptr);
 
-			GET_SINGLE(SceneManager)->ChangeScene(SceneType::DEVSCENE, L"TestMap1.json");
+		if (!fullPath.empty())
+		{
+			// 이름만 추출해서 LoadMap 호출
+			std::wstring fileName = std::filesystem::path(fullPath).filename().wstring();
+			GET_SINGLE(SceneManager)->ChangeScene(SceneType::DEVSCENE, fileName);
+		}
+	}
+
+	if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::F7))
+	{
+		Clear();
+		_selectedObject = nullptr;
+		_playerSpawned = false;
 	}
 
 

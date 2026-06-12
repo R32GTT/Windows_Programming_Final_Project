@@ -102,6 +102,8 @@ void Enemy::Update()
 {
 	if (IsKilled())	return;
 
+
+
 }
 
 void Enemy::Render(ID2D1RenderTarget* renderTarget, float alpha)
@@ -203,6 +205,7 @@ void Enemy::LoadFromData(const ObjectSpawnData& spawnData)
 	GameObject::LoadFromData(spawnData);
 	_enemyType = spawnData.enemyType;
 	currentWeapon_Enemy = spawnData.weaponType;
+	_currentAmmo = GetWeaponInfo(spawnData.weaponType).maxAmmo;
 }
 
 void Enemy::EmMove()

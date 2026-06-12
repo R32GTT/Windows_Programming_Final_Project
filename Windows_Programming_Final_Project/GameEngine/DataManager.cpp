@@ -43,12 +43,27 @@ void DataManager::SaveChaperData(const std::wstring& filename, const ChapterData
     GET_SINGLE(FileManager)->SaveMapJson(filename, chapterJson);
 }
 
-//성공적으로 맵을 이동했다면 true, 더 이상 맵이 없어서 챕터가 끝났다면 false반환으로 변경
+// 성공적으로 맵을 이동했다면 true, 더 이상 맵이 없어서 챕터가 끝났다면 false 반환
 bool DataManager::GoToNextMap(std::string mapInfo)
 {
-    int nextIdx = std::stoi(mapInfo);
+    // 1. 기본적으로는 현재 맵의 다음 인덱스로 설정
+    int nextIdx = _currentMapIdx + 1;
 
-    if (nextIdx < _currentChapter.mapFileNames.size())
+    // 2. 만약 특정 인덱스를 지시하는 문자열이 들어왔다면 그 값으로 덮어씀
+    if (!mapInfo.empty())
+    {
+        // (선택사항) 숫자가 아닌 문자열이 들어왔을 때의 예외 처리를 추가하면 더 안전해
+        try {
+            nextIdx = std::stoi(mapInfo);
+        }
+        catch (...) {
+            // 변환 실패 시 그냥 다음 맵으로 진행하거나 에러 로그 출력
+            nextIdx = _currentMapIdx + 1;
+        }
+    }
+
+    // 3. 계산된 인덱스가 챕터 내 맵 개수 범위 안인지 확인
+    if (nextIdx >= 0 && nextIdx < _currentChapter.mapFileNames.size())
     {
         _currentMapIdx = nextIdx;
 
@@ -63,6 +78,7 @@ bool DataManager::GoToNextMap(std::string mapInfo)
             {
                 curScene->Clear();
                 curScene->BuildMapFromData(nextMapData);
+                curScene->Init();
             }
 
             // [성공] 성공적으로 다음 맵으로 이동함
@@ -128,46 +144,46 @@ void DataManager::LoadMapData(const std::wstring& fileName)
     DeserializeMapObjects(mapJson, _currentMap);
 }
 
-void DataManager::LoadChaperData(const std::wstring& fileName)
-{
-    _mapCache.clear();
-    _currentChapter.mapFileNames.clear();
-
-    json chapterJson = GET_SINGLE(FileManager)->LoadMapJson(fileName);
-    if (chapterJson.is_null() || chapterJson.empty()) return;
-
-    if (chapterJson.contains("ChapterID")) _currentChapter.chapterID = chapterJson["ChapterID"];
-
-    if (chapterJson.contains("MapFiles"))
+    void DataManager::LoadChaperData(const std::wstring& fileName)
     {
-        int mapIdx = 0;
-        for (const auto& mapFileName : chapterJson["MapFiles"])
+        _mapCache.clear();
+        _currentChapter.mapFileNames.clear();
+
+        json chapterJson = GET_SINGLE(FileManager)->LoadMapJson(fileName);
+        if (chapterJson.is_null() || chapterJson.empty()) return;
+
+        if (chapterJson.contains("ChapterID")) _currentChapter.chapterID = chapterJson["ChapterID"];
+
+        if (chapterJson.contains("MapFiles"))
         {
-            std::wstring wMapName = StrToWStr(mapFileName.get<std::string>());
-            _currentChapter.mapFileNames.push_back(wMapName);
+            int mapIdx = 0;
+            for (const auto& mapFileName : chapterJson["MapFiles"])
+            {
+                std::wstring wMapName = StrToWStr(mapFileName.get<std::string>());
+                _currentChapter.mapFileNames.push_back(wMapName);
 
-            // 개별 맵 데이터를 로드해서 메모리에 적재
-            json mapJson = GET_SINGLE(FileManager)->LoadMapJson(wMapName);
-            MapData mData{};
-            mData.mapIDX = mapIdx;
-            DeserializeMapObjects(mapJson, mData);
+                // 개별 맵 데이터를 로드해서 메모리에 적재
+                json mapJson = GET_SINGLE(FileManager)->LoadMapJson(wMapName);
+                MapData mData{};
+                mData.mapIDX = mapIdx;
+                DeserializeMapObjects(mapJson, mData);
 
-            _mapCache[mapIdx] = mData;
-            mapIdx++;
+                _mapCache[mapIdx] = mData;
+                mapIdx++;
+            }
+        }
+        if (!_mapCache.empty())
+        {
+            _currentMap = _mapCache[_currentMapIdx];
+
+            Scene* currentScene = GET_SINGLE(SceneManager)->GetCurrentScene();
+            if (currentScene != nullptr)
+            {
+                currentScene->Clear();
+                currentScene->BuildMapFromData(_currentMap);
+            }
         }
     }
-    if (!_mapCache.empty())
-    {
-        _currentMap = _mapCache[_currentMapIdx];
-
-        Scene* currentScene = GET_SINGLE(SceneManager)->GetCurrentScene();
-        if (currentScene != nullptr)
-        {
-            currentScene->Clear();
-            currentScene->BuildMapFromData(_currentMap);
-        }
-    }
-}
 
 json DataManager::SerializeMapObjects(const std::vector<ObjectSpawnData>& mapDataList)
 {
