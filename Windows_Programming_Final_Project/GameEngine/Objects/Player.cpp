@@ -281,17 +281,18 @@ void Player::Fire()
     Projectile* proj = new Projectile(this, currentWeapon_Player);
     proj->Init();
 
-
-    //proj->SetDirection(facingDir);
-    //proj->SetPos(pos + facingDir * 25.0f);
-
-    // 3. 투사체 정보 세팅 (데미지, 스피드 등 Projectile.h의 SetInfo 활용)
-    // proj->SetInfo(this, Projectile::ProjectileType::BULLET, 10.0f, 800.0f, 2.0f);
-
-    // 4. 씬 매니저에 투사체 등록 (화면에 렌더링되고 Update를 타게 됨)
     GET_SINGLE(SceneManager)->GetCurrentScene()->AddObject(proj);
 
-
+    Camera* cam = GET_SINGLE(SceneManager)->GetCurrentScene()->GetCamera();
+    if (cam != nullptr)
+    {
+        if (currentWeapon_Player == WPTYPE::RIFLE)
+            cam->TriggerShake(0.07f, 7.0f);   // 라이플: 짧고 묵직하게
+        else if (currentWeapon_Player == WPTYPE::CROWBAR)
+            cam->TriggerShake(0.05f, 3.0f);  // 근접무기: 살짝
+        else
+            cam->TriggerShake(0.08f, 5.0f);  // 기본
+    }
 
 }
 
