@@ -9,6 +9,7 @@
 Vec2F Enemy::s_playerPos = Vec2F(0.0f, 0.0f);
 bool Enemy::s_isAlerted = false;
 
+//다시 푸시하기
 
 Enemy::Enemy()
 {

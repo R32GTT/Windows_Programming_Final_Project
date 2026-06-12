@@ -177,8 +177,6 @@ void SceneManager::RequestMapChange(const std::string& targetMapName)
 }
 
 
-
-
 void SceneManager::SetCamOwner(GameObject* object)
 {
 	_scene->SetCamOwner(object);
