@@ -103,6 +103,7 @@ void Enemy::Init()
 		PlayAnimation(_Fanims[(int)AnimType::IDLE]);
 }
 
+//간단한 적 Ai를 구현함
 void Enemy::Update()
 {
 	SavePrevPos();
