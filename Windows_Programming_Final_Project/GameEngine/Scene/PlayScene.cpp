@@ -27,10 +27,20 @@ void PlayScene::Init()
 		Super::SetCamOwner(Super::GetPlayer());
 	}
 
+	// === [추가] 스테이지 시작 시 적들의 경보(추격 상태)를 초기화해 줍니다. ===
+	Enemy::s_isAlerted = false;
+
 }
 
 void PlayScene::Update()
 {
+	// === [추가] 매 프레임 적들의 정적 변수에 플레이어 최신 위치를 동기화해 줍니다. ===
+	GameObject* player = GetPlayer();
+	if (player != nullptr)
+	{
+		Enemy::s_playerPos = player->GetPos();
+	}
+
 	Super::Update();
 
 	//매 프레임마다 플레이어가 도착점에 닿았는지 검사
