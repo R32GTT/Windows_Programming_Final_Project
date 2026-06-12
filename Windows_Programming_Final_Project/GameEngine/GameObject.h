@@ -66,7 +66,8 @@ public:
 	void PlayAnimation(FlipBook* anim);
 	void UpdateAnimation(float dt);
 	void RenderAnimation(ID2D1RenderTarget* renderTarget, float renderX, float renderY);
-
+	void SetRotationAngle(float angle);
+	float GetRotationAngle() { return _rotationAngle; };
 
 public:
 

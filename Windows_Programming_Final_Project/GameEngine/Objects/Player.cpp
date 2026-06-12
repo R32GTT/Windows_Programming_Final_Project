@@ -14,7 +14,7 @@ Player::Player()
 
     type = OBJECTTYPE::PLAYER;
     layer = Layers::ACTORS;
-    currentWeapon_Player = WPTYPE::FIST;
+    currentWeapon_Player = WPTYPE::RIFLE;
     _currentAmmo = 26;
 }
 

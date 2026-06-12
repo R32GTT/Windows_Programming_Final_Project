@@ -7,6 +7,7 @@ class EndPoint : public GameObject
 public:
 	EndPoint();
 	virtual ~EndPoint();
+	virtual void Render(ID2D1RenderTarget* renderTarget, float alpha);
 
 	virtual void OnCollision(GameObject* other) override;
 

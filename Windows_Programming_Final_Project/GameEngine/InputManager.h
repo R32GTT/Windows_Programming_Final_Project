@@ -23,6 +23,7 @@ enum class KeyType
 	F5 = VK_F5,
 	F6 = VK_F6,
 	F7 = VK_F7,
+	F8 = VK_F8,
 
 
 	KEY_1 = '1',

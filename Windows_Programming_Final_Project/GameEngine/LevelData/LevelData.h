@@ -19,6 +19,8 @@ struct ObjectSpawnData
 	std::wstring spriteName{ L"" };
 
 	std::string textData = "";
+	
+	float angle = 0.0f;
 };
 
 struct MapData
