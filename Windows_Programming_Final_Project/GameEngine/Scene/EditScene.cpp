@@ -345,6 +345,22 @@ void EditScene::Update()
 				weapon->SetWeaponType(static_cast<WPTYPE>(currentWType));
 			}
 		}
+		if (_selectedObject->GetObjectType() != OBJECTTYPE::ENDPOINT &&
+			_selectedObject->GetObjectType() != OBJECTTYPE::WALL)
+		{
+			// R 키를 누를 때마다 시계 방향으로 45도씩 회전
+			if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::R))
+			{
+				float currentAngle = _selectedObject->GetRotationAngle();
+				currentAngle += 45.0f;
+
+				if (currentAngle >= 360.0f)
+					currentAngle -= 360.0f;
+
+				_selectedObject->SetRotationAngle(currentAngle);
+			}
+		}
+
 	}
 
 	if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::F8))
@@ -504,6 +520,10 @@ void EditScene::LoadMap(const std::wstring& fileName)
 	GET_SINGLE(DataManager)->LoadMapData(fileName);
 	BuildMapFromData(GET_SINGLE(DataManager)->GetCurrentMapData());
 	Super::Init();
+
+	int objCount = GetAllObjects().size();
+	std::string msg = "Current Object Count: " + std::to_string(objCount) + "\n";
+	OutputDebugStringA(msg.c_str());
 }
 
 

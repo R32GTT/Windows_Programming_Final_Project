@@ -175,13 +175,6 @@ void DataManager::LoadMapData(const std::wstring& fileName)
         if (!_mapCache.empty())
         {
             _currentMap = _mapCache[_currentMapIdx];
-
-            Scene* currentScene = GET_SINGLE(SceneManager)->GetCurrentScene();
-            if (currentScene != nullptr)
-            {
-                currentScene->Clear();
-                currentScene->BuildMapFromData(_currentMap);
-            }
         }
     }
 
@@ -205,6 +198,7 @@ json DataManager::SerializeMapObjects(const std::vector<ObjectSpawnData>& mapDat
         objJson["WallRectT"] = data.WallCoords.top;
         objJson["WallRectB"] = data.WallCoords.bottom;
         objJson["WeaponType"] = WeaponTypeToString(data.weaponType);
+        objJson["Angle"] = data.angle;
         if (!data.textData.empty()) objJson["TextData"] = data.textData;
 
         objectsArray.push_back(objJson);
@@ -233,6 +227,7 @@ void DataManager::DeserializeMapObjects(const json& mapJson, MapData& outMapData
         if (objJson.contains("WallRectT")) data.WallCoords.top = objJson["WallRectT"];
         if (objJson.contains("WallRectB")) data.WallCoords.bottom = objJson["WallRectB"];
         if (objJson.contains("WeaponType")) data.weaponType = StringToWeaponType(objJson["WeaponType"]);
+        if (objJson.contains("Angle")) data.angle = objJson["Angle"];
         if (objJson.contains("TextData")) data.textData = objJson["TextData"].get<std::string>();
 
         outMapData.objects.push_back(data);

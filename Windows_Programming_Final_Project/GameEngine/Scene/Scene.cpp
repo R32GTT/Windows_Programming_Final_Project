@@ -25,6 +25,7 @@ Scene::~Scene()
 	}
 	_player = nullptr;
 	_objectMap.clear();
+	_spawnQueue.clear();
 }
 
 void Scene::Init()
@@ -75,6 +76,7 @@ void Scene::Clear()
 	}
 	_player = nullptr;
 	_objectMap.clear();
+	_spawnQueue.clear();
 }
 
 void Scene::PurgeDeadObjects()
@@ -199,7 +201,6 @@ void Scene::SpawnWeapon(Vec2<float> pos) {
 
 	Weapon* weapon = new Weapon();
 
-	weapon->Init();
 	weapon->SetPos(pos);
 	weapon->Init();
 
