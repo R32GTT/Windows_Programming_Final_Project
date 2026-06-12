@@ -150,6 +150,17 @@ void GameObject::RenderAnimation(ID2D1RenderTarget* renderTarget, float renderX,
 	renderTarget->SetTransform(oldTransform);
 }
 
+void GameObject::SetRotationAngle(float angle)
+{
+	_rotationAngle = angle;
+
+	float radian = _rotationAngle * (3.14159265f / 180.0f);
+
+	facingDir.x = sin(radian);
+	facingDir.y = -cos(radian);
+}
+
+
 
 
 void GameObject::SaveToData(ObjectSpawnData& outData)
@@ -160,6 +171,7 @@ void GameObject::SaveToData(ObjectSpawnData& outData)
 	outData.pos = GetPos();
 	outData.halfSize = GetHalfSize();
 	outData.spriteName = GetSpriteName();
+	outData.angle = _rotationAngle;
 }
 
 void GameObject::LoadFromData(const ObjectSpawnData& spawnData)
@@ -169,6 +181,7 @@ void GameObject::LoadFromData(const ObjectSpawnData& spawnData)
 	SetHalfSize(spawnData.halfSize);
 	layer = (spawnData.layers);
 	SetSpriteName(spawnData.spriteName);
+	SetRotationAngle(spawnData.angle);
 }
 
 
