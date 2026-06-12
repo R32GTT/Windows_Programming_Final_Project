@@ -4,6 +4,7 @@
 #include "Objects.h"
 #include "../LevelData/LevelData.h"
 #include "../FileBase/FileTypes/FlipBook.h"
+#include "../Scene/Scene.h"
 
 // === [추가] Enemy 정적 공유 변수 초기화 ===
 Vec2F Enemy::s_playerPos = Vec2F(0.0f, 0.0f);
@@ -108,6 +109,7 @@ void Enemy::Init()
 void Enemy::Update()
 {
 	SavePrevPos();
+	s_playerPos = GET_SINGLE(SceneManager)->GetCurrentScene()->GetPlayer()->GetPos();
 
 	// 행동 불능 상태가 아닐 때만 패턴을 수행하도록 제어
 	if (_enemyState != EnemyState::DEAD && _enemyState != EnemyState::UNCONSCIOUS)
