@@ -5,6 +5,7 @@
 
 //무기 클래스 전방 선언
 class Weapon;
+class Enemy;
 
 class Player : public GameObject {
 public:
@@ -55,6 +56,6 @@ private:
 	PlayerState status = PlayerState::IDLE;
 
 	bool _projectileSpawned = false;
-
+	Enemy* _targetEnemy = nullptr;
 
 };
