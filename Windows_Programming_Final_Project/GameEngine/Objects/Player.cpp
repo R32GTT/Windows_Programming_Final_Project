@@ -105,11 +105,14 @@ void Player::Update()
     Vec2F mousePos = GET_SINGLE(InputManager)->GetMousePos();
     Vec2F dirToMouse = mousePos - GET_SINGLE(SceneManager)->ToRenderPos(pos);
 
-    if (dirToMouse.LengthSq() > 0.0f) {
-        facingDir = dirToMouse.Normalized();
-        _rotationAngle = facingDir.Angle() * (180.0f / PI) + 90.0f; // Sprite가 위를 향하기 때문에 +90
+    
+    if (status != PlayerState::EXECUTE)
+    {
+        if (dirToMouse.LengthSq() > 0.0f) {
+            facingDir = dirToMouse.Normalized();
+            _rotationAngle = facingDir.Angle() * (180.0f / PI) + 90.0f; // Sprite가 위를 향하기 때문에 +90
+        }
     }
-
 
     Move();
 
@@ -211,8 +214,65 @@ void Player::Update()
         break;
     }
     case PlayerState::EXECUTE:
-        // 처형 로직 등...
+    {
+        InputManager* input = GET_SINGLE(InputManager);
+
+        // 1. 처형 취소 (이동키 입력)
+        if (input->GetButtonDown(KeyType::W) || input->GetButtonDown(KeyType::A) ||
+            input->GetButtonDown(KeyType::S) || input->GetButtonDown(KeyType::D))
+        {
+            status = PlayerState::IDLE;
+            _targetEnemy = nullptr;
+            _isAttacking = false;
+            break;
+        }
+
+        // 애니메이션 세팅 (항상 실행)
+        PlayAnimation(_anims[(int)AnimType::EXECUTE]);
+
+        if (!_isAttacking)
+        {
+
+            _currFrame = 0;
+            _animTimer = 0.0f;
+
+
+            if (input->GetButtonDown(KeyType::LeftMouse))
+            {
+                _isAttacking = true;
+
+                // 처형 타격감 (카메라 흔들림)
+                Camera* cam = GET_SINGLE(SceneManager)->GetCurrentScene()->GetCamera();
+                if (cam) cam->TriggerShake(0.15f, 15.0f);
+            }
+        }
+        else
+        {
+            if (_currAnim != nullptr)
+            {
+                int maxFrame = _currAnim->GetInfo().frames.size() - 1;
+
+                if (_currFrame >= maxFrame)
+                {
+                    // TODO: 적 체력 감소 로직
+                    // _targetEnemy->TakeDamage(1); 
+
+                    // 만약 적이 아직 안 죽었다면 다시 대기 상태(0번 프레임)로 복귀
+                    // (핫라인 마이애미처럼 여러 번 클릭해서 패죽이는 연출 가능)
+                    _isAttacking = false;
+                    _currFrame = 0;
+                    _animTimer = 0.0f;
+
+                    // 만약 적 체력이 0 이하라면 처형 종료
+                     status = PlayerState::IDLE;
+                     _targetEnemy->SetEnemyState(EnemyState::DEAD); // 적 완전 사망 처리
+                     _targetEnemy = nullptr;
+
+                }
+            }
+        }
         break;
+    }
     }
 
     UpdateAnimation(1.0f / 60.0f);
@@ -252,8 +312,13 @@ void Player::OnCollision(GameObject* other)
             {
                 status = PlayerState::EXECUTE;
                 SetPos(enemy->GetPos());
-                //TODO
+                
+                _targetEnemy = enemy;
 
+                _isAttacking = false;
+
+                _currFrame = 0;
+                _animTimer = 0;
             }
         }
         break;
@@ -281,17 +346,18 @@ void Player::Fire()
     Projectile* proj = new Projectile(this, currentWeapon_Player);
     proj->Init();
 
-
-    //proj->SetDirection(facingDir);
-    //proj->SetPos(pos + facingDir * 25.0f);
-
-    // 3. 투사체 정보 세팅 (데미지, 스피드 등 Projectile.h의 SetInfo 활용)
-    // proj->SetInfo(this, Projectile::ProjectileType::BULLET, 10.0f, 800.0f, 2.0f);
-
-    // 4. 씬 매니저에 투사체 등록 (화면에 렌더링되고 Update를 타게 됨)
     GET_SINGLE(SceneManager)->GetCurrentScene()->AddObject(proj);
 
-
+    Camera* cam = GET_SINGLE(SceneManager)->GetCurrentScene()->GetCamera();
+    if (cam != nullptr)
+    {
+        if (currentWeapon_Player == WPTYPE::RIFLE)
+            cam->TriggerShake(0.07f, 7.0f);   // 라이플: 짧고 묵직하게
+        else if (currentWeapon_Player == WPTYPE::CROWBAR)
+            cam->TriggerShake(0.05f, 3.0f);  // 근접무기: 살짝
+        else
+            cam->TriggerShake(0.08f, 5.0f);  // 기본
+    }
 
 }
 

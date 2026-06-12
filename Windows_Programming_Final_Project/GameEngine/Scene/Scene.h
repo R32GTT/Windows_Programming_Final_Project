@@ -46,8 +46,11 @@ public:
 	void SetPlayer(GameObject* player) { _player = player; };
 	GameObject* GetPlayer() { return _player; };
 	void SetCamOwner(GameObject* object) { _cam.SetOwner(object); };
+	Camera* GetCamera() { return &_cam; };
 
 	bool CheckSceneCleared();
+
+
 
 	void AddObject(GameObject* object);
 	void FlushSpawnQueue();
