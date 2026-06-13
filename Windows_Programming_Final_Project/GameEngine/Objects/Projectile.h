@@ -44,6 +44,7 @@ public:
 	Vec2F GetDir() { return _dir; };
 
 	//추가: 무기 타입을 반환하는 Getter 함수를 추가합니다
+	//무기 타입을 알아야 각 마당의 점수를 알 수 있다
 	WPTYPE GetWeaponType() const { return _wpType; }
 
 
