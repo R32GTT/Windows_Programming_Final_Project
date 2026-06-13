@@ -43,6 +43,10 @@ public:
 	ProjectileType GetProjType() { return _projType; }
 	Vec2F GetDir() { return _dir; };
 
+	//추가: 무기 타입을 반환하는 Getter 함수를 추가합니다
+	WPTYPE GetWeaponType() const { return _wpType; }
+
+
 private:
 	GameObject* _owner{ nullptr };         // 누가 발사/공격했는가 (자신이 맞지 않기 위해)
 	ProjectileType _projType = ProjectileType::BULLET;   // 총알인지 근접인지
@@ -58,6 +62,6 @@ private:
 	float _currentTimer{};        // 현재 생존 시간 계산용
 
 	
-
+	WPTYPE _wpType{ WPTYPE::NONE };
 
 };

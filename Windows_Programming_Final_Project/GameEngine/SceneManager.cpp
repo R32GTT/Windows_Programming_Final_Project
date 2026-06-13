@@ -232,7 +232,7 @@ void SceneManager::OnEnemyKilled(WPTYPE wptype)
 		scoreToAdd = 300; // 근접 처치 시 점수
 		break;
 	case WPTYPE::RIFLE:
-		scoreToAdd = 40; // 총기 처치 시 점수
+		scoreToAdd = 200; // 총기 처치 시 점수
 		break;
 
 	case WPTYPE::FIST:
@@ -246,7 +246,7 @@ void SceneManager::OnEnemyKilled(WPTYPE wptype)
 	_comboTimer = COMBO_TIME_LIMIT;
 
 	float earnedScore = BASE_KILL_SCORE + ((_currentCombo - 1) * COMBO_BONUS_SCORE);
-	_totalScore += earnedScore;
+	_totalScore += scoreToAdd;
 }
 
 //처형 처치시(새로 추가함)
