@@ -19,15 +19,14 @@ void SceneManager::Update()
 
 	if (!_isGameEnded)
 	{
-		if (_totalScore > 0.f)
-		{
-			_totalScore -= SCORE_TIME_PENALTY * dt;
-			if (_totalScore < 0.f) _totalScore = 0.f;
-		}
-
+		
 		if (_currentCombo > 0)
 		{
-			_comboTimer -= dt;
+
+			// 현재 2.0f(2배속)로 설정해 두었으며, 원하는 속도에 맞춰 조절해 봅시다.
+			float comboDecayMultiplier = 8.0f;
+			_comboTimer -= (dt * comboDecayMultiplier);
+
 			if (_comboTimer <= 0.f)
 			{
 				_currentCombo = 0;
