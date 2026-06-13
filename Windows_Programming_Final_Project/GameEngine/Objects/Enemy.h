@@ -13,6 +13,7 @@ private:
 	EnemyState _enemyState = EnemyState::IDLE; // 상태는 이걸로 체크
 
 	int _currentAmmo{};
+	int _attackHitCount = 0; // 공격 프레임 중복 방지용 카운트 (Player와 동일)
 
 	bool _projectileSpawned = false;
 	bool _isHit = false; // 장갑용
@@ -29,6 +30,9 @@ private:
 	// === [추가] 시야 감지 및 추적을 위한 세팅 ===
 	float _viewDistance = 400.0f; // 적의 시야 거리 (픽셀 단위, 조절 가능)
 	float _viewAngle = 60.0f;     // 적의 시야 반각 (정면 기준 좌우 60도, 총 120도 시야각)
+
+	float _attackCooldown = 0.0f; 
+	int _burstCount = 0;          
 
 	bool CheckPlayerInSight();    // 플레이어가 시야 내에 있는지 확인하는 함수
 
@@ -52,7 +56,7 @@ public:
 
 	//무기 정보(WPTYPE)를 추가로 받는 새로운 전용 함수 선언
 	void OnHit_Recoil(bool isLethal, Vec2F dir, WPTYPE hitWeapon);
-
+	virtual void Fire() override;
 
 	virtual void SaveToData(ObjectSpawnData& outData) override;
 	virtual void LoadFromData(const ObjectSpawnData& spawnData) override;

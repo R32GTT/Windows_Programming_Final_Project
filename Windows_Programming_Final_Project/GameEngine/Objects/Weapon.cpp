@@ -45,7 +45,7 @@ static const WeaponInfo g_WeaponTable[(int)WPTYPE::TOTAL_COUNT] =
 	{
 		50,
 		20,                           // projectile_Life (최대 2초 동안 총알 날아감)
-		2000.0f,                        // projectile_Speed
+		1500.0f,                        // projectile_Speed
 		1,
 		0.03f,                          // projectile_Deviation (라디안 탄퍼짐)
 		ProjectileType::BULLET,

@@ -44,9 +44,10 @@ Projectile::Projectile(GameObject* owner, WPTYPE wpType)
 		Vec2F rightDir = Vec2F(-facingDir.y, facingDir.x);
 		float offsetDistance = 11.0f;
 		pos = pos + (rightDir * offsetDistance);
-		
+		prevPos = pos = pos + _dir * 10.0f;
 	}
-	prevPos = pos = pos + _dir * 40.0f;
+	else
+		prevPos = pos = pos + _dir * 30.0f;
 	_rotationAngle = _dir.Angle() * (180.0f / PI);
 }
 
