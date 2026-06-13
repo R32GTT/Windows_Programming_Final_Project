@@ -222,8 +222,8 @@ void PlayScene::OnStageClearTrigger()
 		Super::Init();
 
 		//다음 맵이 시작 시 콤보가 초기화되도록 설정
-		GET_SINGLE(SceneManager)->SetCurrentCombo(0);
-		GET_SINGLE(SceneManager)->SetComboTimer(0.0f);
+		//GET_SINGLE(SceneManager)->SetCurrentCombo(0);
+		//GET_SINGLE(SceneManager)->SetComboTimer(0.0f);
 
 		_isStageClearing = false;
 	} 

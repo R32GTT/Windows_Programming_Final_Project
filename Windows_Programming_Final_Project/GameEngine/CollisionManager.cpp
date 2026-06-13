@@ -68,9 +68,11 @@ void CollisionManager::Update()
 	
 	CheckActorWallCollision(_characters, walls);
 	CheckProjectileCollision(_projectiles, _characters, walls);
-	CheckActorEndpointCollision(_characters, _endPoints);
 	if (player != nullptr && !player->IsKilled())
+	{
 		CheckPlayerEnemyCollision(player, _characters);
+		CheckPlayerEndpointCollision(player, _endPoints); 
+	}
 	CheckActorWeaponCollision(_characters, currentScene->GetObjectsByLayer(Layers::ITEM));
 
 }
@@ -110,71 +112,80 @@ void CollisionManager::CheckProjectileCollision(const std::vector<GameObject*>& 
 		if (roj == nullptr || roj->CheckDead()) continue;
 
 		Projectile* proj = static_cast<Projectile*>(roj);
-		GameObject* owner = proj->GetOwner(); 
+		GameObject* owner = proj->GetOwner();
 
-		for (auto* wall : walls)
+		// 1. 이번 프레임의 이동 궤적 정보 계산
+		Vec2F startPos = proj->GetPrevPos();
+		Vec2F endPos = proj->GetPos();
+		Vec2F travelVec = endPos - startPos;
+		float travelDist = travelVec.Length();
+
+		// [핵심 변경점] 총알의 가장 얇은 부분을 기준으로 stepSize 자동 설정
+		// GetHalfSize()는 절반 크기이므로, 이 값을 stepSize로 쓰면 절대 건너뛰지 않는 안전한 간격이 됩니다.
+		float minHalfSize = std::min(proj->GetHalfSize().x, proj->GetHalfSize().y);
+		float stepSize = (minHalfSize > 0.1f) ? minHalfSize : 2.0f; // 0이 되는 것을 방지하는 최소한의 방어 코드
+
+		int steps = std::max(1, static_cast<int>(travelDist / stepSize));
+
+		bool isProjectileDestroyed = false;
+
+		// 2. 궤적을 따라 잘게 쪼개서 한 단계씩 전진하며 검사
+		for (int i = 1; i <= steps; ++i)
 		{
-			if (wall == nullptr) continue;
+			float t = static_cast<float>(i) / steps;
+			Vec2F currentPos = startPos + travelVec * t;
 
-			Vec2F diff = proj->GetPos() - wall->GetPos();
-			float maxDist = (proj->GetHalfSize().x + proj->GetHalfSize().y) + (wall->GetHalfSize().x + wall->GetHalfSize().y);
-			if (diff.LengthSq() > maxDist * maxDist) continue;
+			proj->SetPos(currentPos);
 
-			if (CheckOBB_AABB(proj, wall))
+			// [A] 벽 충돌 검사
+			for (auto* wall : walls)
 			{
-				proj->OnCollision(wall);
-				wall->OnCollision(proj);
-				break;
+				if (wall == nullptr) continue;
+
+				Vec2F diff = proj->GetPos() - wall->GetPos();
+				float maxDist = (proj->GetHalfSize().x + proj->GetHalfSize().y) + (wall->GetHalfSize().x + wall->GetHalfSize().y);
+				if (diff.LengthSq() > maxDist * maxDist) continue;
+
+				if (CheckOBB_AABB(proj, wall))
+				{
+					proj->OnCollision(wall);
+					wall->OnCollision(proj);
+					isProjectileDestroyed = true;
+					break;
+				}
 			}
-		}
 
-		if (proj->CheckDead()) continue;
+			// 벽에 부딪혀 총알이 사라졌다면 다음 단계 검사 중단
+			if (isProjectileDestroyed || proj->CheckDead()) break;
 
-		for (auto* actor : actors)
-		{
-			if (actor == nullptr || actor->CheckDead()) continue;
-
-			if (actor == owner) continue;
-			if (actor->IsKilled()) continue;
-
-			Vec2F diff = proj->GetPos() - actor->GetPos();
-			float maxDist = (proj->GetHalfSize().x + proj->GetHalfSize().y) + (actor->GetHalfSize().x + actor->GetHalfSize().y);
-			if (diff.LengthSq() > maxDist * maxDist) continue;
-
-			if (CheckOBB(proj, actor))
+			// [B] 액터(적/플레이어) 충돌 검사
+			for (auto* actor : actors)
 			{
-				proj->OnCollision(actor);
-				actor->OnCollision(proj);
-				if (proj->CheckDead()) break; 
+				if (actor == nullptr || actor->CheckDead()) continue;
+				if (actor == owner) continue;
+				if (actor->IsKilled()) continue;
+
+				Vec2F diff = proj->GetPos() - actor->GetPos();
+				float maxDist = (proj->GetHalfSize().x + proj->GetHalfSize().y) + (actor->GetHalfSize().x + actor->GetHalfSize().y);
+				if (diff.LengthSq() > maxDist * maxDist) continue;
+
+				if (CheckOBB(proj, actor))
+				{
+					proj->OnCollision(actor);
+					actor->OnCollision(proj);
+					if (proj->CheckDead())
+					{
+						isProjectileDestroyed = true;
+						break;
+					}
+				}
 			}
+
+			if (isProjectileDestroyed || proj->CheckDead()) break;
 		}
 	}
 }
 
-void CollisionManager::CheckActorEndpointCollision(const std::vector<GameObject*>& actors, const std::vector<GameObject*>& endPoints)
-{
-	for (auto* actor : actors)
-	{
-		if (actor == nullptr || actor->CheckDead()) continue;
-		if (actor->GetObjectType() != OBJECTTYPE::PLAYER) continue;
-
-		for (auto* ep : endPoints)
-		{
-			if (ep == nullptr) continue;
-
-			Vec2F diff = actor->GetPos() - ep->GetPos();
-			float maxDist = (actor->GetHalfSize().x + actor->GetHalfSize().y) + (ep->GetHalfSize().x + ep->GetHalfSize().y);
-			if (diff.LengthSq() > maxDist * maxDist) continue;
-
-			if (CheckOBB_AABB(actor, ep))
-			{
-				//actor->OnCollision(ep);
-				ep->OnCollision(actor);
-				return;
-			}
-		}
-	}
-}
 
 
 void CollisionManager::CheckPlayerEnemyCollision(GameObject* player, const std::vector<GameObject*>& actors)
@@ -223,6 +234,28 @@ void CollisionManager::CheckActorWeaponCollision(const std::vector<GameObject*>&
 				//wep->OnCollision(actor);
 				break;
 			}
+		}
+	}
+}
+
+void CollisionManager::CheckPlayerEndpointCollision(GameObject* player, const std::vector<GameObject*>& endPoints)
+{
+	// Update에서 체크하긴 하지만 안전을 위해 한 번 더 검증
+	if (player == nullptr || player->CheckDead()) return;
+
+	for (auto* ep : endPoints)
+	{
+		if (ep == nullptr) continue;
+
+		Vec2F diff = player->GetPos() - ep->GetPos();
+		float maxDist = (player->GetHalfSize().x + player->GetHalfSize().y) + (ep->GetHalfSize().x + ep->GetHalfSize().y);
+		if (diff.LengthSq() > maxDist * maxDist) continue;
+
+		if (CheckOBB_AABB(player, ep))
+		{
+			//player->OnCollision(ep);
+			ep->OnCollision(player);
+			return; // Endpoint에 도달했으므로 더 이상 다른 Endpoint를 검사할 필요 없음
 		}
 	}
 }
