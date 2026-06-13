@@ -45,7 +45,6 @@ void CollisionManager::Update()
 	_characters.clear();
 	_projectiles.clear();
 	_endPoints.clear();
-	_weapons.clear();
 
 	const auto& allActors = currentScene->GetObjectsByLayer(Layers::ACTORS);
 	const auto& walls = currentScene->GetObjectsByLayer(Layers::WALL);
@@ -63,16 +62,16 @@ void CollisionManager::Update()
 			_projectiles.push_back(obj);
 		else if (type == OBJECTTYPE::ENDPOINT)
 			_endPoints.push_back(obj);
-		else if (type == OBJECTTYPE::WEAPON)
-			_weapons.push_back(obj);
 	}
 	GameObject* player = currentScene->GetPlayer();
-		
+	
+
 	CheckActorWallCollision(_characters, walls);
 	CheckProjectileCollision(_projectiles, _characters, walls);
 	CheckActorEndpointCollision(_characters, _endPoints);
 	if (player != nullptr && !player->IsKilled())
 		CheckPlayerEnemyCollision(player, _characters);
+	CheckActorWeaponCollision(_characters, currentScene->GetObjectsByLayer(Layers::ITEM));
 
 }
 
@@ -207,11 +206,12 @@ void CollisionManager::CheckActorWeaponCollision(const std::vector<GameObject*>&
 	{
 		if (actor == nullptr || actor->CheckDead()) continue;
 		OBJECTTYPE objt = actor->GetObjectType();
-		if (objt != OBJECTTYPE::PLAYER || objt != OBJECTTYPE::ENEMY) continue;
+		if (objt != OBJECTTYPE::PLAYER && objt != OBJECTTYPE::ENEMY) continue;
 
 		for (auto* wep : weapons)
 		{
 			if (wep == nullptr) continue;
+			if (wep->CheckDead()) continue;
 
 			Vec2F diff = actor->GetPos() - wep->GetPos();
 			float maxDist = (actor->GetHalfSize().x + actor->GetHalfSize().y) + (wep->GetHalfSize().x + wep->GetHalfSize().y);
@@ -221,7 +221,7 @@ void CollisionManager::CheckActorWeaponCollision(const std::vector<GameObject*>&
 			{
 				actor->OnCollision(wep);
 				//wep->OnCollision(actor);
-				return;
+				break;
 			}
 		}
 	}

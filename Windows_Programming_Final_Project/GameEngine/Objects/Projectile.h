@@ -59,5 +59,5 @@ private:
 
 	
 
-	bool _isDead = false;               // 삭제 대기 상태인지 확인
+
 };

@@ -31,7 +31,7 @@ private:
 	std::vector<GameObject*> _characters;
 	std::vector<GameObject*> _projectiles;
 	std::vector<GameObject*> _endPoints;
-	std::vector<GameObject*> _weapons;
+	//std::vector<GameObject*> _weapons;
 
 
 };

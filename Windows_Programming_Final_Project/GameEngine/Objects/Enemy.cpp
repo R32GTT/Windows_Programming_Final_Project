@@ -17,7 +17,7 @@ bool Enemy::s_isAlerted = false;
 Enemy::Enemy()
 {
 	speed = baseEnemySpeed;
-	_halfSize = Vec2F(25.0f, 10.0f);
+	_halfSize = Vec2F(30.0f, 15.0f);
 
 	type = OBJECTTYPE::ENEMY;
 	layer = Layers::ACTORS;
@@ -25,7 +25,7 @@ Enemy::Enemy()
 
 Enemy::Enemy(EnemyType etype)
 {
-	_halfSize = Vec2F(25.0f, 10.0f);
+	_halfSize = Vec2F(30.0f, 15.0f);
 	type = OBJECTTYPE::ENEMY;
 	layer = Layers::ACTORS;
 
