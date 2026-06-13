@@ -30,6 +30,10 @@ void PlayScene::Init()
 	// === [추가] 스테이지 시작 시 적들의 경보(추격 상태)를 초기화해 줍니다. ===
 	Enemy::s_isAlerted = false;
 
+	//씬을 새로 불러와 시작할 때 무조건 콤보와 타이머를 0으로 초기화 합니다
+	GET_SINGLE(SceneManager)->SetCurrentCombo(0);
+	GET_SINGLE(SceneManager)->SetComboTimer(0.0f);
+
 }
 
 void PlayScene::Update()
