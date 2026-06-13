@@ -53,6 +53,10 @@ public:
 	//SetIsGameEnded를 추가. 상태 변경을 위하여
 	void SetIsGameEnded(bool isEnded) { _isGameEnded = isEnded; }
 
+	//콤보와 타이머를 외부에서 조작할 수 있는 Setter함수
+
+	void SetCurrentCombo(int combo) { _currentCombo = combo; }
+	void SetComboTimer(float time) { _comboTimer = time; }
 
 private:
 	void ExecuteMapChange();
