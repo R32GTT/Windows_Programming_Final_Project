@@ -1,9 +1,7 @@
 #pragma once
 #include "pch.h"
 #include "GameObject.h"
-#include "Projectile.h"
 #include "Enums.h"
-
 
 struct WeaponInfo
 {

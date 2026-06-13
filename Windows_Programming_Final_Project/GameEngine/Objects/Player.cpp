@@ -37,7 +37,6 @@ WPTYPE Player::GetWeaponType() const
 void Player::EquipWeapon(Weapon* weapon)
 {
     if (weapon == nullptr) return;
-    
     SetWeaponType(weapon->GetWeaponType());
     _currentAmmo = weapon->GetAmmo();
 }
@@ -45,7 +44,7 @@ void Player::EquipWeapon(Weapon* weapon)
 //무기 버리기 구현
 void Player::DropWeapon()
 {
-  
+
 
 
     currentWeapon_Player = WPTYPE::FIST;

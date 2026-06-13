@@ -2,6 +2,8 @@
 #include "Projectile.h"
 #include <random>
 #include "Managers.h"
+#include "Weapon.h"
+
 static std::random_device rd;
 static std::mt19937 gen(rd());
 
@@ -106,9 +108,6 @@ void Projectile::OnCollision(GameObject* other)
 		_isDead = true;
 	}
 }
-
-
-
 void Projectile::SetDirection(Vec2<float> dir)
 {
 	_dir = dir.Normalized();

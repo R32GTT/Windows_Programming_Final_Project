@@ -18,7 +18,7 @@ public:
 	virtual void OnCollision(GameObject* other);
 	virtual void Fire() {};
 	virtual void OnHit_Recoil(bool isLethal, Vec2F dir);
-
+ 
 public:
 	bool operator==(const GameObject& rhs) { return _id == rhs._id; };
 
