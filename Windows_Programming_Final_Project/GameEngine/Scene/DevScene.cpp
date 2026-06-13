@@ -49,7 +49,13 @@ void DevScene::Update()
 	//추가된 코드: F2를 누르면 PlayScene으로 이동
 	if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::F2))
 	{
+		GET_SINGLE(SceneManager)->SetCurrentCombo(0);
+		GET_SINGLE(SceneManager)->SetComboTimer(0.0f);
+
+		GET_SINGLE(SceneManager)->SetIsGameEnded(false);
+
 		GET_SINGLE(SceneManager)->ChangeScene(SceneType::PLAYSCENE);
+		return;
 	}
 
 }
