@@ -50,6 +50,9 @@ public:
 	float GetComboTimer() { return _comboTimer; }
 	bool GetIsGameEnded() { return _isGameEnded; }
 
+	//SetIsGameEnded를 추가. 상태 변경을 위하여
+	void SetIsGameEnded(bool isEnded) { _isGameEnded = isEnded; }
+
 
 private:
 	void ExecuteMapChange();
