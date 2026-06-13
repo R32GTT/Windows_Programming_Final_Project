@@ -62,10 +62,10 @@ void CollisionManager::Update()
 			_projectiles.push_back(obj);
 		else if (type == OBJECTTYPE::ENDPOINT)
 			_endPoints.push_back(obj);
+
 	}
 	GameObject* player = currentScene->GetPlayer();
 	
-
 	CheckActorWallCollision(_characters, walls);
 	CheckProjectileCollision(_projectiles, _characters, walls);
 	CheckActorEndpointCollision(_characters, _endPoints);
