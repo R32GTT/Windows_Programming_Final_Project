@@ -93,7 +93,7 @@ void PlayScene::Render(ID2D1RenderTarget* renderTarget, float alpha)
 	else
 	{
 		// [게임 종료 상태] 최종 점수 표시 + 시간을 표시한다
-		scoreText = L"=== STAGE CLEAR ===\n\nFINAL SCORE: " + std::to_wstring(currentScore);
+		scoreText = L"=== STAGE CLEAR ===\n\n";
 		scoreText += L"CLEAR TIME: " + std::to_wstring((int)currentPlayTime) + L"s\n";
 		scoreText += L"FINAL SCORE: " + std::to_wstring(currentScore);
 	}
