@@ -23,7 +23,7 @@ static const WeaponInfo g_WeaponTable[(int)WPTYPE::TOTAL_COUNT] =
 		ProjectileType::MELEE,
 		false,
 		-1,//inf ammo
-		Vec2F(shortMelee * 0.5f, 25.0f),
+		Vec2F(shortMelee * 0.5f, 35.0f),
 		{3}
 	},
 
@@ -38,16 +38,16 @@ static const WeaponInfo g_WeaponTable[(int)WPTYPE::TOTAL_COUNT] =
 		true,
 		-1,
 		Vec2F(midMelee * 0.5f, 35.0f),
-		{2,4}
+		{2,5}
 	},
 
 	// [3] WPTYPE::RIFLE (라이플)
 	{
 		50,
 		20,                           // projectile_Life (최대 2초 동안 총알 날아감)
-		1500.0f,                        // projectile_Speed
+		2000.0f,                        // projectile_Speed
 		1,
-		0.06f,                          // projectile_Deviation (라디안 탄퍼짐)
+		0.03f,                          // projectile_Deviation (라디안 탄퍼짐)
 		ProjectileType::BULLET,
 		true,
 		26,

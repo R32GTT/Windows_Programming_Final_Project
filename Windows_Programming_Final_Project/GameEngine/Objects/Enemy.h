@@ -46,7 +46,7 @@ public:
 	virtual bool IsKilled() override;
 	virtual void OnCollision(GameObject* other) override;
 
-	void OnExecution();
+	void OnExecution(bool t) { _onExecution = t; };
 
 	virtual void OnHit_Recoil(bool isLethal, Vec2F dir) override;
 

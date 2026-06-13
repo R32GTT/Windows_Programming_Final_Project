@@ -46,8 +46,8 @@ Projectile::Projectile(GameObject* owner, WPTYPE wpType)
 		pos = pos + (rightDir * offsetDistance);
 		
 	}
-	prevPos = pos = pos + _dir * 65.0f;
-	_rotationAngle = _rotationAngle = facingDir.Angle() * (180.0f / PI) + 90.0f; // Sprite가 위를 향하기 때문에 +90
+	prevPos = pos = pos + _dir * 40.0f;
+	_rotationAngle = _dir.Angle() * (180.0f / PI);
 }
 
 Projectile::~Projectile()
@@ -75,20 +75,31 @@ void Projectile::Update()
 void Projectile::Render(ID2D1RenderTarget* renderTarget, float alpha)
 {
 	if (!renderTarget) return;
+	//if (_projType == ProjectileType::MELEE) return;
 	Vec2F screenPos = GetRenderPos(alpha);
-
 	Vec2F ToRenderPos = GET_SINGLE(SceneManager)->ToRenderPos(screenPos);
 
-	D2D1_ELLIPSE ellipse = D2D1::Ellipse(D2D1::Point2F(ToRenderPos.x, ToRenderPos.y), _halfSize.x, _halfSize.y);
+	// 1. 기존 트랜스폼 폼 저장
+	D2D1_MATRIX_3X2_F oldTransform;
+	renderTarget->GetTransform(&oldTransform);
+
+	// 2. 바라보는 방향(facingDir)을 각도(Degree)로 변환 후 렌더 타겟 회전!
+	float angle = atan2(facingDir.y, facingDir.x) * (180.0f / 3.14159265f);
+	renderTarget->SetTransform(
+		oldTransform * D2D1::Matrix3x2F::Rotation(angle, D2D1::Point2F(ToRenderPos.x, ToRenderPos.y))
+	);
+
+	// 3. OBB는 사각형(Rectangle)이므로 사각형으로 그려보는 것을 추천합니다.
+	D2D1_RECT_F rect = D2D1::RectF(ToRenderPos.x - _halfSize.x, ToRenderPos.y - _halfSize.y,
+		ToRenderPos.x + _halfSize.x, ToRenderPos.y + _halfSize.y);
 
 	ID2D1SolidColorBrush* brush = nullptr;
+	renderTarget->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::Yellow, 0.5f), &brush); // 반투명 노란색
+	renderTarget->FillRectangle(rect, brush);
+	if (brush) brush->Release();
 
-	renderTarget->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::Yellow), &brush);
-
-	renderTarget->FillEllipse(ellipse, brush);
-
-	if (brush != nullptr)
-		brush->Release();
+	// 4. 렌더 타겟 원상복구 (매우 중요!)
+	renderTarget->SetTransform(oldTransform);
 
 }
 
