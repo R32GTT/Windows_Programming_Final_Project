@@ -140,21 +140,19 @@ void Enemy::Update()
 		if (_currAnim != animArray[(int)AnimType::UNCONSCIOUS])
 			PlayAnimation(animArray[(int)AnimType::UNCONSCIOUS]);
 
-		// 처형 중이 아닐 때만 시간 누적
+		// 처형 중이 아닐 때만 5초 시간 누적
 		if (!_onExecution)
 		{
 			AC += 1.0f / 60.0f;
-			if (AC >= 5.0f) // 5초 뒤 일어남
+			if (AC >= 5.0f)
 			{
 				_enemyState = EnemyState::IDLE;
 				AC = 0.0f;
 				_isHit = false;
-				// 🔥 [핵심 해결] 여기서 return을 하지 않습니다! 
-				// 상태가 IDLE로 바뀌었으니 바로 아래 코드로 흘러가 애니메이션이 즉시 변경됩니다!
+				// 여기서 return 하지 않고 아래로 내려가 애니메이션을 즉시 갱신합니다!
 			}
 		}
 
-		// 여전히 기절 상태(5초 미만)라면 여기서 렌더링 후 종료
 		if (_enemyState == EnemyState::UNCONSCIOUS)
 		{
 			UpdateAnimation(1.0f / 60.0f);
@@ -168,7 +166,7 @@ void Enemy::Update()
 		s_playerPos = GET_SINGLE(SceneManager)->GetCurrentScene()->GetPlayer()->GetPos();
 	}
 
-	// 5. 애니메이션 및 무기 타겟 매핑 (Player.cpp 방식 그대로!)
+	// 5. 애니메이션 및 무기 타겟 매핑
 	AnimType targetIdle = AnimType::IDLE;
 	AnimType targetMove = AnimType::MOVE;
 	AnimType targetAttack = AnimType::ATTACK_FIST;
@@ -186,10 +184,9 @@ void Enemy::Update()
 			targetAttack = AnimType::ATTACK_GUN;
 		}
 	}
-
 	FlipBook** animsToUse = (_enemyType == EnemyType::ARMORED) ? _Fanims : _anims;
 
-	// 6. 상태 머신 및 AI 로직
+	// 6. 상태 머신 및 AI 로직 (가속도 포함)
 	switch (_enemyState)
 	{
 	case EnemyState::IDLE:
@@ -245,7 +242,7 @@ void Enemy::Update()
 			stopDist = 5.0f;
 		}
 
-		// 공격 개시 조건 (거리 도달 + 쿨타임 완료 + 벽 뒤에 숨지 않음)
+		// 공격 개시 조건 (사거리 + 쿨타임 + 시야 확보)
 		if (distToPlayer <= attackRange && _attackCooldown <= 0.0f)
 		{
 			if (HasLineOfSightToPlayer())
@@ -310,23 +307,18 @@ void Enemy::Update()
 	}
 	}
 
-	// ========================================================
 	// 7. 확정된 상태를 바탕으로 깔끔하게 애니메이션 재생!
-	// ========================================================
 	if (_enemyState == EnemyState::IDLE)
 	{
-		if (_currAnim != animsToUse[(int)targetIdle])
-			PlayAnimation(animsToUse[(int)targetIdle]);
+		if (_currAnim != animsToUse[(int)targetIdle]) PlayAnimation(animsToUse[(int)targetIdle]);
 	}
 	else if (_enemyState == EnemyState::PATROL || _enemyState == EnemyState::CHASE)
 	{
-		if (_currAnim != animsToUse[(int)targetMove])
-			PlayAnimation(animsToUse[(int)targetMove]);
+		if (_currAnim != animsToUse[(int)targetMove]) PlayAnimation(animsToUse[(int)targetMove]);
 	}
 	else if (_enemyState == EnemyState::ATTACK)
 	{
-		if (_currAnim != animsToUse[(int)targetAttack])
-			PlayAnimation(animsToUse[(int)targetAttack]);
+		if (_currAnim != animsToUse[(int)targetAttack]) PlayAnimation(animsToUse[(int)targetAttack]);
 
 		// 애니메이션 종료 처리 및 점사 로직
 		if (_currAnim != nullptr && _currAnim == animsToUse[(int)targetAttack])
