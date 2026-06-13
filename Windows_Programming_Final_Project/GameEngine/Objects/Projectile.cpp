@@ -46,7 +46,7 @@ Projectile::Projectile(GameObject* owner, WPTYPE wpType)
 		pos = pos + (rightDir * offsetDistance);
 		
 	}
-	prevPos = pos = pos + _dir * 65.0f;
+	prevPos = pos = pos + _dir * 40.0f;
 	_rotationAngle = _dir.Angle() * (180.0f / PI);
 }
 
