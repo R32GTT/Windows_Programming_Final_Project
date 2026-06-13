@@ -113,16 +113,17 @@ void Enemy::Init()
 void Enemy::Update()
 {
 	SavePrevPos();
-	// 쿨타임 감소 로직 (살아있고 기절하지 않았을 때만)
+
+	// 1. 쿨타임 감소 (살아있고 기절하지 않았을 때만)
 	if (_enemyState != EnemyState::DEAD && _enemyState != EnemyState::UNCONSCIOUS)
 	{
-		if (_attackCooldown > 0.0f)
-			_attackCooldown -= 1.0f / 60.0f;
+		if (_attackCooldown > 0.0f) _attackCooldown -= 1.0f / 60.0f;
 	}
 
-	// 1. 사망 체크
+	// 2. 사망 상태
 	if (_enemyState == EnemyState::DEAD)
 	{
+		_velocity = Vec2F(0.0f, 0.0f);
 		FlipBook** animArray = (_enemyType == EnemyType::ARMORED) ? _Fanims : _anims;
 		if (_currAnim != animArray[(int)AnimType::DEAD])
 			PlayAnimation(animArray[(int)AnimType::DEAD]);
@@ -131,54 +132,55 @@ void Enemy::Update()
 		return;
 	}
 
-	// 2. 🔥 기절 및 기상 로직 (AC 변수 활용)
+	// 3. 기절 상태 및 기상 로직
 	if (_enemyState == EnemyState::UNCONSCIOUS)
 	{
+		_velocity = Vec2F(0.0f, 0.0f);
 		FlipBook** animArray = (_enemyType == EnemyType::ARMORED) ? _Fanims : _anims;
 		if (_currAnim != animArray[(int)AnimType::UNCONSCIOUS])
 			PlayAnimation(animArray[(int)AnimType::UNCONSCIOUS]);
 
-		UpdateAnimation(1.0f / 60.0f);
-
-		// 플레이어에게 처형(EXECUTE) 당하고 있는 중이 아닐 때만 시간이 흐름!
+		// 처형 중이 아닐 때만 시간 누적
 		if (!_onExecution)
 		{
-			AC += 1.0f / 60.0f; // 델타타임 누적 (초 단위)
-
-			if (AC >= 5.0f) // 🔥 5초 뒤에 일어남 (원하시는 시간으로 조절하세요!)
+			AC += 1.0f / 60.0f;
+			if (AC >= 5.0f) // 5초 뒤 일어남
 			{
-				_enemyState = EnemyState::IDLE; // 다시 IDLE 상태로 복귀
-				AC = 0.0f;                      // 누적기 초기화
-				_isHit = false;                 // 피격 판정도 초기화 (장갑병 등 대비)
+				_enemyState = EnemyState::IDLE;
+				AC = 0.0f;
+				_isHit = false;
+				// 🔥 [핵심 해결] 여기서 return을 하지 않습니다! 
+				// 상태가 IDLE로 바뀌었으니 바로 아래 코드로 흘러가 애니메이션이 즉시 변경됩니다!
 			}
 		}
 
-		return; // 기절 중에는 밑의 AI(이동, 공격) 로직을 타지 않음
+		// 여전히 기절 상태(5초 미만)라면 여기서 렌더링 후 종료
+		if (_enemyState == EnemyState::UNCONSCIOUS)
+		{
+			UpdateAnimation(1.0f / 60.0f);
+			return;
+		}
 	}
 
-	// 3. 플레이어 위치 갱신
+	// 4. 플레이어 실시간 위치 갱신
 	if (GET_SINGLE(SceneManager)->GetCurrentScene() && GET_SINGLE(SceneManager)->GetCurrentScene()->GetPlayer())
 	{
-		if (GET_SINGLE(SceneManager)->GetCurrentScene()->GetPlayer()->IsKilled()) // 플레이어 죽으면 그냥 더 연산 안함.
-			return; 
 		s_playerPos = GET_SINGLE(SceneManager)->GetCurrentScene()->GetPlayer()->GetPos();
-
 	}
-	// 3. Player와 완벽히 동일한 애니메이션 타겟 매핑
+
+	// 5. 애니메이션 및 무기 타겟 매핑 (Player.cpp 방식 그대로!)
 	AnimType targetIdle = AnimType::IDLE;
 	AnimType targetMove = AnimType::MOVE;
 	AnimType targetAttack = AnimType::ATTACK_FIST;
 
 	if (_enemyType == EnemyType::NORMAL)
 	{
-		if (currentWeapon_Enemy == WPTYPE::CROWBAR)
-		{
+		if (currentWeapon_Enemy == WPTYPE::CROWBAR) {
 			targetIdle = AnimType::IDLE_CROWBAR;
 			targetMove = AnimType::IDLE_CROWBAR;
 			targetAttack = AnimType::ATTACK_CROWBAR;
 		}
-		else if (currentWeapon_Enemy == WPTYPE::RIFLE)
-		{
+		else if (currentWeapon_Enemy == WPTYPE::RIFLE) {
 			targetIdle = AnimType::IDLE_GUN;
 			targetMove = AnimType::IDLE_GUN;
 			targetAttack = AnimType::ATTACK_GUN;
@@ -187,103 +189,106 @@ void Enemy::Update()
 
 	FlipBook** animsToUse = (_enemyType == EnemyType::ARMORED) ? _Fanims : _anims;
 
-	// 4. 상태 머신
+	// 6. 상태 머신 및 AI 로직
 	switch (_enemyState)
 	{
 	case EnemyState::IDLE:
+		_enemyState = EnemyState::PATROL;
+		break;
+
 	case EnemyState::PATROL:
+	{
+		if (CheckPlayerInSight())
+		{
+			_enemyState = EnemyState::CHASE;
+			break;
+		}
+
+		if (!_isStartPosSet)
+		{
+			_startPos = pos;
+			_isStartPosSet = true;
+			if (_moveDir.LengthSq() == 0.0f) _moveDir = Vec2F(1.0f, 0.0f);
+		}
+
+		facingDir = _moveDir;
+		_rotationAngle = _moveDir.Angle() * (180.0f / PI) + 90.0f;
+
+		// 최적화된 가속도 보간
+		Vec2F desiredVelocity = _moveDir * speed;
+		_velocity.x += (desiredVelocity.x - _velocity.x) * 0.1f;
+		_velocity.y += (desiredVelocity.y - _velocity.y) * 0.1f;
+		pos = pos + _velocity;
+
+		if ((pos - _startPos).Length() >= _patrolRange)
+		{
+			_moveDir = _moveDir * -1.0f;
+			_startPos = pos;
+		}
+		break;
+	}
+
 	case EnemyState::CHASE:
 	{
 		Vec2F dirToPlayer = s_playerPos - pos;
 		float distToPlayer = dirToPlayer.Length();
-		float attackRange = 80.0f; // 기본 (빠루 등)
-		if (currentWeapon_Enemy == WPTYPE::RIFLE)
-			attackRange = 300.0f;  // 총은 멀리서
-		else if (currentWeapon_Enemy == WPTYPE::FIST)
-			attackRange = 50.0f;   // 주먹은 아주 가까이 와야 공격 시작!
 
-		// --- 공격 사거리 진입 시 ---
-		if (_enemyState == EnemyState::CHASE && distToPlayer <= attackRange)
+		float attackRange = 80.0f;
+		float stopDist = 20.0f;
+
+		if (currentWeapon_Enemy == WPTYPE::RIFLE) {
+			attackRange = 300.0f;
+			stopDist = 150.0f;
+		}
+		else if (currentWeapon_Enemy == WPTYPE::FIST) {
+			attackRange = 50.0f;
+			stopDist = 5.0f;
+		}
+
+		// 공격 개시 조건 (거리 도달 + 쿨타임 완료 + 벽 뒤에 숨지 않음)
+		if (distToPlayer <= attackRange && _attackCooldown <= 0.0f)
 		{
-			if (_attackCooldown <= 0.0f)
+			if (HasLineOfSightToPlayer())
 			{
 				_enemyState = EnemyState::ATTACK;
 				_attackHitCount = 0;
-				_burstCount = 0; // 점사 카운트 초기화
-
+				_burstCount = 0;
 				_currFrame = 0;
 				_animTimer = 0.0f;
+				_velocity = Vec2F(0.0f, 0.0f); // 즉시 멈춤
 				break;
 			}
 		}
 
-		// --- 이동 로직 ---
-		if (_enemyState == EnemyState::CHASE)
-		{
-			if (distToPlayer > _viewDistance * 1.5f)
-			{
-				_enemyState = EnemyState::PATROL;
-				_isStartPosSet = false;
-			}
-			else if (distToPlayer > 0.0f)
-			{
-				facingDir = dirToPlayer.Normalized();
-				_rotationAngle = facingDir.Angle() * (180.0f / PI) + 90.0f;
-				float stopDist = (currentWeapon_Enemy == WPTYPE::RIFLE) ? 150.0f : 20.0f;
-				if (distToPlayer > stopDist) {
-					pos = pos + facingDir * speed;
-				}
-			}
-		}
-		else if (_enemyState == EnemyState::PATROL)
-		{
-			if (CheckPlayerInSight())
-			{
-				_enemyState = EnemyState::CHASE;
-				break;
-			}
-			if (!_isStartPosSet)
-			{
-				_startPos = pos;
-				_isStartPosSet = true;
-				if (_moveDir.LengthSq() == 0.0f) _moveDir = Vec2F(1.0f, 0.0f);
-			}
-			facingDir = _moveDir;
-			_rotationAngle = _moveDir.Angle() * (180.0f / PI) + 90.0f;
-			pos = pos + _moveDir * speed;
-
-			if ((pos - _startPos).Length() >= _patrolRange)
-			{
-				_moveDir = _moveDir * -1.0f;
-				_startPos = pos;
-			}
-		}
-		else if (_enemyState == EnemyState::IDLE)
+		if (distToPlayer > _viewDistance * 1.5f)
 		{
 			_enemyState = EnemyState::PATROL;
+			_isStartPosSet = false;
+			break;
 		}
 
-		if (_enemyState == EnemyState::CHASE || _enemyState == EnemyState::PATROL)
+		if (distToPlayer > 0.0f)
 		{
-			if (_currAnim != animsToUse[(int)targetMove])
-				PlayAnimation(animsToUse[(int)targetMove]);
-		}
-		else
-		{
-			if (_currAnim != animsToUse[(int)targetIdle])
-				PlayAnimation(animsToUse[(int)targetIdle]);
+			facingDir = dirToPlayer.Normalized();
+			_rotationAngle = facingDir.Angle() * (180.0f / PI) + 90.0f;
+
+			Vec2F desiredVel(0.0f, 0.0f);
+			if (distToPlayer > stopDist) {
+				desiredVel = facingDir * speed;
+			}
+
+			// 부드러운 가속도 추적
+			_velocity.x += (desiredVel.x - _velocity.x) * 0.1f;
+			_velocity.y += (desiredVel.y - _velocity.y) * 0.1f;
+			pos = pos + _velocity;
 		}
 		break;
 	}
 
 	case EnemyState::ATTACK:
 	{
-		if (_currAnim != animsToUse[(int)targetAttack])
-		{
-			PlayAnimation(animsToUse[(int)targetAttack]);
-		}
+		_velocity = Vec2F(0.0f, 0.0f); // 공격 중 관성 제거
 
-		// 조준 유지
 		Vec2F dirToPlayer = s_playerPos - pos;
 		if (dirToPlayer.LengthSq() > 0.0f)
 		{
@@ -291,7 +296,6 @@ void Enemy::Update()
 			_rotationAngle = facingDir.Angle() * (180.0f / PI) + 90.0f;
 		}
 
-		// 타격 판정 (Fire)
 		const WeaponInfo& weaponInfo = GetWeaponInfo(currentWeapon_Enemy);
 		if (_attackHitCount < weaponInfo.attackFrames.size())
 		{
@@ -302,8 +306,29 @@ void Enemy::Update()
 				_attackHitCount++;
 			}
 		}
+		break;
+	}
+	}
 
-		// 🔥 [핵심 추가] 점사 및 쿨타임 로직
+	// ========================================================
+	// 7. 확정된 상태를 바탕으로 깔끔하게 애니메이션 재생!
+	// ========================================================
+	if (_enemyState == EnemyState::IDLE)
+	{
+		if (_currAnim != animsToUse[(int)targetIdle])
+			PlayAnimation(animsToUse[(int)targetIdle]);
+	}
+	else if (_enemyState == EnemyState::PATROL || _enemyState == EnemyState::CHASE)
+	{
+		if (_currAnim != animsToUse[(int)targetMove])
+			PlayAnimation(animsToUse[(int)targetMove]);
+	}
+	else if (_enemyState == EnemyState::ATTACK)
+	{
+		if (_currAnim != animsToUse[(int)targetAttack])
+			PlayAnimation(animsToUse[(int)targetAttack]);
+
+		// 애니메이션 종료 처리 및 점사 로직
 		if (_currAnim != nullptr && _currAnim == animsToUse[(int)targetAttack])
 		{
 			int maxFrame = _currAnim->GetInfo().frames.size() - 1;
@@ -312,14 +337,11 @@ void Enemy::Update()
 				if (currentWeapon_Enemy == WPTYPE::RIFLE)
 				{
 					_burstCount++;
-					if (_burstCount >= 3) // 🔥 3번 쐈으면(3점사) 멈춤!
-					{
-						_attackCooldown = 1.5f; // 1.5초 동안 대기
+					if (_burstCount >= 3) {
+						_attackCooldown = 1.5f;
 						_enemyState = EnemyState::CHASE;
 					}
-					else
-					{
-						// 아직 3발을 덜 쐈다면 애니메이션을 즉시 0으로 되돌려 바로 다음 탄 발사 (연사)
+					else {
 						_currFrame = 0;
 						_animTimer = 0.0f;
 						_attackHitCount = 0;
@@ -327,17 +349,14 @@ void Enemy::Update()
 				}
 				else
 				{
-					// 근접 무기(FIST, CROWBAR)의 경우도 헛스윙 무한 반복을 막기 위해 0.5초 딜레이
 					_attackCooldown = 0.5f;
 					_enemyState = EnemyState::CHASE;
 				}
 			}
 		}
-		break;
-	}
 	}
 
-	// 실제 애니메이션 프레임 진행
+	// 8. 최종 프레임 갱신
 	UpdateAnimation(1.0f / 60.0f);
 }
 
@@ -393,31 +412,39 @@ void Enemy::OnCollision(GameObject* other)
 		Projectile* Proj = static_cast<Projectile*>(other);
 		OnHit_Recoil(Proj->IsLethal(), Proj->GetDir(), Proj->GetWeaponType());
 	}
+	break;
 	case OBJECTTYPE::WALL:
+	{
+		// 💡 매니저가 이미 겹침을 해결해주었으므로, pos를 건드리지 않고 속도(_velocity)만 제어합니다.
 		if (_enemyState == EnemyState::PATROL)
 		{
 			_moveDir = _moveDir * -1.0f;
 			facingDir = _moveDir;
 			_rotationAngle = _moveDir.Angle() * (180.0f / PI) + 90.0f;
-
-
-			_startPos = pos;
+			_velocity = Vec2F(0.0f, 0.0f);
+			_startPos = pos; // 매니저가 밀어준 안전한 위치를 새 출발점으로
 		}
-
 		else
 		{
+			// 안전한 사칙연산만으로 매니저와 동일하게 충돌 축을 찾아 해당 속도만 0으로 만듭니다. (벽 덜덜거림 방지)
+			float diffX = std::abs(pos.x - other->GetPos().x);
+			float diffY = std::abs(pos.y - other->GetPos().y);
+			float minX = _halfSize.x + other->GetHalfSize().x;
+			float minY = _halfSize.y + other->GetHalfSize().y;
 
-			Vec2F leftDir(-facingDir.y, facingDir.x);
+			float overlapX = minX - diffX;
+			float overlapY = minY - diffY;
 
-
-			if (leftDir.LengthSq() > 0.0f)
+			if (overlapX < overlapY)
 			{
-				leftDir = leftDir.Normalized();
-				facingDir = leftDir;
-				_rotationAngle = facingDir.Angle() * (180.0f / PI) + 90.0f;
-				pos = pos + leftDir * (speed * 1.5f);
+				_velocity.x = 0.0f; // 좌/우 벽에 부딪히면 좌우 이동 관성만 소멸 -> 상하로 미끄러짐
+			}
+			else
+			{
+				_velocity.y = 0.0f; // 상/하 벽에 부딪히면 상하 이동 관성만 소멸 -> 좌우로 미끄러짐
 			}
 		}
+	}
 		break;
 	default:
 		break;
@@ -675,3 +702,9 @@ void Enemy::SetWPTYPE(WPTYPE wType)
 }
 
 
+bool Enemy::HasLineOfSightToPlayer()
+{
+
+
+	return true; 
+}

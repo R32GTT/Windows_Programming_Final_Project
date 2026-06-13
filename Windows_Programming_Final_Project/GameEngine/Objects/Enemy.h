@@ -33,6 +33,9 @@ private:
 
 	float _attackCooldown = 0.0f; 
 	int _burstCount = 0;          
+	Vec2F _velocity{};
+
+	bool HasLineOfSightToPlayer();
 
 	bool CheckPlayerInSight();    // 플레이어가 시야 내에 있는지 확인하는 함수
 
