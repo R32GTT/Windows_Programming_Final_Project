@@ -412,6 +412,7 @@ void EditScene::Update()
 
 
 	//추가된 코드: F2를 누르면 PlayScene으로 이동
+	//이래도 안됩니까???
 	if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::F2))
 	{
 		GET_SINGLE(SceneManager)->SetCurrentCombo(0);

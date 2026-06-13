@@ -169,6 +169,7 @@ void SceneManager::ResetCurrentMap() // 여기서 점수 리셋 해줘야 함
 	_scene->Init();
 }
 
+//이게 CheckStageClear
 void SceneManager::RequestMapChange(const std::string& targetMapName)
 {
 	_isMapChangeRequested = true;

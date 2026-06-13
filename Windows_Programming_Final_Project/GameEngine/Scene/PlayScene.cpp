@@ -34,6 +34,9 @@ void PlayScene::Init()
 	GET_SINGLE(SceneManager)->SetCurrentCombo(0);
 	GET_SINGLE(SceneManager)->SetComboTimer(0.0f);
 
+	//점수도 마찬가지로
+	GET_SINGLE(SceneManager)->SetTotalScore(0);
+
 }
 
 void PlayScene::Update()
