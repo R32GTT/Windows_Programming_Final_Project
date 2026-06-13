@@ -162,6 +162,10 @@ void SceneManager::ResetCurrentMap() // 여기서 점수 리셋 해줘야 함
 {
 	if (_scene == nullptr) return;
 
+	_totalScore = _savedScore;
+	_currentCombo = 0;
+	_comboTimer = 0.f;
+
 	_scene->Clear();
 	MapData loadedMapData = GET_SINGLE(DataManager)->GetCurrentMapData();
 
