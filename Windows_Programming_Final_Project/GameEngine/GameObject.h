@@ -14,7 +14,6 @@ public:
 	virtual void Update();
 	virtual void Render(ID2D1RenderTarget* renderTarget, float alpha);
 	virtual bool CheckDead();
-
 	virtual bool IsKilled();
 	virtual void OnCollision(GameObject* other);
 	virtual void Fire() {};
