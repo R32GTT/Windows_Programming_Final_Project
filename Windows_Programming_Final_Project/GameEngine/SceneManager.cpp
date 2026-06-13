@@ -37,6 +37,9 @@ void SceneManager::Update()
 
 	if (_scene) _scene->Update();
 
+	if (_reqReset)
+		ResetCurrentMap();
+
 	if (_isMapChangeRequested)
 	{
 		ExecuteMapChange();
@@ -161,6 +164,7 @@ void SceneManager::ChangeMap(const MapData& nextMapData)
 void SceneManager::ResetCurrentMap() // 여기서 점수 리셋 해줘야 함
 {
 	if (_scene == nullptr) return;
+	_reqReset = false;
 
 	_totalScore = _savedScore;
 	_currentCombo = 0;
@@ -178,6 +182,11 @@ void SceneManager::RequestMapChange(const std::string& targetMapName)
 {
 	_isMapChangeRequested = true;
 	_nextMapName = targetMapName;
+}
+
+void SceneManager::RequestReset()
+{
+	_reqReset = true;
 }
 
 

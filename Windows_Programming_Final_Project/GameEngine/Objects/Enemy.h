@@ -53,6 +53,7 @@ public:
 	virtual bool IsKilled() override;
 	virtual void OnCollision(GameObject* other) override;
 
+	WPTYPE GetCurrentWeapon() const { return currentWeapon_Enemy; };
 	void OnExecution(bool t) { _onExecution = t; };
 	void DropWeapon();
 

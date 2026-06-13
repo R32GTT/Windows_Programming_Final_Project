@@ -60,6 +60,8 @@ void Scene::Render(ID2D1RenderTarget* renderTarget, float alpha)
 	for (const std::vector<GameObject*>& objects : _objects)
 		for (GameObject* object : objects)
 			object->Render(renderTarget, alpha);
+	if (_player)
+		_player->Render(renderTarget, alpha);
 }
 
 void Scene::Clear()

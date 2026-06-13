@@ -110,6 +110,9 @@ void Player::Update()
 
     if (IsKilled())
     {
+        if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::R))
+            GET_SINGLE(SceneManager)->RequestReset();
+
         PlayAnimation(_anims[(int)AnimType::DEAD]);
         return;
     }

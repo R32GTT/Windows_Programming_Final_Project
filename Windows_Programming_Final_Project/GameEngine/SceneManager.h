@@ -10,8 +10,8 @@ class GameObject;
 class SceneManager
 {
 	DECLARE_SINGLE(SceneManager);
-
-
+private:
+	bool _reqReset = false;
 public:
 	void init();
 	void Update();
@@ -25,6 +25,7 @@ public:
 	void ChangeMap(const MapData& nextMapData);
 	void ResetCurrentMap();
 	void RequestMapChange(const std::string& targetMapName = "");
+	void RequestReset();
 	Scene* GetCurrentScene() { return _scene; };
 
 	Vec2F GetCameraPos() { return cameraPos; };

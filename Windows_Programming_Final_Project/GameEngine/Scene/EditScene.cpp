@@ -302,47 +302,75 @@ void EditScene::Update()
 		{
 			_indexCursor = (_indexCursor == 0) ? 1 : 0;
 		}
-
 		if (objType == OBJECTTYPE::ENEMY)
 		{
 			Enemy* enemy = static_cast<Enemy*>(_selectedObject);
 
+			// --- [기존 코드] 좌/우 방향키로 타입 순환 (유지) ---
 			if (adjustDir != 0)
 			{
 				if (_indexCursor == 0)
 				{
 					int currentEType = static_cast<int>(enemy->GetEType());
 					int maxCount = static_cast<int>(EnemyType::ETYPE_COUNT);
-
-
 					currentEType = (currentEType + adjustDir + maxCount) % maxCount;
-
 					enemy->SetEnemyType(static_cast<EnemyType>(currentEType));
 				}
 				else if (_indexCursor == 1)
 				{
 					int currentWType = static_cast<int>(enemy->GetWPTYPE());
 					int maxCount = static_cast<int>(WPTYPE::TOTAL_COUNT);
-
 					currentWType = (currentWType + adjustDir + maxCount) % maxCount;
-
 					enemy->SetWPTYPE(static_cast<WPTYPE>(currentWType));
 				}
+			}
+
+			// ==========================================
+			// [수정] 단축키 다이렉트 지정 (R키는 회전용으로 양보!)
+			// ==========================================
+			// 0번 키: 랜덤 무기로 지정
+			if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::KEY_0))
+			{
+				enemy->SetWPTYPE(WPTYPE::RANDOM_ANY);
+			}
+			// 7, 8, 9번 키: 특정 무기 지정
+			else if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::KEY_7))
+			{
+				enemy->SetWPTYPE(WPTYPE::FIST);
+			}
+			else if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::KEY_8))
+			{
+				enemy->SetWPTYPE(WPTYPE::CROWBAR);
+			}
+			else if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::KEY_9))
+			{
+				enemy->SetWPTYPE(WPTYPE::RIFLE);
 			}
 		}
 		else if (objType == OBJECTTYPE::WEAPON)
 		{
 			Weapon* weapon = static_cast<Weapon*>(_selectedObject);
-			_indexCursor = 0;
 
 			if (adjustDir != 0)
 			{
 				int currentWType = static_cast<int>(weapon->GetWeaponType());
 				int maxCount = static_cast<int>(WPTYPE::TOTAL_COUNT);
-
 				currentWType = (currentWType + adjustDir + maxCount) % maxCount;
-
 				weapon->SetWeaponType(static_cast<WPTYPE>(currentWType));
+			}
+
+			// 여기도 R 대신 0, 8, 9 사용
+			if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::KEY_0))
+			{
+				weapon->SetWeaponType(WPTYPE::RANDOM_ANY);
+			}
+			else if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::KEY_8))
+			{
+				weapon->SetWeaponType(WPTYPE::CROWBAR);
+			}
+			else if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::KEY_9))
+			{
+				weapon->SetWeaponType(WPTYPE::RIFLE);
 			}
 		}
 		if (_selectedObject->GetObjectType() != OBJECTTYPE::ENDPOINT &&
@@ -376,12 +404,10 @@ void EditScene::Update()
 
 	if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::F1))
 	{
-		// 다이얼로그를 띄워 파일 경로를 받아옴
 		std::wstring fullPath = LoadMapFileDialog(nullptr);
 
 		if (!fullPath.empty())
 		{
-			// 이름만 추출해서 LoadMap 호출
 			std::wstring fileName = std::filesystem::path(fullPath).filename().wstring();
 			LoadMap(fileName);
 		}
@@ -411,8 +437,6 @@ void EditScene::Update()
 	}
 
 
-	//추가된 코드: F2를 누르면 PlayScene으로 이동
-	//이래도 안됩니까???
 	if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::F2))
 	{
 		GET_SINGLE(SceneManager)->SetCurrentCombo(0);
@@ -422,8 +446,14 @@ void EditScene::Update()
 
 		GET_SINGLE(SceneManager)->SetIsGameEnded(false);
 
-		GET_SINGLE(SceneManager)->ChangeScene(SceneType::PLAYSCENE);
-		return;
+		std::wstring fullPath = LoadMapFileDialog(nullptr);
+
+		if (!fullPath.empty())
+		{
+			std::wstring fileName = std::filesystem::path(fullPath).filename().wstring();
+			GET_SINGLE(SceneManager)->ChangeScene(SceneType::PLAYSCENE, fileName);
+			return;
+		}
 	}
 
 	Super::FlushSpawnQueue(); // 넣어둠. 다른거 해도 돼.
@@ -504,7 +534,48 @@ void EditScene::Render(ID2D1RenderTarget* renderTarget, float alpha)
 			renderTarget->DrawRectangle(outlineRect, outlineBrush, 2.0f);
 			outlineBrush->Release();
 		}
-	}
+
+		// ==========================================================
+		// [수정 완료] 여기서부터 닫는 괄호( } ) 전까지 안으로 집어넣었습니다!
+		// ==========================================================
+		if (_selectedObject->GetObjectType() == OBJECTTYPE::ENEMY ||
+			_selectedObject->GetObjectType() == OBJECTTYPE::WEAPON)
+		{
+			WPTYPE weaponType;
+
+			if (_selectedObject->GetObjectType() == OBJECTTYPE::ENEMY)
+				weaponType = static_cast<Enemy*>(_selectedObject)->GetWPTYPE();
+			else
+				weaponType = static_cast<Weapon*>(_selectedObject)->GetWeaponType();
+
+			D2D1::ColorF indicatorColor = D2D1::ColorF::White;
+
+			if (weaponType == WPTYPE::RANDOM_ANY)
+				indicatorColor = D2D1::ColorF::Magenta;    // 랜덤 = 보라색
+			else if (weaponType == WPTYPE::FIST)
+				indicatorColor = D2D1::ColorF::LightGray;  // 주먹 = 밝은 회색
+			else if (weaponType == WPTYPE::CROWBAR)
+				indicatorColor = D2D1::ColorF::Red;        // 빠루 = 빨간색
+			else if (weaponType == WPTYPE::RIFLE)
+				indicatorColor = D2D1::ColorF::Yellow;     // 라이플 = 노란색
+
+			// 인디케이터 그리기 (지역 변수 screenCenter, halfSize 정상 사용 가능)
+			D2D1_RECT_F indicatorRect = D2D1::RectF(
+				screenCenter.x - 10.0f,
+				screenCenter.y - halfSize.y - 15.0f,
+				screenCenter.x + 10.0f,
+				screenCenter.y - halfSize.y - 5.0f
+			);
+
+			ID2D1SolidColorBrush* indicatorBrush = nullptr;
+			renderTarget->CreateSolidColorBrush(indicatorColor, &indicatorBrush);
+			if (indicatorBrush)
+			{
+				renderTarget->FillRectangle(indicatorRect, indicatorBrush);
+				indicatorBrush->Release();
+			}
+		}
+	} // <-- _selectedObject != nullptr 중괄호가 여기서 닫힙니다.
 
 	Super::Render(renderTarget, alpha); // 객체들 렌더링
 }

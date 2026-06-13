@@ -46,6 +46,6 @@ private:
 	//새로 추가된 변수
 	//시작 챕터 번호와 총 챕터 개수 번호변수
 	int _currentChapterIdx = 1;
-	int _maxChapterCount = 3;
+	int _maxChapterCount = 1;
 
 };

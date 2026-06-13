@@ -71,6 +71,7 @@ enum class WPTYPE {
 	//PISTOL,
 	//SHOTGUN,
 	RIFLE,
+	RANDOM_ANY,
 	TOTAL_COUNT
 };
 
