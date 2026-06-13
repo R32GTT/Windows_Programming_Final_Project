@@ -24,6 +24,7 @@ private:
 	Vec2F _moveDir = Vec2F(1.f, 0.f); // 이동 방향 (기본값: 우측 X축 이동)
 	float _patrolRange = 200.f;   // 왕복할 총 거리 (픽셀 단위)
 	bool _isStartPosSet = false;  // 시작 위치가 올바르게 잡혔는지 체크하는 플래그
+	bool _onExecution = false;
 
 	// === [추가] 시야 감지 및 추적을 위한 세팅 ===
 	float _viewDistance = 400.0f; // 적의 시야 거리 (픽셀 단위, 조절 가능)
@@ -45,6 +46,7 @@ public:
 	virtual bool IsKilled() override;
 	virtual void OnCollision(GameObject* other) override;
 
+	void OnExecution();
 
 	virtual void OnHit_Recoil(bool isLethal, Vec2F dir) override;
 

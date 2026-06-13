@@ -151,8 +151,9 @@ void Player::Update()
     {
         bool isAttackTriggered = false;
 
-        
-         isAttackTriggered = GET_SINGLE(InputManager)->GetButton(KeyType::LeftMouse);
+        if(GET_SINGLE(InputManager)->GetButtonDown(KeyType::RightMouse))
+            DropWeapon();
+        isAttackTriggered = GET_SINGLE(InputManager)->GetButton(KeyType::LeftMouse);
         
 
         if (isAttackTriggered)

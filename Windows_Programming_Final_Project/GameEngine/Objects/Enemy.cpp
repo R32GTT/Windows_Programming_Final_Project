@@ -277,8 +277,6 @@ void Enemy::LoadFromData(const ObjectSpawnData& spawnData)
 	_startPos = pos;
 	_targetPos = _startPos + (_moveDir * _patrolRange);
 	_isStartPosSet = true;
-
-
 }
 
 void Enemy::EmMove()
@@ -294,15 +292,10 @@ void Enemy::EmMove()
 		{
 			Vec2F moveDir = dirToPlayer.Normalized();
 
-			// 1. 플레이어를 향해 회전각 업데이트 (OnHit_Recoil과 동일한 방식 적용)
 			_rotationAngle = moveDir.Angle() * (180.0f / PI) + 90.0f;
 
-			// 2. 플레이어 방향으로 이동
 			pos = pos + moveDir * speed;
 
-			// 3. 걷기 애니메이션 재생
-			// (주의: 매 프레임 PlayAnimation이 호출되어 애니메이션이 0프레임으로 고정되는 현상이 있다면, 
-			// 현재 재생 중인 애니메이션과 다를 때만 PlayAnimation을 호출하도록 예외 처리가 필요합니다.)
 			if (_enemyType == EnemyType::NORMAL)
 			{
 				PlayAnimation(_anims[(int)AnimType::MOVE]);
