@@ -59,6 +59,8 @@ public:
 	void SetComboTimer(float time) { _comboTimer = time; }
 	void SetTotalScore(int score) { _totalScore = score; }
 
+	float GetPlayTime() const { return _playTime; }
+	void AddTimeScore();
 
 private:
 	void ExecuteMapChange();
@@ -87,6 +89,9 @@ private:
 	static constexpr float BASE_KILL_SCORE = 3.0f;
 	static constexpr float COMBO_BONUS_SCORE = 3.0f;
 
-
+	//현재 플레이 누적 시간
+	//플레이어 사망/맵 재시작 시 복수할 시간 백업
+	float _playTime = 0.0f;
+	float _savedPlayTime = 0.0f;
 };
 
