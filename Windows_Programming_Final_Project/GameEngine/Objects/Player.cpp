@@ -228,12 +228,13 @@ void Player::Update()
     case PlayerState::EXECUTE:
     {
         InputManager* input = GET_SINGLE(InputManager);
-
+        _targetEnemy->OnExecution(true);
         // 1. 처형 취소 (이동키 입력)
         if (input->GetButtonDown(KeyType::W) || input->GetButtonDown(KeyType::A) ||
             input->GetButtonDown(KeyType::S) || input->GetButtonDown(KeyType::D))
         {
             status = PlayerState::IDLE;
+            _targetEnemy->OnExecution(false);
             _targetEnemy = nullptr;
             _isAttacking = false;
             break;
@@ -282,12 +283,12 @@ void Player::Update()
                      if (_targetEnemy != nullptr)
                      {
                          _targetEnemy->SetEnemyState(EnemyState::DEAD);
+                         _targetEnemy->OnExecution(false);
                          _targetEnemy = nullptr;
                      }
 
                      //(수정): 처형 전용 함수 호출
                      GET_SINGLE(SceneManager)->OnEnemyExecuted();
-
                      _targetEnemy = nullptr;
 
                 }

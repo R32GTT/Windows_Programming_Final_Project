@@ -134,6 +134,7 @@ void Enemy::Update()
 void Enemy::Render(ID2D1RenderTarget* renderTarget, float alpha)
 {
 	if (!renderTarget) return;
+	if (_onExecution) return;
 
 	Vec2F screenPos = GetRenderPos(alpha);
 
