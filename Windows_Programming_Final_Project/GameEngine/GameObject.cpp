@@ -44,7 +44,7 @@ void GameObject::Render(ID2D1RenderTarget* renderTarget, float alpha)
 
 bool GameObject::CheckDead()
 {
-	return false;
+	return _isDead;
 }
 
 bool GameObject::IsKilled()

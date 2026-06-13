@@ -37,17 +37,27 @@ WPTYPE Player::GetWeaponType() const
 void Player::EquipWeapon(Weapon* weapon)
 {
     if (weapon == nullptr) return;
+    if (currentWeapon_Player != WPTYPE::FIST)
+        DropWeapon();
     
     SetWeaponType(weapon->GetWeaponType());
     _currentAmmo = weapon->GetAmmo();
+    
+    weapon->SetDead(true);
 }
 
 //무기 버리기 구현
 void Player::DropWeapon()
 {
-  
-
-
+    if (currentWeapon_Player == WPTYPE::FIST || currentWeapon_Player == WPTYPE::NONE) return;
+    Weapon* wep = new Weapon();
+    wep->Init();
+    wep->SetWeaponType(currentWeapon_Player);
+    wep->SetAmmo(_currentAmmo);
+    wep->SetPos(pos);
+    wep->SavePrevPos();
+    GET_SINGLE(SceneManager)->GetCurrentScene()->AddObject(wep);
+    
     currentWeapon_Player = WPTYPE::FIST;
 }
 
@@ -141,12 +151,9 @@ void Player::Update()
     {
         bool isAttackTriggered = false;
 
-        if (currentWeapon_Player == WPTYPE::RIFLE) {
-            isAttackTriggered = GET_SINGLE(InputManager)->GetButton(KeyType::LeftMouse);
-        }
-        else {
-            isAttackTriggered = GET_SINGLE(InputManager)->GetButton(KeyType::LeftMouse);
-        }
+        
+         isAttackTriggered = GET_SINGLE(InputManager)->GetButton(KeyType::LeftMouse);
+        
 
         if (isAttackTriggered)
         {
@@ -336,10 +343,10 @@ void Player::OnCollision(GameObject* other)
     case OBJECTTYPE::WEAPON:
     {
         Weapon* weapon = static_cast<Weapon*>(other);
+        if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::RightMouse))
+            EquipWeapon(weapon);
 
     }
-        break;
-    case OBJECTTYPE::ENDPOINT:
         break;
     default:
             break;

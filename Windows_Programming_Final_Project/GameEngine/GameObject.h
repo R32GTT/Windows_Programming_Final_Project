@@ -14,6 +14,7 @@ public:
 	virtual void Update();
 	virtual void Render(ID2D1RenderTarget* renderTarget, float alpha);
 	virtual bool CheckDead();
+
 	virtual bool IsKilled();
 	virtual void OnCollision(GameObject* other);
 	virtual void Fire() {};
@@ -51,6 +52,8 @@ public:
 	//SetFacingDir 추가
 	//플레이어 이동하거나 회전할 때 방향을 바꾸려 하면
 	void SetFacingDir(Vec2F dir) { facingDir = dir; };
+
+	void SetDead(bool dead) { _isDead = dead; }; // 게임엔진상 죽음
 
 	//게임 오브젝트의 위치를 설정하는 함수 추가
 	//추가 수정이 필요하다 
@@ -98,6 +101,8 @@ protected:
 	OBJECTTYPE type = OBJECTTYPE::NONE;
 	
 	FlipBook* _anims[(int)AnimType::TOTAL_COUNT] = { nullptr };
+
+	bool _isDead = false;               // 삭제 대기 상태인지 확인
 
 
 	FlipBook*	_currAnim{};

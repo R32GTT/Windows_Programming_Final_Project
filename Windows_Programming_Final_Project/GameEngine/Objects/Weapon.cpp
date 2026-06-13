@@ -123,7 +123,7 @@ void Weapon::SaveToData(ObjectSpawnData& outData)
 void Weapon::LoadFromData(const ObjectSpawnData& spawnData)
 {
 	GameObject::LoadFromData(spawnData);
-	_weaponType = spawnData.weaponType;
+	SetWeaponType(spawnData.weaponType);
 }
 
 void Weapon::SetWeaponType(WPTYPE type)

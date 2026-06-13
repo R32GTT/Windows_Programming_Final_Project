@@ -42,10 +42,10 @@ public:
 	virtual void LoadFromData(const ObjectSpawnData& spawnData) override;
 
 	void SetWeaponType(WPTYPE type);
-	WPTYPE GetWeaponType() const { return _weaponType; };
+	WPTYPE GetWeaponType() { return _weaponType; };
 	
 	void SetAmmo(int ammo) { _currentAmmo = ammo; };
-	int GetAmmo() const { return _currentAmmo; };
+	int GetAmmo() { return _currentAmmo; };
 
 
 };
