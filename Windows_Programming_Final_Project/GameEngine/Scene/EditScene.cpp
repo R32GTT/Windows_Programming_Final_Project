@@ -399,6 +399,7 @@ void EditScene::Update()
 			// 이름만 추출해서 LoadMap 호출
 			std::wstring fileName = std::filesystem::path(fullPath).filename().wstring();
 			GET_SINGLE(SceneManager)->ChangeScene(SceneType::DEVSCENE, fileName);
+			return;
 		}
 	}
 
@@ -414,6 +415,7 @@ void EditScene::Update()
 	if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::F2))
 	{
 		GET_SINGLE(SceneManager)->ChangeScene(SceneType::PLAYSCENE);
+		return;
 	}
 
 	Super::FlushSpawnQueue(); // 넣어둠. 다른거 해도 돼.

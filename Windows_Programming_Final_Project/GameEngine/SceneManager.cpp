@@ -37,10 +37,10 @@ void SceneManager::Update()
 
 	if (_scene) _scene->Update();
 
-	if (_isMapChangeRequested)
+	/*if (_isMapChangeRequested)
 	{
 		ExecuteMapChange();
-	}
+	}*/
 
 }
 

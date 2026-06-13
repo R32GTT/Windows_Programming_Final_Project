@@ -18,5 +18,7 @@ public:
 	void HandleChapterClearSequence();  //챕터 클리어 연출 및 UI 처리
 	void ProceedToNextChapter();       //실제로 다음 챕터로 전환
 
+	bool _isStageClearing = false;
+
 
 };

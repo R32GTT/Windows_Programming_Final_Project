@@ -167,6 +167,8 @@ void PlayScene::Render(ID2D1RenderTarget* renderTarget, float alpha)
 //CheckStageClear 추가됨
 void PlayScene::CheckStageClear() // Scene으로 옮길지 고민중
 {
+	if (_isStageClearing) return;
+
 	GameObject* player = GetPlayer();
 	if (player == nullptr) return;
 
@@ -188,10 +190,9 @@ void PlayScene::CheckStageClear() // Scene으로 옮길지 고민중
 
 			if (distance < 50.0f) // (50.0f는 플레이어와 도착점의 충돌 판정 크기에 맞게 조절)
 			{
+				_isStageClearing = true;
 				// 3. 도달했다면 클리어 트리거를 작동시킵니다.
 				OnStageClearTrigger();
-
-				// 프레임당 여러 번 호출되는 것을 막기 위해 return으로 빠져나옵니다.
 				return;
 			}
 		}
@@ -210,12 +211,21 @@ void PlayScene::OnStageClearTrigger()
 
 	if (hasNextMap)
 	{
-		//다음 스테이지 이동 성공
+		Super::Clear();
+		const MapData& mapData = GET_SINGLE(DataManager)->GetCurrentMapData();
+		Super::BuildMapFromData(mapData); // 다음 맵의 오브젝트 소환
+
 		if (GetPlayer() != nullptr)
 		{
 			SetCamOwner(GetPlayer());
 		}
 		Super::Init();
+
+		//다음 맵이 시작 시 콤보가 초기화되도록 설정
+		GET_SINGLE(SceneManager)->SetCurrentCombo(0);
+		GET_SINGLE(SceneManager)->SetComboTimer(0.0f);
+
+		_isStageClearing = false;
 	} 
 	else
 	{
@@ -242,12 +252,17 @@ void PlayScene::ProceedToNextChapter()
 
 	if (hasNextChapter)
 	{
+		Super::Clear();
+		const MapData& mapData = GET_SINGLE(DataManager)->GetCurrentMapData();
+		Super::BuildMapFromData(mapData);
+
 		//참이면 다음 챕터로
 		if (GetPlayer() != nullptr)
 		{
 			SetCamOwner(GetPlayer());
 		}
 		Super::Init();
+		_isStageClearing = false;
 
 	}
 	else
