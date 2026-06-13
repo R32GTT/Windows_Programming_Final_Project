@@ -7,6 +7,7 @@
 #include "LevelData/LevelData.h"
 #include "DataManager.h"
 #include "TimeManager.h"
+#include "InputManager.h"
 
 void SceneManager::init()
 {
@@ -15,7 +16,7 @@ void SceneManager::init()
 
 void SceneManager::Update()
 {
-	float dt = GET_SINGLE(TimeManager)->GetDeltaTime();
+	float dt = 1.0f / 60.0f;
 
 	if (!_isGameEnded)
 	{
@@ -111,7 +112,7 @@ void SceneManager::ChangeScene(SceneType sceneType, const std::wstring& mapFileP
 void SceneManager::ChangeScene(SceneType sceneType, const std::wstring& mapFilePath, const std::wstring& chapterFilePath)
 {
 	Scene* newScene = nullptr;
-
+	_playTime = 0.0f;
 	switch (sceneType)
 	{
 	case SceneType::DEVSCENE:
@@ -173,13 +174,22 @@ void SceneManager::ResetCurrentMap() // 여기서 점수 리셋 해줘야 함
 	_comboTimer = 0.f;
 
 	//추가: 맵을 재시작하면 누적 플레이 시간도 이전 세이브 포인트로 돌린다
-	_playTime = _savedPlayTime;
+	//_playTime = _savedPlayTime; 그냥 냅두는게 낫겠다...
 
 	_scene->Clear();
 	MapData loadedMapData = GET_SINGLE(DataManager)->GetCurrentMapData();
 
 	_scene->BuildMapFromData(loadedMapData);
 	_scene->Init();
+
+	_totalScore = _savedScore;
+
+	if (_scene->GetPlayer())
+	{
+		Player* player = static_cast<Player*>(_scene->GetPlayer());
+		player->SetWeaponType(currentPlayerWeapon);
+		player->SetAmmo(currentAmmo);
+	}
 }
 
 //이게 CheckStageClear
@@ -215,20 +225,41 @@ void SceneManager::ExecuteMapChange()
 	_comboTimer = 0.f;
 	_savedScore = _totalScore;
 
-	//추가: 맵을 무사히 클리어하고 넘어갈 때 현재까지의 시간을 저장합니다
 	_savedPlayTime = _playTime;
+	
+	if (_scene->GetPlayer())
+	{
+		Player* player = static_cast<Player*>(_scene->GetPlayer());
+		currentPlayerWeapon = player->GetWeaponType();
+		currentAmmo = player->GetAmmo();
+	}
 
 	bool hasNextMap = GET_SINGLE(DataManager)->GoToNextMap(_nextMapName);
-
+	_totalScore = _savedScore;
 	if (hasNextMap)
 	{
-		//ChangeMap(GET_SINGLE(DataManager)->GetCurrentMapData()); // 왜 있는거야 도데체
+		if (_scene->GetPlayer())
+		{
+			Player* player = static_cast<Player*>(_scene->GetPlayer());
+			player->SetWeaponType(currentPlayerWeapon);
+			player->SetAmmo(currentAmmo);
+		} // 그 전 무기 추가해줌.
 	}
 	else
 	{
+		currentPlayerWeapon = WPTYPE::FIST;
+		currentAmmo = -1;
 		bool hasNextChapter = GET_SINGLE(DataManager)->GoToNextChapter();
 		if (hasNextChapter)
 		{
+			GET_SINGLE(DataManager)->EndGame();
+
+			//추가: 최종 게임 클리어 시 시간 점수를 계산하여 더합니다.
+			AddTimeScore();
+			while (true)
+				if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::SpaceBar))
+					break;
+
 			ChangeMap(GET_SINGLE(DataManager)->GetCurrentMapData());
 		}
 		else

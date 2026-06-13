@@ -10,6 +10,9 @@ GameEngine::GameEngine()
 GameEngine::~GameEngine()
 {
 	GET_SINGLE(FileManager)->Clear();
+	GET_SINGLE(DataManager)->Clear();
+	GET_SINGLE(CollisionManager)->Clear();
+	GET_SINGLE(SceneManager)->Clear();
 	SafeRelease(&_textFormat);
 	SafeRelease(&_dwriteFactory);
 	SafeRelease(&_debugBrush);
@@ -17,6 +20,7 @@ GameEngine::~GameEngine()
 	SafeRelease(&_renderTarget);
 	SafeRelease(&_d2dFactory);
 	SafeRelease(&_wicFactory);
+
 }
 
 void GameEngine::Init(HWND hWnd)
@@ -87,10 +91,11 @@ void GameEngine::Init(HWND hWnd)
 	std::wstring startChapterPath = L"TestChapter1.json";
 
 	//GET_SINGLE(SceneManager)->ChangeScene(SceneType::EDITSCENE, startMapPath);
-	GET_SINGLE(SceneManager)->ChangeScene(SceneType::EDITSCENE, startMapPath,startChapterPath);
+	//GET_SINGLE(SceneManager)->ChangeScene(SceneType::EDITSCENE, startMapPath,startChapterPath);
 	//GET_SINGLE(SceneManager)->ChangeScene(SceneType::EDITSCENE,startMapPath);
 	//GET_SINGLE(SceneManager)->ChangeScene(SceneType::DEVSCENE, L"", startChapterPath);
 	//GET_SINGLE(SceneManager)->ChangeScene(SceneType::DEVSCENE,L"");
+	GET_SINGLE(SceneManager)->ChangeScene(SceneType::PLAYSCENE, startMapPath, startChapterPath);
  }
 
 void GameEngine::Update()
@@ -110,7 +115,8 @@ void GameEngine::Update()
 
 		GET_SINGLE(InputManager)->Update();
 		GET_SINGLE(SceneManager)->Update();
-
+		if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::Escape))
+			PostQuitMessage(0);
 		_accumulator -= _FIXED_DT;
 	}
 
@@ -129,26 +135,26 @@ void GameEngine::Render()
 
 	GET_SINGLE(SceneManager)->Render(_renderTarget, _alpha);
 
-	unsigned int fps = GET_SINGLE(TimeManager)->GetFps();
-	float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
+	//unsigned int fps = GET_SINGLE(TimeManager)->GetFps();
+	//float deltaTime = GET_SINGLE(TimeManager)->GetDeltaTime();
 
-	std::wstring debugStr = L"FPS: " + std::to_wstring(GET_SINGLE(TimeManager)->GetFps());
+	//std::wstring debugStr = L"FPS: " + std::to_wstring(GET_SINGLE(TimeManager)->GetFps());
 
-	// 마우스 좌표 같은 것도 덧붙이고 싶다면:
-	 Vec2<float> mPos = GET_SINGLE(InputManager)->GetMousePos();
-	 debugStr += std::format(L"\nMouse: {}, {}", (int)mPos.x, (int)mPos.y);
-	 
-	 //Vec2F Ppos = GET_SINGLE(SceneManager)->GetCurrentScene()->GetGameObjectByID()->GetPos();
-	 //debugStr += std::format(L"\nPos: {}, {}", Ppos.x, Ppos.y);
+	//// 마우스 좌표 같은 것도 덧붙이고 싶다면:
+	// Vec2<float> mPos = GET_SINGLE(InputManager)->GetMousePos();
+	// debugStr += std::format(L"\nMouse: {}, {}", (int)mPos.x, (int)mPos.y);
+	// 
+	// //Vec2F Ppos = GET_SINGLE(SceneManager)->GetCurrentScene()->GetGameObjectByID()->GetPos();
+	// //debugStr += std::format(L"\nPos: {}, {}", Ppos.x, Ppos.y);
 
-	D2D1_RECT_F textRect = D2D1::RectF(10.f, 10.f, 800.f, 600.f);
-	_renderTarget->DrawTextW(
-		debugStr.c_str(),
-		(UINT32)debugStr.length(),
-		_textFormat,
-		&textRect,
-		_debugBrush
-	);
+	//D2D1_RECT_F textRect = D2D1::RectF(10.f, 10.f, 800.f, 600.f);
+	//_renderTarget->DrawTextW(
+	//	debugStr.c_str(),
+	//	(UINT32)debugStr.length(),
+	//	_textFormat,
+	//	&textRect,
+	//	_debugBrush
+	//);
 
 	HRESULT hr = _renderTarget->EndDraw();
 

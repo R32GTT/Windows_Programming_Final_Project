@@ -27,6 +27,9 @@ public:
 	void SetWeaponType(WPTYPE type);
 	WPTYPE GetWeaponType() const;
 
+	void SetAmmo(int ammo) { _currentAmmo = ammo; };
+	int GetAmmo() { return _currentAmmo; }
+	int GetMaxAmmo();
 	
 	void Move();
 

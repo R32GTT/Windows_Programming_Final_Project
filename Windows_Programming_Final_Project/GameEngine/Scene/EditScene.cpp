@@ -300,40 +300,50 @@ void EditScene::Update()
 		if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::Up) ||
 			GET_SINGLE(InputManager)->GetButtonDown(KeyType::Down))
 		{
-			_indexCursor = (_indexCursor == 0) ? 1 : 0;
+			_indexCursor = (_indexCursor + 1) % 3;
 		}
 		if (objType == OBJECTTYPE::ENEMY)
 		{
 			Enemy* enemy = static_cast<Enemy*>(_selectedObject);
 
-			// --- [기존 코드] 좌/우 방향키로 타입 순환 (유지) ---
+			// [기존 방향키 순환 시스템 활용]
 			if (adjustDir != 0)
 			{
-				if (_indexCursor == 0)
+				if (_indexCursor == 0) // 커서 0: 적 타입(Normal, Armored)
 				{
 					int currentEType = static_cast<int>(enemy->GetEType());
 					int maxCount = static_cast<int>(EnemyType::ETYPE_COUNT);
 					currentEType = (currentEType + adjustDir + maxCount) % maxCount;
 					enemy->SetEnemyType(static_cast<EnemyType>(currentEType));
 				}
-				else if (_indexCursor == 1)
+				else if (_indexCursor == 1) // 커서 1: 무기 타입(Fist, Crowbar, Rifle, Random)
 				{
 					int currentWType = static_cast<int>(enemy->GetWPTYPE());
 					int maxCount = static_cast<int>(WPTYPE::TOTAL_COUNT);
 					currentWType = (currentWType + adjustDir + maxCount) % maxCount;
 					enemy->SetWPTYPE(static_cast<WPTYPE>(currentWType));
 				}
+				// ==========================================
+				// [여기에 추가!] 커서 2: 기본 행동 상태(IDLE, PATROL, ROAMING)
+				// ==========================================
+				else if (_indexCursor == 2)
+				{
+					int currentState = static_cast<int>(enemy->GetDefaultState());
+
+					// 기본 상태로 쓸 수 있는 건 3개뿐 (IDLE=0, PATROL=1, ROAMING=2)
+					// (CHASE나 ATTACK으로 스폰시킬 수는 없으므로 3으로 고정합니다)
+					int maxStateCount = 3;
+
+					currentState = (currentState + adjustDir + maxStateCount) % maxStateCount;
+					enemy->SetDefaultState(static_cast<EnemyState>(currentState));
+				}
 			}
 
-			// ==========================================
-			// [수정] 단축키 다이렉트 지정 (R키는 회전용으로 양보!)
-			// ==========================================
-			// 0번 키: 랜덤 무기로 지정
+			// (아래는 기존에 작성하신 무기 다이렉트 단축키 그대로 유지)
 			if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::KEY_0))
 			{
 				enemy->SetWPTYPE(WPTYPE::RANDOM_ANY);
 			}
-			// 7, 8, 9번 키: 특정 무기 지정
 			else if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::KEY_7))
 			{
 				enemy->SetWPTYPE(WPTYPE::FIST);
@@ -359,7 +369,6 @@ void EditScene::Update()
 				weapon->SetWeaponType(static_cast<WPTYPE>(currentWType));
 			}
 
-			// 여기도 R 대신 0, 8, 9 사용
 			if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::KEY_0))
 			{
 				weapon->SetWeaponType(WPTYPE::RANDOM_ANY);
@@ -376,7 +385,6 @@ void EditScene::Update()
 		if (_selectedObject->GetObjectType() != OBJECTTYPE::ENDPOINT &&
 			_selectedObject->GetObjectType() != OBJECTTYPE::WALL)
 		{
-			// R 키를 누를 때마다 시계 방향으로 45도씩 회전
 			if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::R))
 			{
 				float currentAngle = _selectedObject->GetRotationAngle();
@@ -388,7 +396,6 @@ void EditScene::Update()
 				_selectedObject->SetRotationAngle(currentAngle);
 			}
 		}
-
 	}
 
 	if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::F8))
@@ -472,7 +479,6 @@ void EditScene::Render(ID2D1RenderTarget* renderTarget, float alpha)
 
 	if (gridBrush)
 	{
-		// 카메라 좌표에서 화면 절반을 뺀 진짜 월드 시작점 계산
 		int startX = (int)(floor((camPos.x - halfWinX) / _gridSize)) * _gridSize;
 		int startY = (int)(floor((camPos.y - halfWinY) / _gridSize)) * _gridSize;
 
@@ -487,10 +493,8 @@ void EditScene::Render(ID2D1RenderTarget* renderTarget, float alpha)
 		gridBrush->Release();
 	}
 
-	// --- 2. 마우스 미리보기 사각형 그리기 ---
 	POINT curmousePos = GET_SINGLE(InputManager)->GetMousePos();
 
-	// Update()와 동일한 공식 적용!
 	float worldX = curmousePos.x + camPos.x - halfWinX;
 	float worldY = curmousePos.y + camPos.y - halfWinY;
 
@@ -514,10 +518,8 @@ void EditScene::Render(ID2D1RenderTarget* renderTarget, float alpha)
 		Vec2F objPos = _selectedObject->GetPos();
 		Vec2F halfSize = _selectedObject->GetHalfSize();
 
-		// 월드 좌표를 화면(렌더링) 좌표로 변환
 		Vec2F screenCenter = GET_SINGLE(SceneManager)->ToRenderPos(objPos);
 
-		// 사각형 영역 계산
 		D2D1_RECT_F outlineRect = D2D1::RectF(
 			screenCenter.x - halfSize.x,
 			screenCenter.y - halfSize.y,
@@ -525,19 +527,21 @@ void EditScene::Render(ID2D1RenderTarget* renderTarget, float alpha)
 			screenCenter.y + halfSize.y
 		);
 
+
+		D2D1::ColorF outlineColor = D2D1::ColorF(0.0f, 0.8f, 0.8f, 1.0f); // 기본 시안색 (0: 적 타입 수정)
+		if (_indexCursor == 1) outlineColor = D2D1::ColorF::White;        // 흰색 (1: 무기 수정)
+		else if (_indexCursor == 2) outlineColor = D2D1::ColorF::LimeGreen; // 밝은 초록색 (2: 상태 수정)
+
 		ID2D1SolidColorBrush* outlineBrush = nullptr;
-		renderTarget->CreateSolidColorBrush(D2D1::ColorF(0.0f, 0.8f, 0.8f, 1.0f), &outlineBrush);
+		renderTarget->CreateSolidColorBrush(outlineColor, &outlineBrush);
 
 		if (outlineBrush)
 		{
-			// 두께 2.0f 로 빈 사각형(테두리) 그리기
 			renderTarget->DrawRectangle(outlineRect, outlineBrush, 2.0f);
 			outlineBrush->Release();
 		}
 
-		// ==========================================================
-		// [수정 완료] 여기서부터 닫는 괄호( } ) 전까지 안으로 집어넣었습니다!
-		// ==========================================================
+		// 무기 및 상태 인디케이터 그리기
 		if (_selectedObject->GetObjectType() == OBJECTTYPE::ENEMY ||
 			_selectedObject->GetObjectType() == OBJECTTYPE::WEAPON)
 		{
@@ -559,7 +563,7 @@ void EditScene::Render(ID2D1RenderTarget* renderTarget, float alpha)
 			else if (weaponType == WPTYPE::RIFLE)
 				indicatorColor = D2D1::ColorF::Yellow;     // 라이플 = 노란색
 
-			// 인디케이터 그리기 (지역 변수 screenCenter, halfSize 정상 사용 가능)
+			// 1. 무기 인디케이터 그리기 (아래쪽 박스)
 			D2D1_RECT_F indicatorRect = D2D1::RectF(
 				screenCenter.x - 10.0f,
 				screenCenter.y - halfSize.y - 15.0f,
@@ -574,8 +578,37 @@ void EditScene::Render(ID2D1RenderTarget* renderTarget, float alpha)
 				renderTarget->FillRectangle(indicatorRect, indicatorBrush);
 				indicatorBrush->Release();
 			}
+
+			if (_selectedObject->GetObjectType() == OBJECTTYPE::ENEMY)
+			{
+				EnemyState state = static_cast<Enemy*>(_selectedObject)->GetDefaultState();
+				D2D1::ColorF stateColor = D2D1::ColorF::Black;
+
+				if (state == EnemyState::IDLE)
+					stateColor = D2D1::ColorF::CornflowerBlue; // IDLE = 파란색
+				else if (state == EnemyState::PATROL)
+					stateColor = D2D1::ColorF::LimeGreen;      // PATROL = 초록색
+				else if (state == EnemyState::ROAMING)
+					stateColor = D2D1::ColorF::Orange;         // ROAMING = 주황색
+
+				// 무기 인디케이터보다 15픽셀 더 위쪽에 그립니다 (2층 탑 쌓기)
+				D2D1_RECT_F stateRect = D2D1::RectF(
+					screenCenter.x - 10.0f,
+					screenCenter.y - halfSize.y - 30.0f,
+					screenCenter.x + 10.0f,
+					screenCenter.y - halfSize.y - 20.0f
+				);
+
+				ID2D1SolidColorBrush* stateBrush = nullptr;
+				renderTarget->CreateSolidColorBrush(stateColor, &stateBrush);
+				if (stateBrush)
+				{
+					renderTarget->FillRectangle(stateRect, stateBrush);
+					stateBrush->Release();
+				}
+			}
 		}
-	} // <-- _selectedObject != nullptr 중괄호가 여기서 닫힙니다.
+	}
 
 	Super::Render(renderTarget, alpha); // 객체들 렌더링
 }

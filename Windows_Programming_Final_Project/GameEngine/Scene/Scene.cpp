@@ -6,9 +6,13 @@
 #include "../Utility/Vec2.h"
 #include "../LevelData/LevelData.h"	
 
+static IDWriteFactory* s_dwriteFactory = nullptr;
+static IDWriteTextFormat* s_textFormat = nullptr;
+static ID2D1SolidColorBrush* s_uiBrush = nullptr;
+
 Scene::Scene()
 {
-
+	
 }
 
 Scene::~Scene()
@@ -24,6 +28,10 @@ Scene::~Scene()
 	_player = nullptr;
 	_objectMap.clear();
 	_spawnQueue.clear();
+	if (s_uiBrush) { s_uiBrush->Release(); s_uiBrush = nullptr; }
+	if (s_textFormat) { s_textFormat->Release(); s_textFormat = nullptr; }
+	if (s_dwriteFactory) { s_dwriteFactory->Release(); s_dwriteFactory = nullptr; }
+
 }
 
 void Scene::Init()
@@ -62,6 +70,76 @@ void Scene::Render(ID2D1RenderTarget* renderTarget, float alpha)
 			object->Render(renderTarget, alpha);
 	if (_player)
 		_player->Render(renderTarget, alpha);
+
+	if (_player)
+	{
+
+		if (s_dwriteFactory == nullptr)
+		{
+			DWriteCreateFactory(DWRITE_FACTORY_TYPE_SHARED, __uuidof(IDWriteFactory), reinterpret_cast<IUnknown**>(&s_dwriteFactory));
+			if (s_dwriteFactory)
+			{
+				s_dwriteFactory->CreateTextFormat(
+					L"Consolas", NULL, DWRITE_FONT_WEIGHT_BOLD, DWRITE_FONT_STYLE_NORMAL,
+					DWRITE_FONT_STRETCH_NORMAL, 24.0f, L"ko-kr", &s_textFormat
+				);
+			}
+		}
+		if (s_uiBrush == nullptr)
+		{
+			renderTarget->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::Yellow), &s_uiBrush);
+		}
+
+		if (s_textFormat && s_uiBrush)
+		{
+			D2D1_SIZE_F rtSize = renderTarget->GetSize();
+
+			if (_player->IsKilled())
+			{
+				std::wstring restartText = L"PRESS 'R' TO RESTART";
+
+				D2D1_RECT_F deadRect = D2D1::RectF(
+					rtSize.width / 2.0f - 140.0f, 
+					rtSize.height / 2.0f - 20.0f,
+					rtSize.width,
+					rtSize.height
+				);
+
+				renderTarget->DrawTextW(
+					restartText.c_str(),
+					(UINT32)restartText.length(),
+					s_textFormat,
+					deadRect,
+					s_uiBrush
+				);
+			}
+			else
+			{
+				D2D1_RECT_F textRect = D2D1::RectF(
+					20.0f,
+					rtSize.height - 40.0f,
+					300.0f,
+					rtSize.height
+				);
+
+				if (static_cast<Player*>(_player)->GetWeaponType() == WPTYPE::RIFLE)
+				{
+					int maxAmmo = static_cast<Player*>(_player)->GetMaxAmmo();
+					int curAmmo = static_cast<Player*>(_player)->GetAmmo();
+					std::wstring ammoText = L"";
+					ammoText += std::format(L"Ammo {}/{}", curAmmo, maxAmmo);
+
+					renderTarget->DrawTextW(
+						ammoText.c_str(),
+						(UINT32)ammoText.length(),
+						s_textFormat,
+						textRect,
+						s_uiBrush
+					);
+				}
+			}
+		}
+	}
 }
 
 void Scene::Clear()

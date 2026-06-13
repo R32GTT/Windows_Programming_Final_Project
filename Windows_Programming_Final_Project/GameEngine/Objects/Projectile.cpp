@@ -42,7 +42,7 @@ Projectile::Projectile(GameObject* owner, WPTYPE wpType)
 
 		Vec2F facingDir = owner->GetFacningDir();
 		Vec2F rightDir = Vec2F(-facingDir.y, facingDir.x);
-		float offsetDistance = 11.0f;
+		float offsetDistance = 5.0f;
 		pos = pos + (rightDir * offsetDistance);
 		prevPos = pos = pos + _dir * 10.0f;
 	}
@@ -79,7 +79,7 @@ void Projectile::Update()
 void Projectile::Render(ID2D1RenderTarget* renderTarget, float alpha)
 {
 	if (!renderTarget) return;
-	//if (_projType == ProjectileType::MELEE) return;
+	if (_projType == ProjectileType::MELEE) return;
 	Vec2F screenPos = GetRenderPos(alpha);
 	Vec2F ToRenderPos = GET_SINGLE(SceneManager)->ToRenderPos(screenPos);
 

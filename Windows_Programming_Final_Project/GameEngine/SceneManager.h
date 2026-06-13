@@ -26,6 +26,8 @@ public:
 	void ResetCurrentMap();
 	void RequestMapChange(const std::string& targetMapName = "");
 	void RequestReset();
+
+	SceneType GetCurrentSceneType() { return _sceneType; };
 	Scene* GetCurrentScene() { return _scene; };
 
 	Vec2F GetCameraPos() { return cameraPos; };
@@ -94,5 +96,8 @@ private:
 	//플레이어 사망/맵 재시작 시 복수할 시간 백업
 	float _playTime = 0.0f;
 	float _savedPlayTime = 0.0f;
+
+	WPTYPE currentPlayerWeapon = WPTYPE::FIST;
+	int currentAmmo = -1;
 };
 

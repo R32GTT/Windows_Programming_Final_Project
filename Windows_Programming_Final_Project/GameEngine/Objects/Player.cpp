@@ -15,8 +15,8 @@ Player::Player()
 
     type = OBJECTTYPE::PLAYER;
     layer = Layers::ACTORS;
-    currentWeapon_Player = WPTYPE::RIFLE;
-    _currentAmmo = 26;
+    currentWeapon_Player = WPTYPE::FIST;
+    _currentAmmo = -1;
 }
 
 Player::~Player()
@@ -397,6 +397,11 @@ void Player::LoadFromData(const ObjectSpawnData& spawnData)
 {
     GameObject::LoadFromData(spawnData);
 }
+
+int Player::GetMaxAmmo()
+{
+    return GetWeaponInfo(currentWeapon_Player).maxAmmo;
+};
 
 void Player::Move()
 {

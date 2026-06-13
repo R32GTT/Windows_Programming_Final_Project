@@ -10,6 +10,7 @@ public:
 
 	~CollisionManager();
 
+	void Clear();
 	void Init();
 	void Update();
 

@@ -14,6 +14,7 @@ struct ObjectSpawnData
 	D2D1_RECT_F WallCoords{};
 
 	EnemyType enemyType = EnemyType::NORMAL;
+	EnemyState enemyState = EnemyState::IDLE;
 	WPTYPE weaponType = WPTYPE::FIST;
 
 	std::wstring spriteName{ L"" };

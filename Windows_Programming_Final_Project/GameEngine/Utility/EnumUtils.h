@@ -14,5 +14,6 @@ EnemyType StringToEnemyType(const std::string& str);
 std::string WeaponTypeToString(WPTYPE type);
 WPTYPE StringToWeaponType(const std::string& str);
 
-
+std::string EnemyStateToString(EnemyState type);
+EnemyState StringToEnemyState(const std::string& str);
 

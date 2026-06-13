@@ -107,6 +107,7 @@ std::string WeaponTypeToString(WPTYPE type)
     case WPTYPE::FIST:        return "FIST";
     case WPTYPE::CROWBAR:     return "CROWBAR";
     case WPTYPE::RIFLE:       return "RIFLE";
+    case WPTYPE::RANDOM_ANY:   return "RANDOM_ANY";
     case WPTYPE::TOTAL_COUNT: return "TOTAL_COUNT";
     default:                  return "NONE";
     }
@@ -119,6 +120,7 @@ WPTYPE StringToWeaponType(const std::string& str)
         {"FIST",        WPTYPE::FIST},
         {"CROWBAR",     WPTYPE::CROWBAR},
         {"RIFLE",       WPTYPE::RIFLE},
+        {"RANDOM_ANY", WPTYPE::RANDOM_ANY},
         {"TOTAL_COUNT", WPTYPE::TOTAL_COUNT}
     };
 
@@ -127,4 +129,54 @@ WPTYPE StringToWeaponType(const std::string& str)
         return it->second;
 
     return WPTYPE::NONE;
+}
+
+std::string EnemyStateToString(EnemyState type)
+{
+    switch (type)
+    {
+    case EnemyState::IDLE:
+        return "IDLE";
+        break;
+    case EnemyState::PATROL:
+        return "PATROL";
+        break;
+    case EnemyState::ROAMING:
+        return "ROAMING";
+        break;
+    case EnemyState::CHASE:
+        return "CHASE";
+        break;
+    case EnemyState::ATTACK:
+        return "ATTACK";
+        break;
+    case EnemyState::UNCONSCIOUS:
+        return "UNCONSCIOUS";
+        break;
+    case EnemyState::DEAD:
+        return "DEAD";
+        break;
+    default:
+        return "IDLE";
+        break;
+    }
+}
+
+EnemyState StringToEnemyState(const std::string& str)
+{
+    static const std::unordered_map<std::string, EnemyState> map = {
+        {"IDLE",        EnemyState::IDLE},
+        {"PATROL",        EnemyState::PATROL},
+        {"ROAMING",     EnemyState::ROAMING},
+        {"CHASE",       EnemyState::CHASE},
+        {"ATTACK", EnemyState::ATTACK},
+        {"UNCONSCIOUS", EnemyState::UNCONSCIOUS},
+        {"DEAD", EnemyState::DEAD}
+    };
+
+    auto it = map.find(str);
+    if (it != map.end())
+        return it->second;
+
+    return EnemyState::IDLE;
 }

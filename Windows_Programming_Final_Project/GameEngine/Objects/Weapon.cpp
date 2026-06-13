@@ -2,7 +2,7 @@
 #include "Weapon.h"
 #include "../LevelData/LevelData.h"
 #include "Managers.h"
-
+#include <random>
 
 constexpr float shortMelee{ 50.0f };
 constexpr float midMelee{ 100.0f };
@@ -80,6 +80,8 @@ void Weapon::Init()
 		PlayAnimation(_anims[(int)AnimType::IDLE_CROWBAR]);
 	if (_weaponType == WPTYPE::RIFLE)
 		PlayAnimation(_anims[(int)AnimType::IDLE_GUN]);
+	if (_weaponType == WPTYPE::RANDOM_ANY)
+		PlayAnimation(_anims[(int)AnimType::IDLE_CROWBAR]);
 }
 
 void Weapon::Update()
@@ -112,7 +114,19 @@ void Weapon::SaveToData(ObjectSpawnData& outData)
 void Weapon::LoadFromData(const ObjectSpawnData& spawnData)
 {
 	GameObject::LoadFromData(spawnData);
-	SetWeaponType(spawnData.weaponType);
+	WPTYPE loadedWeapon = spawnData.weaponType;
+	if (spawnData.weaponType == WPTYPE::RANDOM_ANY && GET_SINGLE(SceneManager)->GetCurrentSceneType() != SceneType::EDITSCENE)
+	{
+		static std::random_device rd;
+		static std::mt19937 gen(rd());
+
+		std::uniform_int_distribution<int> dist(0, 1);
+
+		int randVal = dist(gen);
+		if (randVal == 0) loadedWeapon = WPTYPE::RIFLE;
+		else if (randVal == 1) loadedWeapon = WPTYPE::CROWBAR;
+	}
+	SetWeaponType(loadedWeapon);
 }
 
 void Weapon::SetWeaponType(WPTYPE type)
@@ -127,6 +141,9 @@ void Weapon::SetWeaponType(WPTYPE type)
 	case WPTYPE::RIFLE:
 		_currentAmmo = GetWeaponInfo(type).maxAmmo;
 		PlayAnimation(_anims[(int)AnimType::IDLE_GUN]);
+		break;
+	case WPTYPE::RANDOM_ANY:
+		PlayAnimation(_anims[(int)AnimType::IDLE_CROWBAR]);
 		break;
 	default:
 		break;

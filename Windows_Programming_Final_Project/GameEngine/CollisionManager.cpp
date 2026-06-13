@@ -9,6 +9,13 @@ CollisionManager::~CollisionManager()
 {
 }
 
+void CollisionManager::Clear()
+{
+	_characters.clear();
+	_projectiles.clear();
+	_endPoints.clear();
+}
+
 void CollisionManager::Init()
 {
 }

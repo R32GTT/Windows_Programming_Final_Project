@@ -37,6 +37,7 @@ enum class EnemyState
 {
 	IDLE,
 	PATROL,
+	ROAMING,
 	CHASE,
 	ATTACK,
 	UNCONSCIOUS,

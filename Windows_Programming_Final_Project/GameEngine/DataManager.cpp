@@ -12,6 +12,7 @@ void DataManager::Init()
 void DataManager::Clear()
 {
 	_currentMap.objects.clear();
+    _mapCache.clear();
 }
 
 void DataManager::SaveMapData(const std::wstring& filename, const std::vector<ObjectSpawnData>& mapDataList)
@@ -43,21 +44,17 @@ void DataManager::SaveChaperData(const std::wstring& filename, const ChapterData
     GET_SINGLE(FileManager)->SaveMapJson(filename, chapterJson);
 }
 
-// 성공적으로 맵을 이동했다면 true, 더 이상 맵이 없어서 챕터가 끝났다면 false 반환
 bool DataManager::GoToNextMap(std::string mapInfo)
 {
-    // 1. 기본적으로는 현재 맵의 다음 인덱스로 설정
+
     int nextIdx = _currentMapIdx + 1;
 
-    // 2. 만약 특정 인덱스를 지시하는 문자열이 들어왔다면 그 값으로 덮어씀
     if (!mapInfo.empty())
     {
-        // (선택사항) 숫자가 아닌 문자열이 들어왔을 때의 예외 처리를 추가하면 더 안전해
         try {
             nextIdx = std::stoi(mapInfo);
         }
         catch (...) {
-            // 변환 실패 시 그냥 다음 맵으로 진행하거나 에러 로그 출력
             nextIdx = _currentMapIdx + 1;
         }
     }
@@ -81,7 +78,6 @@ bool DataManager::GoToNextMap(std::string mapInfo)
                 curScene->Init();
             }
 
-            // [성공] 성공적으로 다음 맵으로 이동함
             return true;
         }
 
@@ -89,7 +85,6 @@ bool DataManager::GoToNextMap(std::string mapInfo)
     }
     else
     {
-        // [챕터 종료] 더 이상 갈 수 있는 다음 맵 인덱스가 없음! (예: 3개 중 4번째 맵을 요구함)
         return false;
     }
 }
@@ -193,6 +188,7 @@ json DataManager::SerializeMapObjects(const std::vector<ObjectSpawnData>& mapDat
         objJson["halfSize_y"] = data.halfSize.y;
         objJson["SpriteName"] = WStrToStr(data.spriteName);
         objJson["EnemyType"] = EnemyTypeToString(data.enemyType);
+        objJson["EnemyState"] = EnemyStateToString(data.enemyState);
         objJson["WallRectL"] = data.WallCoords.left;
         objJson["WallRectR"] = data.WallCoords.right;
         objJson["WallRectT"] = data.WallCoords.top;
@@ -222,6 +218,7 @@ void DataManager::DeserializeMapObjects(const json& mapJson, MapData& outMapData
         if (objJson.contains("halfSize_y")) data.halfSize.y = objJson["halfSize_y"];
         if (objJson.contains("SpriteName")) data.spriteName = StrToWStr(objJson["SpriteName"].get<std::string>());
         if (objJson.contains("EnemyType")) data.enemyType = StringToEnemyType(objJson["EnemyType"]);
+        if (objJson.contains("EnemyState")) data.enemyState = StringToEnemyState(objJson["EnemyState"]);
         if (objJson.contains("WallRectL")) data.WallCoords.left = objJson["WallRectL"];
         if (objJson.contains("WallRectR")) data.WallCoords.right = objJson["WallRectR"];
         if (objJson.contains("WallRectT")) data.WallCoords.top = objJson["WallRectT"];

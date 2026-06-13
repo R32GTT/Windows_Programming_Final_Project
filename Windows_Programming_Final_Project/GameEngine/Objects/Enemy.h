@@ -12,6 +12,10 @@ private:
 	EnemyType _enemyType = EnemyType::NORMAL;
 	EnemyState _enemyState = EnemyState::IDLE; // 상태는 이걸로 체크
 
+	EnemyState _defaultState = EnemyState::IDLE;
+	float _roamTimer = 0.0f;
+	float _reactionTimer = 0.0f;
+
 	int _currentAmmo{};
 	int _attackHitCount = 0; // 공격 프레임 중복 방지용 카운트 (Player와 동일)
 
@@ -28,8 +32,8 @@ private:
 	bool _onExecution = false;
 
 	// === [추가] 시야 감지 및 추적을 위한 세팅 ===
-	float _viewDistance = 400.0f; // 적의 시야 거리 (픽셀 단위, 조절 가능)
-	float _viewAngle = 60.0f;     // 적의 시야 반각 (정면 기준 좌우 60도, 총 120도 시야각)
+	float _viewDistance = 600.0f; // 적의 시야 거리 (픽셀 단위, 조절 가능)
+	float _viewAngle = 70.0f;     // 적의 시야 반각 (정면 기준 좌우 60도, 총 120도 시야각)
 
 	float _attackCooldown = 0.0f; 
 	int _burstCount = 0;          
@@ -79,7 +83,9 @@ public:
 	void SetWPTYPE(WPTYPE wType);
 
 	EnemyState GetEnemyState() { return _enemyState; };
-	void SetEnemyState(EnemyState state) { _enemyState = state; };
+	EnemyState GetDefaultState() { return _defaultState; };
+	void SetDefaultState(EnemyState state) { _defaultState = state; };
+	void SetEnemyState(EnemyState state) { _defaultState = state; _enemyState = state; };
 
 	// [이전 추가] 모든 적이 공유할 정적(static) 멤버 변수
 	static bool s_isAlerted;      // 한 명이라도 플레이어를 감지했는지 여부 (경보 플래그)
