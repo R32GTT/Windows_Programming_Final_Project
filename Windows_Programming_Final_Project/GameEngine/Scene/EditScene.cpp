@@ -417,6 +417,8 @@ void EditScene::Update()
 		GET_SINGLE(SceneManager)->SetCurrentCombo(0);
 		GET_SINGLE(SceneManager)->SetComboTimer(0.0f);
 
+		GET_SINGLE(SceneManager)->SetTotalScore(0);
+
 		GET_SINGLE(SceneManager)->SetIsGameEnded(false);
 
 		GET_SINGLE(SceneManager)->ChangeScene(SceneType::PLAYSCENE);

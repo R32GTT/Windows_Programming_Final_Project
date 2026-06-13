@@ -54,9 +54,11 @@ public:
 	void SetIsGameEnded(bool isEnded) { _isGameEnded = isEnded; }
 
 	//콤보와 타이머를 외부에서 조작할 수 있는 Setter함수
-
+	//SCORE까지 초기화 하기
 	void SetCurrentCombo(int combo) { _currentCombo = combo; }
 	void SetComboTimer(float time) { _comboTimer = time; }
+	void SetTotalScore(int score) { _totalScore = score; }
+
 
 private:
 	void ExecuteMapChange();
