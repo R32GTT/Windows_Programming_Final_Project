@@ -55,7 +55,7 @@ private:
 
 	PlayerState status = PlayerState::IDLE;
 
-	bool _projectileSpawned = false;
+	int _attackHitCount = 0;
 	Enemy* _targetEnemy = nullptr;
 
 };

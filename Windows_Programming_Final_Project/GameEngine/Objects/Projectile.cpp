@@ -47,6 +47,7 @@ Projectile::Projectile(GameObject* owner, WPTYPE wpType)
 		
 	}
 	prevPos = pos = pos + _dir * 65.0f;
+	_rotationAngle = _rotationAngle = facingDir.Angle() * (180.0f / PI) + 90.0f; // Sprite가 위를 향하기 때문에 +90
 }
 
 Projectile::~Projectile()

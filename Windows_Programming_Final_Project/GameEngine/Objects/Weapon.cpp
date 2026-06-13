@@ -23,7 +23,8 @@ static const WeaponInfo g_WeaponTable[(int)WPTYPE::TOTAL_COUNT] =
 		ProjectileType::MELEE,
 		false,
 		-1,//inf ammo
-		Vec2F(shortMelee * 0.5f, 25.0f)
+		Vec2F(shortMelee * 0.5f, 25.0f),
+		{3}
 	},
 
 	// [2] WPTYPE::CROWBAR (빠루)
@@ -36,7 +37,8 @@ static const WeaponInfo g_WeaponTable[(int)WPTYPE::TOTAL_COUNT] =
 		ProjectileType::MELEE,
 		true,
 		-1,
-		Vec2F(midMelee * 0.5f, 35.0f)
+		Vec2F(midMelee * 0.5f, 35.0f),
+		{2,4}
 	},
 
 	// [3] WPTYPE::RIFLE (라이플)
@@ -49,7 +51,8 @@ static const WeaponInfo g_WeaponTable[(int)WPTYPE::TOTAL_COUNT] =
 		ProjectileType::BULLET,
 		true,
 		26,
-		Vec2F(2.5f, 2.5f)               // projectile_Size (총알 투사체 크기)
+		Vec2F(2.5f, 2.5f),               // projectile_Size (총알 투사체 크기)
+		{1}
 	}
 };
 

@@ -1,0 +1,8 @@
+{
+  "ChapterID": 1,
+  "MapFiles": [
+    "TestMap1.json",
+    "TestMap2.json",
+    "TestMap3.json"
+  ]
+}

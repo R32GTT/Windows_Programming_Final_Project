@@ -10,7 +10,7 @@
    },
    {
     "filename": "CharAnim #Walking 0.aseprite",
-    "frame": { "x": 0, "y": 112, "w": 80, "h": 112 },
+    "frame": { "x": 0, "y": 0, "w": 80, "h": 112 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 112 },
@@ -19,7 +19,7 @@
    },
    {
     "filename": "CharAnim #Walking 1.aseprite",
-    "frame": { "x": 80, "y": 112, "w": 80, "h": 112 },
+    "frame": { "x": 0, "y": 112, "w": 80, "h": 112 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 112 },
@@ -28,7 +28,7 @@
    },
    {
     "filename": "CharAnim #Walking 2.aseprite",
-    "frame": { "x": 160, "y": 112, "w": 80, "h": 112 },
+    "frame": { "x": 80, "y": 112, "w": 80, "h": 112 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 112 },
@@ -37,7 +37,7 @@
    },
    {
     "filename": "CharAnim #Walking 3.aseprite",
-    "frame": { "x": 240, "y": 112, "w": 80, "h": 112 },
+    "frame": { "x": 0, "y": 112, "w": 80, "h": 112 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 112 },
@@ -46,7 +46,7 @@
    },
    {
     "filename": "CharAnim #Walking 4.aseprite",
-    "frame": { "x": 320, "y": 112, "w": 80, "h": 112 },
+    "frame": { "x": 160, "y": 112, "w": 80, "h": 112 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 112 },
@@ -55,7 +55,7 @@
    },
    {
     "filename": "CharAnim #Walking 5.aseprite",
-    "frame": { "x": 400, "y": 112, "w": 80, "h": 112 },
+    "frame": { "x": 240, "y": 112, "w": 80, "h": 112 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 112 },
@@ -64,7 +64,7 @@
    },
    {
     "filename": "CharAnim #Walking 6.aseprite",
-    "frame": { "x": 480, "y": 112, "w": 80, "h": 112 },
+    "frame": { "x": 160, "y": 112, "w": 80, "h": 112 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 112 },
@@ -73,66 +73,66 @@
    },
    {
     "filename": "CharAnim #Punch 0.aseprite",
+    "frame": { "x": 0, "y": 0, "w": 80, "h": 112 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 112 },
+    "sourceSize": { "w": 80, "h": 112 },
+    "duration": 20
+   },
+   {
+    "filename": "CharAnim #Punch 1.aseprite",
     "frame": { "x": 0, "y": 224, "w": 80, "h": 112 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 112 },
     "sourceSize": { "w": 80, "h": 112 },
-    "duration": 100
+    "duration": 20
    },
    {
-    "filename": "CharAnim #Punch 1.aseprite",
+    "filename": "CharAnim #Punch 2.aseprite",
     "frame": { "x": 80, "y": 224, "w": 80, "h": 112 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 112 },
     "sourceSize": { "w": 80, "h": 112 },
-    "duration": 100
+    "duration": 20
    },
    {
-    "filename": "CharAnim #Punch 2.aseprite",
+    "filename": "CharAnim #Punch 3.aseprite",
     "frame": { "x": 160, "y": 224, "w": 80, "h": 112 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 112 },
     "sourceSize": { "w": 80, "h": 112 },
-    "duration": 100
+    "duration": 20
    },
    {
-    "filename": "CharAnim #Punch 3.aseprite",
+    "filename": "CharAnim #Punch 4.aseprite",
     "frame": { "x": 240, "y": 224, "w": 80, "h": 112 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 112 },
     "sourceSize": { "w": 80, "h": 112 },
-    "duration": 100
+    "duration": 20
    },
    {
-    "filename": "CharAnim #Punch 4.aseprite",
+    "filename": "CharAnim #Punch 5.aseprite",
     "frame": { "x": 320, "y": 224, "w": 80, "h": 112 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 112 },
     "sourceSize": { "w": 80, "h": 112 },
-    "duration": 100
+    "duration": 20
    },
    {
-    "filename": "CharAnim #Punch 5.aseprite",
+    "filename": "CharAnim #Punch 6.aseprite",
     "frame": { "x": 400, "y": 224, "w": 80, "h": 112 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 112 },
     "sourceSize": { "w": 80, "h": 112 },
-    "duration": 100
-   },
-   {
-    "filename": "CharAnim #Punch 6.aseprite",
-    "frame": { "x": 480, "y": 224, "w": 80, "h": 112 },
-    "rotated": false,
-    "trimmed": false,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 112 },
-    "sourceSize": { "w": 80, "h": 112 },
-    "duration": 100
+    "duration": 20
    },
    {
     "filename": "CharAnim #Crowbar 0.aseprite",
@@ -208,7 +208,7 @@
    },
    {
     "filename": "CharAnim #Crowbar 8.aseprite",
-    "frame": { "x": 640, "y": 336, "w": 80, "h": 112 },
+    "frame": { "x": 0, "y": 336, "w": 80, "h": 112 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 80, "h": 112 },
@@ -317,10 +317,10 @@
  ],
  "meta": {
   "app": "https://www.aseprite.org/",
-  "version": "1.3.18-beta1-dev",
+  "version": "1.3.16.1-dev",
   "image": "MainCharAnim.png",
   "format": "RGBA8888",
-  "size": { "w": 720, "h": 896 },
+  "size": { "w": 640, "h": 896 },
   "scale": "1",
   "frameTags": [
    { "name": "Idle", "from": 0, "to": 0, "direction": "forward", "color": "#000000ff" },
@@ -333,7 +333,6 @@
    { "name": "Dead", "from": 34, "to": 34, "direction": "forward", "color": "#000000ff" }
   ],
   "layers": [
-   { "name": "DeadMob", "opacity": 255, "blendMode": "normal" },
    { "name": "DeadMobF", "opacity": 255, "blendMode": "normal" },
    { "name": "DeadPlayer", "opacity": 255, "blendMode": "normal" },
    { "name": "Player" },
