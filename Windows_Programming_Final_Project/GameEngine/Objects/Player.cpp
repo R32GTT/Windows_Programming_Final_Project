@@ -60,6 +60,7 @@ void Player::DropWeapon()
     GET_SINGLE(SceneManager)->GetCurrentScene()->AddObject(wep);
     
     currentWeapon_Player = WPTYPE::FIST;
+    _currentAmmo = -1;
 }
 
 
@@ -160,7 +161,7 @@ void Player::Update()
         if (isAttackTriggered)
         {
             status = PlayerState::ATTACK;
-            _projectileSpawned = false;
+            _attackHitCount = 0;
 
 
             _currFrame = 0;
@@ -182,41 +183,43 @@ void Player::Update()
     }
     case PlayerState::ATTACK:
     {
+        // 탄약 체크 및 애니메이션 재생
         if (_currentAmmo > 0 || _currentAmmo <= -1)
             PlayAnimation(_anims[(int)targetAttack]);
         else
             status = PlayerState::IDLE;
 
+        const WeaponInfo& weaponInfo = GetWeaponInfo(currentWeapon_Player);
 
-        int targetFrame = 1; // (수정 필요) 실제로 총알이 나가거나 빠루 타격이 들어가는 프레임 번호
-        if (_currFrame == targetFrame && !_projectileSpawned)
+        if (_attackHitCount < weaponInfo.attackFrames.size())
         {
-            _projectileSpawned = true;
-            Fire();
+            int targetFrame = weaponInfo.attackFrames[_attackHitCount];
+
+            if (_currFrame == targetFrame)
+            {
+                Fire(); // 총알 생성 or 근접 타격 판정 생성
+                _attackHitCount++; // 다음 타격을 기다리도록 카운트 증가! (다단히트 해결)
+            }
         }
 
-
+        // --- 빠루 캔슬 로직 ---
         if (currentWeapon_Player == WPTYPE::CROWBAR)
         {
-
-            int midFrame = 4;
-
+            int midFrame = 4; // 이 수치도 나중에 WeaponInfo에 넣으면 더 깔끔해집니다!
             if (_currFrame >= midFrame && !GET_SINGLE(InputManager)->GetButton(KeyType::LeftMouse))
             {
-
                 status = (movingDir.LengthSq() > 0.0f) ? PlayerState::MOVE : PlayerState::IDLE;
                 break;
             }
         }
 
-
+        // --- 애니메이션 종료 체크 ---
         if (_currAnim != nullptr && _currAnim == _anims[(int)targetAttack])
         {
             int maxFrame = _currAnim->GetInfo().frames.size() - 1;
             // 끝까지 재생되었다면
             if (_currFrame >= maxFrame)
             {
-                // 공격이 끝난 시점에 계속 걷고 있다면 MOVE로, 멈췄다면 IDLE로 복귀
                 status = (movingDir.LengthSq() > 0.0f) ? PlayerState::MOVE : PlayerState::IDLE;
             }
         }
