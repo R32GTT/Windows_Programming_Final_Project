@@ -24,7 +24,7 @@ void SceneManager::Update()
 		{
 
 			// 현재 2.0f(2배속)로 설정해 두었으며, 원하는 속도에 맞춰 조절해 봅시다.
-			float comboDecayMultiplier = 8.0f;
+			float comboDecayMultiplier = 1.7f;
 			_comboTimer -= (dt * comboDecayMultiplier);
 
 			if (_comboTimer <= 0.f)
@@ -229,16 +229,16 @@ void SceneManager::OnEnemyKilled(WPTYPE wptype)
 	switch (wptype)
 	{
 	case WPTYPE::CROWBAR:
-		scoreToAdd = 200; // 근접 처치 시 점수
+		scoreToAdd = 300; // 근접 처치 시 점수
 		break;
 	case WPTYPE::RIFLE:
-		scoreToAdd = 100; // 총기 처치 시 점수
+		scoreToAdd = 40; // 총기 처치 시 점수
 		break;
 
 	case WPTYPE::FIST:
 		
 	default:
-		scoreToAdd = 50; //기본 점수
+		scoreToAdd = 30; //기본 점수
 		break;
 	}
 
@@ -252,7 +252,7 @@ void SceneManager::OnEnemyKilled(WPTYPE wptype)
 //처형 처치시(새로 추가함)
 void SceneManager::OnEnemyExecuted()
 {
-	int scoreToAdd = 300; // 처형은 더 높은 점수 부여!
+	int scoreToAdd = 400; // 처형은 더 높은 점수 부여!
 
 	_currentCombo++;
 	_totalScore += (scoreToAdd * _currentCombo);
