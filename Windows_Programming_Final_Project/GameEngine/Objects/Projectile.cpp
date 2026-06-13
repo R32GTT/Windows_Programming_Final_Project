@@ -49,6 +49,9 @@ Projectile::Projectile(GameObject* owner, WPTYPE wpType)
 	else
 		prevPos = pos = pos + _dir * 30.0f;
 	_rotationAngle = _dir.Angle() * (180.0f / PI);
+
+	_wpType = wpType;
+
 }
 
 Projectile::~Projectile()

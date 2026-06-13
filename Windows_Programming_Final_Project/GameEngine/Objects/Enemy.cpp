@@ -391,7 +391,7 @@ void Enemy::OnCollision(GameObject* other)
 	case OBJECTTYPE::PROJECTILE:
 	{
 		Projectile* Proj = static_cast<Projectile*>(other);
-		OnHit_Recoil(Proj->IsLethal(), Proj->GetDir());
+		OnHit_Recoil(Proj->IsLethal(), Proj->GetDir(), Proj->GetWeaponType());
 	}
 	case OBJECTTYPE::WALL:
 		if (_enemyState == EnemyState::PATROL)
