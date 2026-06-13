@@ -48,7 +48,7 @@ void PlayScene::Update()
 	Super::Update();
 
 	//매 프레임마다 플레이어가 도착점에 닿았는지 검사
-	CheckStageClear();
+	//CheckStageClear();
 
 	//플레이 도중 F5를 누르면 다시 EditScene으로 복귀
 	if (GET_SINGLE(InputManager)->GetButtonDown(KeyType::F5))
@@ -169,40 +169,40 @@ void PlayScene::Render(ID2D1RenderTarget* renderTarget, float alpha)
 }
 
 //CheckStageClear 추가됨
-void PlayScene::CheckStageClear() // Scene으로 옮길지 고민중
-{
-	if (_isStageClearing) return;
-
-	GameObject* player = GetPlayer();
-	if (player == nullptr) return;
-
-	std::vector<GameObject*> allObjects = GetAllObjects();
-
-	for (GameObject* obj : allObjects)
-	{
-		// 1. 오브젝트가 도착점(EndPoint)인지 확인합니다.
-		if (obj->GetObjectType() == OBJECTTYPE::ENDPOINT) // (사용중인 enum으로 변경하세요)
-		{
-			// 2. 플레이어와 EndPoint 간의 거리를 계산하거나 충돌 박스를 겹쳐봅니다.
-			Vec2F playerPos = player->GetPos();
-			Vec2F endPos = obj->GetPos();
-
-			// 예시: 두 객체 간의 거리(유클리드 거리)가 50 이하일 때 도달한 것으로 판정
-			float dx = playerPos.x - endPos.x;
-			float dy = playerPos.y - endPos.y;
-			float distance = sqrt((dx * dx) + (dy * dy));
-
-			if (distance < 50.0f) // (50.0f는 플레이어와 도착점의 충돌 판정 크기에 맞게 조절)
-			{
-				_isStageClearing = true;
-				// 3. 도달했다면 클리어 트리거를 작동시킵니다.
-				OnStageClearTrigger();
-				return;
-			}
-		}
-	}
-
-}
+//void PlayScene::CheckStageClear() // Scene으로 옮길지 고민중
+//{
+//	if (_isStageClearing) return;
+//
+//	GameObject* player = GetPlayer();
+//	if (player == nullptr) return;
+//
+//	std::vector<GameObject*> allObjects = GetAllObjects();
+//
+//	for (GameObject* obj : allObjects)
+//	{
+//		// 1. 오브젝트가 도착점(EndPoint)인지 확인합니다.
+//		if (obj->GetObjectType() == OBJECTTYPE::ENDPOINT) // (사용중인 enum으로 변경하세요)
+//		{
+//			// 2. 플레이어와 EndPoint 간의 거리를 계산하거나 충돌 박스를 겹쳐봅니다.
+//			Vec2F playerPos = player->GetPos();
+//			Vec2F endPos = obj->GetPos();
+//
+//			// 예시: 두 객체 간의 거리(유클리드 거리)가 50 이하일 때 도달한 것으로 판정
+//			float dx = playerPos.x - endPos.x;
+//			float dy = playerPos.y - endPos.y;
+//			float distance = sqrt((dx * dx) + (dy * dy));
+//
+//			if (distance < 50.0f) // (50.0f는 플레이어와 도착점의 충돌 판정 크기에 맞게 조절)
+//			{
+//				_isStageClearing = true;
+//				// 3. 도달했다면 클리어 트리거를 작동시킵니다.
+//				OnStageClearTrigger();
+//				return;
+//			}
+//		}
+//	}
+//
+//}
 
 //추가된 함수들
 void PlayScene::OnStageClearTrigger()

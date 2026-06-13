@@ -37,10 +37,10 @@ void SceneManager::Update()
 
 	if (_scene) _scene->Update();
 
-	/*if (_isMapChangeRequested)
+	if (_isMapChangeRequested)
 	{
 		ExecuteMapChange();
-	}*/
+	}
 
 }
 
@@ -158,7 +158,7 @@ void SceneManager::ChangeMap(const MapData& nextMapData)
 	_scene->BuildMapFromData(nextMapData);
 }
 
-void SceneManager::ResetCurrentMap()
+void SceneManager::ResetCurrentMap() // 여기서 점수 리셋 해줘야 함
 {
 	if (_scene == nullptr) return;
 

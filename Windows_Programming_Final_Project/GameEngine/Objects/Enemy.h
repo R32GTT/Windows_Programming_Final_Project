@@ -54,6 +54,7 @@ public:
 	virtual void OnCollision(GameObject* other) override;
 
 	void OnExecution(bool t) { _onExecution = t; };
+	void DropWeapon();
 
 	virtual void OnHit_Recoil(bool isLethal, Vec2F dir) override;
 

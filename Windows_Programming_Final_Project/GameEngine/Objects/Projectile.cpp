@@ -47,7 +47,7 @@ Projectile::Projectile(GameObject* owner, WPTYPE wpType)
 		prevPos = pos = pos + _dir * 10.0f;
 	}
 	else
-		prevPos = pos = pos + _dir * 30.0f;
+		prevPos = pos = pos + _dir * 40.0f;
 	_rotationAngle = _dir.Angle() * (180.0f / PI);
 
 	_wpType = wpType;
@@ -116,6 +116,7 @@ void Projectile::OnCollision(GameObject* other)
 
 	if (otherType == OBJECTTYPE::WALL)
 	{
+		if (_projType == ProjectileType::MELEE) return;
 		_isDead = true;
 	}
 

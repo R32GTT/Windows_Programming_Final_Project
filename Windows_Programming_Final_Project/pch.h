@@ -4,6 +4,7 @@ const int WinSizeX = 1280;
 const int WinSizeY = 720;
 
 const float PI = 3.1415926f;
+#define NOMINMAX
 
 #include <Windows.h>
 #include <vector>

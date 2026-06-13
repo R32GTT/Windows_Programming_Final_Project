@@ -7,7 +7,7 @@
 EndPoint::EndPoint()
 {
 	type = OBJECTTYPE::ENDPOINT;
-	layer = Layers::WALL;
+	layer = Layers::ACTORS;
 }
 
 EndPoint::~EndPoint()
@@ -68,11 +68,13 @@ void EndPoint::OnCollision(GameObject* other)
 void EndPoint::SaveToData(ObjectSpawnData& outData)
 {
 	GameObject::SaveToData(outData);
+	outData.layers = Layers::ACTORS;
 	outData.textData = _targetMapName;
 }
 
 void EndPoint::LoadFromData(const ObjectSpawnData& spawnData)
 {
 	GameObject::LoadFromData(spawnData);
+	layer = Layers::ACTORS;
 	_targetMapName = spawnData.textData;
 }

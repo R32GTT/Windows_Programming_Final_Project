@@ -14,7 +14,7 @@ public:
 	void Update();
 
 	void ResolveWallCollision(GameObject* movingObj, GameObject* wall);
-
+	bool CheckLineOfSight(Vec2F start, Vec2F end);
 private:
 	bool CheckAABB(GameObject* a, GameObject* b);
 	bool CheckOBB(GameObject* a, GameObject* b);

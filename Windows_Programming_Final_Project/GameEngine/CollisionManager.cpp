@@ -17,15 +17,76 @@ void CollisionManager::ResolveWallCollision(GameObject* movingObj, GameObject* w
 {
 	Vec2F objPos = movingObj->GetPos();
 	Vec2F diff = objPos - wall->GetPos();
-	Vec2F minDistance = movingObj->GetHalfSize() + wall->GetHalfSize();
+
+	// 1. 캐릭터가 바라보는 방향(회전)을 바탕으로 로컬 축 구하기
+	Vec2F oFace = movingObj->GetFacningDir();
+	if (oFace.LengthSq() == 0.f) oFace = { 0.0f, -1.0f };
+	Vec2F oUp = oFace.Normalized();
+	Vec2F oRight = { -oUp.y, oUp.x };
+
+	Vec2F oHalf = movingObj->GetHalfSize();
+
+	// 2. [핵심] 캐릭터가 회전했을 때, 월드 공간(X, Y축)에서 차지하는 '실제 반경' 계산
+	Vec2F effectiveHalfSize;
+	effectiveHalfSize.x = oHalf.x * std::abs(oRight.x) + oHalf.y * std::abs(oUp.x);
+	effectiveHalfSize.y = oHalf.x * std::abs(oRight.y) + oHalf.y * std::abs(oUp.y);
+
+	// 3. 기존의 GetHalfSize() 대신, 회전이 고려된 effectiveHalfSize를 사용하여 겹친 깊이 계산
+	Vec2F minDistance = effectiveHalfSize + wall->GetHalfSize();
 	Vec2F overlap = minDistance - diff.Abs();
 
-	if (overlap.x < overlap.y)
-		objPos.x += (diff.x > 0) ? overlap.x : -overlap.x;
-	else
-		objPos.y += (diff.y > 0) ? overlap.y : -overlap.y;
+	// 컴퓨터 소수점 오차로 인해 다음 프레임에 또 끼는 것을 방지할 여유 공간(Epsilon)
+	float epsilon = 0.1f;
 
+	// 겹친 부분이 있을 때만 밀어내기 처리
+	if (overlap.x > 0 && overlap.y > 0)
+	{
+		// X, Y 중 덜 겹친 방향(가장 빠르게 탈출할 수 있는 방향)으로 밀어내기 -> 자연스러운 벽 타기 완성
+		if (overlap.x < overlap.y)
+			objPos.x += (diff.x > 0) ? (overlap.x + epsilon) : -(overlap.x + epsilon);
+		else
+			objPos.y += (diff.y > 0) ? (overlap.y + epsilon) : -(overlap.y + epsilon);
+	}
+
+	// 최종 위치 갱신
 	movingObj->SetPos(objPos);
+}
+
+bool CollisionManager::CheckLineOfSight(Vec2F start, Vec2F end)
+{
+	Scene* currentScene = GET_SINGLE(SceneManager)->GetCurrentScene();
+	if (currentScene == nullptr) return false;
+
+	const auto& walls = currentScene->GetObjectsByLayer(Layers::WALL);
+
+	Vec2F travelVec = end - start;
+	float travelDist = travelVec.Length();
+
+	// 10픽셀 단위로 선분을 잘라서 검사 (맵의 가장 얇은 벽 두께보다 작게 설정하면 절대 뚫리지 않음)
+	float stepSize = 10.0f;
+	int steps = std::max(1, static_cast<int>(travelDist / stepSize));
+
+	for (int i = 1; i <= steps; ++i)
+	{
+		float t = static_cast<float>(i) / steps;
+		Vec2F checkPoint = start + travelVec * t;
+
+		// 쪼개진 점(checkPoint)이 벽 내부에 들어갔는지 검사
+		for (auto* wall : walls)
+		{
+			if (wall == nullptr || wall->CheckDead()) continue;
+
+			// 점과 AABB(벽)의 충돌 검사 (가장 가벼운 연산)
+			Vec2F diff = (checkPoint - wall->GetPos()).Abs();
+
+			if (diff.x <= wall->GetHalfSize().x && diff.y <= wall->GetHalfSize().y)
+			{
+				return false; // 시야가 벽에 가로막힘!
+			}
+		}
+	}
+
+	return true; // 모든 벽을 통과했다면 시야가 확보됨!
 }
 
 bool CollisionManager::CheckAABB(GameObject* a, GameObject* b)
@@ -137,7 +198,7 @@ void CollisionManager::CheckProjectileCollision(const std::vector<GameObject*>& 
 
 			proj->SetPos(currentPos);
 
-			// [A] 벽 충돌 검사
+
 			for (auto* wall : walls)
 			{
 				if (wall == nullptr) continue;
@@ -150,12 +211,16 @@ void CollisionManager::CheckProjectileCollision(const std::vector<GameObject*>& 
 				{
 					proj->OnCollision(wall);
 					wall->OnCollision(proj);
-					isProjectileDestroyed = true;
-					break;
+
+
+					if (proj->CheckDead())
+					{
+						isProjectileDestroyed = true;
+						break;
+					}
 				}
 			}
 
-			// 벽에 부딪혀 총알이 사라졌다면 다음 단계 검사 중단
 			if (isProjectileDestroyed || proj->CheckDead()) break;
 
 			// [B] 액터(적/플레이어) 충돌 검사
@@ -253,9 +318,8 @@ void CollisionManager::CheckPlayerEndpointCollision(GameObject* player, const st
 
 		if (CheckOBB_AABB(player, ep))
 		{
-			//player->OnCollision(ep);
 			ep->OnCollision(player);
-			return; // Endpoint에 도달했으므로 더 이상 다른 Endpoint를 검사할 필요 없음
+			return; 
 		}
 	}
 }

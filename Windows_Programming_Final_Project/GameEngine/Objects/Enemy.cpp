@@ -227,8 +227,26 @@ void Enemy::Update()
 
 	case EnemyState::CHASE:
 	{
-		Vec2F dirToPlayer = s_playerPos - pos;
-		float distToPlayer = dirToPlayer.Length();
+		// 1. 매 프레임 시야 확인
+		bool canSeePlayer = CheckPlayerInSight();
+
+		if (canSeePlayer)
+		{
+			// 시야에 보이면 마지막으로 본 위치를 실시간 갱신
+			_targetPos = s_playerPos;
+		}
+
+		// 플레이어의 실시간 위치(s_playerPos)가 아니라 '마지막 목표 위치(_targetPos)'를 향해 이동
+		Vec2F dirToTarget = _targetPos - pos;
+		float distToTarget = dirToTarget.Length();
+
+		// 2. 플레이어를 놓쳤는데(벽 뒤로 숨음), 마지막으로 본 위치에 도달했다면 추격 포기!
+		if (!canSeePlayer && distToTarget <= 20.0f)
+		{
+			_enemyState = EnemyState::PATROL;
+			_isStartPosSet = false;
+			break;
+		}
 
 		float attackRange = 80.0f;
 		float stopDist = 20.0f;
@@ -242,35 +260,34 @@ void Enemy::Update()
 			stopDist = 5.0f;
 		}
 
-		// 공격 개시 조건 (사거리 + 쿨타임 + 시야 확보)
-		if (distToPlayer <= attackRange && _attackCooldown <= 0.0f)
+		// 3. 공격 개시 조건 (사거리 + 쿨타임 + [반드시 시야에 보여야 함])
+		if (canSeePlayer && distToTarget <= attackRange && _attackCooldown <= 0.0f)
 		{
-			if (HasLineOfSightToPlayer())
-			{
-				_enemyState = EnemyState::ATTACK;
-				_attackHitCount = 0;
-				_burstCount = 0;
-				_currFrame = 0;
-				_animTimer = 0.0f;
-				_velocity = Vec2F(0.0f, 0.0f); // 즉시 멈춤
-				break;
-			}
+			_enemyState = EnemyState::ATTACK;
+			_attackHitCount = 0;
+			_burstCount = 0;
+			_currFrame = 0;
+			_animTimer = 0.0f;
+			_velocity = Vec2F(0.0f, 0.0f); // 즉시 멈춤
+			break;
 		}
 
-		if (distToPlayer > _viewDistance * 1.5f)
+		// 거리가 너무 멀어지면 추격 포기
+		if (distToTarget > _viewDistance * 1.5f)
 		{
 			_enemyState = EnemyState::PATROL;
 			_isStartPosSet = false;
 			break;
 		}
 
-		if (distToPlayer > 0.0f)
+		// 4. 목표를 향해 이동 (보이든 안 보이든 마지막 위치로 달림)
+		if (distToTarget > 0.0f)
 		{
-			facingDir = dirToPlayer.Normalized();
+			facingDir = dirToTarget.Normalized();
 			_rotationAngle = facingDir.Angle() * (180.0f / PI) + 90.0f;
 
 			Vec2F desiredVel(0.0f, 0.0f);
-			if (distToPlayer > stopDist) {
+			if (distToTarget > stopDist) {
 				desiredVel = facingDir * speed;
 			}
 
@@ -402,12 +419,12 @@ void Enemy::OnCollision(GameObject* other)
 	case OBJECTTYPE::PROJECTILE:
 	{
 		Projectile* Proj = static_cast<Projectile*>(other);
+		DropWeapon();
 		OnHit_Recoil(Proj->IsLethal(), Proj->GetDir(), Proj->GetWeaponType());
 	}
 	break;
 	case OBJECTTYPE::WALL:
 	{
-		// 💡 매니저가 이미 겹침을 해결해주었으므로, pos를 건드리지 않고 속도(_velocity)만 제어합니다.
 		if (_enemyState == EnemyState::PATROL)
 		{
 			_moveDir = _moveDir * -1.0f;
@@ -418,7 +435,6 @@ void Enemy::OnCollision(GameObject* other)
 		}
 		else
 		{
-			// 안전한 사칙연산만으로 매니저와 동일하게 충돌 축을 찾아 해당 속도만 0으로 만듭니다. (벽 덜덜거림 방지)
 			float diffX = std::abs(pos.x - other->GetPos().x);
 			float diffY = std::abs(pos.y - other->GetPos().y);
 			float minX = _halfSize.x + other->GetHalfSize().x;
@@ -443,6 +459,21 @@ void Enemy::OnCollision(GameObject* other)
 	}
 }
 
+
+void Enemy::DropWeapon()
+{
+	if (currentWeapon_Enemy == WPTYPE::FIST || currentWeapon_Enemy == WPTYPE::NONE) return;
+	Weapon* wep = new Weapon();
+	wep->Init();
+	wep->SetWeaponType(currentWeapon_Enemy);
+	wep->SetAmmo(_currentAmmo);
+	wep->SetPos(pos);
+	wep->SavePrevPos();
+	GET_SINGLE(SceneManager)->GetCurrentScene()->AddObject(wep);
+
+	currentWeapon_Enemy = WPTYPE::FIST;
+	_currentAmmo = -1;
+}
 
 // 1. 기존의 매개변수 2개짜리 함수 (부모 클래스와의 약속)
 // 이제 이 함수는 직접 로직을 처리하지 않고, 3개짜리 함수로 토스만 합니다.
@@ -487,10 +518,8 @@ void Enemy::OnHit_Recoil(bool isLethal, Vec2F dir, WPTYPE hitWeapon)
 				_rotationAngle = dir.Angle() * (180.0f / PI) + 90.0f; // Sprite가 위를 향하기 때문에 +90
 				PlayAnimation(_Fanims[(int)AnimType::DEAD]);
 
-				// ===================================================
-				// [추가] 아머드 적 최종 사망 시 점수 계산!
 				GET_SINGLE(SceneManager)->OnEnemyKilled(hitWeapon);
-				// ===================================================
+
 			}
 			else
 			{
@@ -601,16 +630,21 @@ bool Enemy::CheckPlayerInSight()
 	Vec2F dirToPlayer = s_playerPos - pos;
 	float dist = dirToPlayer.Length();
 
+	// 1. 플레이어가 최대 시야 거리 밖에 있으면 안 보임
 	if (dist > _viewDistance) return false;
 
+	// 2. [핵심] 거리나 각도에 들어왔어도, 플레이어와의 사이에 벽이 있으면 시야 차단
+	if (!HasLineOfSightToPlayer()) return false;
 
-	float closeSenseRange = 60.0f; // 캐릭터 덩치에 맞춰 조절하세요 (반지름의 2배 정도)
+	// 3. 아주 가까운 거리에 있으면 각도 상관없이 눈치챔 (근접 감지)
+	float closeSenseRange = 60.0f;
 	if (dist <= closeSenseRange)
 	{
 		s_isAlerted = true;
 		return true;
 	}
 
+	// 4. 시야각(View Angle) 내에 있는지 내적(Dot Product)으로 검사
 	float rad = (_rotationAngle - 90.0f) * (PI / 180.0f);
 	Vec2F forwardDir = Vec2F(cos(rad), sin(rad));
 	Vec2F normDirToPlayer = dirToPlayer.Normalized();
@@ -696,7 +730,5 @@ void Enemy::SetWPTYPE(WPTYPE wType)
 
 bool Enemy::HasLineOfSightToPlayer()
 {
-
-
-	return true; 
+	return GET_SINGLE(CollisionManager)->CheckLineOfSight(pos, s_playerPos);
 }
