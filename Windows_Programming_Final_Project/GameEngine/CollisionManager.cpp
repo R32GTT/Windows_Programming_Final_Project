@@ -62,10 +62,10 @@ void CollisionManager::Update()
 			_projectiles.push_back(obj);
 		else if (type == OBJECTTYPE::ENDPOINT)
 			_endPoints.push_back(obj);
+
 	}
 	GameObject* player = currentScene->GetPlayer();
 	
-
 	CheckActorWallCollision(_characters, walls);
 	CheckProjectileCollision(_projectiles, _characters, walls);
 	CheckActorEndpointCollision(_characters, _endPoints);
@@ -226,8 +226,6 @@ void CollisionManager::CheckActorWeaponCollision(const std::vector<GameObject*>&
 		}
 	}
 }
-
-
 
 //OBB충돌 체크 구현시작
 //혹시 문제가 있으면 삭제해도 괜찮음

@@ -6,8 +6,6 @@
 #include "../Utility/Vec2.h"
 #include "../LevelData/LevelData.h"	
 
-
-
 Scene::Scene()
 {
 

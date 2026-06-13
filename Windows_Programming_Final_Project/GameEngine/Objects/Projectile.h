@@ -1,14 +1,11 @@
 ﻿#pragma once
 #include "pch.h"
 #include "GameObject.h"
-#include "Weapon.h"
 #include "Enums.h"
 
 class Projectile : public GameObject
 {
 public:
-
-
 
 	Projectile();
 	Projectile(GameObject* owner,WPTYPE wpType);
