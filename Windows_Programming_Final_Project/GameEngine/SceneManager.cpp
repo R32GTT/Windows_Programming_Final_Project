@@ -169,6 +169,7 @@ void SceneManager::ResetCurrentMap()
 	_scene->Init();
 }
 
+//이게 CheckStageClear
 void SceneManager::RequestMapChange(const std::string& targetMapName)
 {
 	_isMapChangeRequested = true;

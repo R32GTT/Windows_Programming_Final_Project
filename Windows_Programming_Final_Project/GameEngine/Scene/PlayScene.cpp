@@ -34,6 +34,9 @@ void PlayScene::Init()
 	GET_SINGLE(SceneManager)->SetCurrentCombo(0);
 	GET_SINGLE(SceneManager)->SetComboTimer(0.0f);
 
+	//점수도 마찬가지로
+	GET_SINGLE(SceneManager)->SetTotalScore(0);
+
 }
 
 void PlayScene::Update()
@@ -169,6 +172,7 @@ void PlayScene::Render(ID2D1RenderTarget* renderTarget, float alpha)
 }
 
 //CheckStageClear 추가됨
+//이 역할을 하는것이 따로 있다
 void PlayScene::CheckStageClear() // Scene으로 옮길지 고민중
 {
 	if (_isStageClearing) return;
