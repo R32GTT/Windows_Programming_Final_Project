@@ -2,6 +2,7 @@
 #include "Player.h"
 #include "Weapon.h" //Weapon 헤더 포함
 #include "Managers.h"
+#include "Projectile.h"
 #include "Enemy.h"
 #include "../Scene/Scene.h"
 #include "../FileBase/FileTypes/Texture.h"
