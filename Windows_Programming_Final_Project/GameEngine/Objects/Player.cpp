@@ -265,7 +265,17 @@ void Player::Update()
 
                     // 만약 적 체력이 0 이하라면 처형 종료
                      status = PlayerState::IDLE;
-                     _targetEnemy->SetEnemyState(EnemyState::DEAD); // 적 완전 사망 처리
+
+                     // 1. 타겟이 된(기절해 있던) 적을 사망 상태로 변경
+                     if (_targetEnemy != nullptr)
+                     {
+                         _targetEnemy->SetEnemyState(EnemyState::DEAD);
+                         _targetEnemy = nullptr;
+                     }
+
+                     //(수정): 처형 전용 함수 호출
+                     GET_SINGLE(SceneManager)->OnEnemyExecuted();
+
                      _targetEnemy = nullptr;
 
                 }

@@ -1,5 +1,7 @@
 ﻿#pragma once
 #include <string>
+#include "Enums.h"
+
 class Scene;
 
 struct MapData;
@@ -34,7 +36,13 @@ public:
 
 	//점수 시스템 로직
 	void ResetAllScore();
-	void OnEnemyKilled();
+
+	//일반 무기로 적을 처치했을 때 호출
+	void OnEnemyKilled(WPTYPE wptype);
+
+	//플레이어가 적을 처형했을 때 호출
+	void OnEnemyExecuted();
+
 	int GetTotalScore() { return static_cast<int>(_totalScore); }
 	int GetCurrentCombo() { return _currentCombo; }
 

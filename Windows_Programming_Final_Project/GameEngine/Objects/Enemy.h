@@ -44,7 +44,13 @@ public:
 	virtual void Render(ID2D1RenderTarget* renderTarget, float alpha) override;
 	virtual bool IsKilled() override;
 	virtual void OnCollision(GameObject* other) override;
+
+
 	virtual void OnHit_Recoil(bool isLethal, Vec2F dir) override;
+
+	//무기 정보(WPTYPE)를 추가로 받는 새로운 전용 함수 선언
+	void OnHit_Recoil(bool isLethal, Vec2F dir, WPTYPE hitWeapon);
+
 
 	virtual void SaveToData(ObjectSpawnData& outData) override;
 	virtual void LoadFromData(const ObjectSpawnData& spawnData) override;

@@ -5,6 +5,8 @@
 #include "../LevelData/LevelData.h"
 #include "../FileBase/FileTypes/FlipBook.h"
 #include "../Scene/Scene.h"
+#include "Enums.h"
+
 
 // === [추가] Enemy 정적 공유 변수 초기화 ===
 Vec2F Enemy::s_playerPos = Vec2F(0.0f, 0.0f);
@@ -186,7 +188,16 @@ void Enemy::OnCollision(GameObject* other)
 	}
 }
 
+
+// 1. 기존의 매개변수 2개짜리 함수 (부모 클래스와의 약속)
+// 이제 이 함수는 직접 로직을 처리하지 않고, 3개짜리 함수로 토스만 합니다.
 void Enemy::OnHit_Recoil(bool isLethal, Vec2F dir)
+{
+	OnHit_Recoil(isLethal, dir, WPTYPE::NONE);
+}
+
+// 2. [새로 추가된] 매개변수 3개짜리 함수 (실제 모든 로직 처리)
+void Enemy::OnHit_Recoil(bool isLethal, Vec2F dir, WPTYPE hitWeapon)
 {
 	switch (_enemyType)
 	{
@@ -197,6 +208,11 @@ void Enemy::OnHit_Recoil(bool isLethal, Vec2F dir)
 			_enemyState = EnemyState::DEAD;
 			_rotationAngle = dir.Angle() * (180.0f / PI) + 90.0f; // Sprite가 위를 향하기 때문에 +90
 			PlayAnimation(_anims[(int)AnimType::DEAD]);
+
+			// ===================================================
+			// [추가] 노말 적 사망 시 점수 계산!
+			GET_SINGLE(SceneManager)->OnEnemyKilled(hitWeapon);
+			// ===================================================
 		}
 		else
 		{
@@ -215,6 +231,11 @@ void Enemy::OnHit_Recoil(bool isLethal, Vec2F dir)
 				_enemyState = EnemyState::DEAD;
 				_rotationAngle = dir.Angle() * (180.0f / PI) + 90.0f; // Sprite가 위를 향하기 때문에 +90
 				PlayAnimation(_Fanims[(int)AnimType::DEAD]);
+
+				// ===================================================
+				// [추가] 아머드 적 최종 사망 시 점수 계산!
+				GET_SINGLE(SceneManager)->OnEnemyKilled(hitWeapon);
+				// ===================================================
 			}
 			else
 			{
@@ -237,6 +258,7 @@ void Enemy::OnHit_Recoil(bool isLethal, Vec2F dir)
 		break;
 	}
 }
+
 
 void Enemy::SaveToData(ObjectSpawnData& outData)
 {
@@ -411,4 +433,5 @@ void Enemy::SetWPTYPE(WPTYPE wType)
 		break;
 	}
 }
+
 

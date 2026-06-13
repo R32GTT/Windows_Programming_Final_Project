@@ -21,7 +21,7 @@ void SceneManager::Update()
 	{
 		if (_totalScore > 0.f)
 		{
-			_totalScore = SCORE_TIME_PENALTY * dt;
+			_totalScore -= SCORE_TIME_PENALTY * dt;
 			if (_totalScore < 0.f) _totalScore = 0.f;
 		}
 
@@ -220,9 +220,28 @@ void SceneManager::ExecuteMapChange()
 }
 
 //점수 처리를 위한 함수 구현
-void SceneManager::OnEnemyKilled()
+void SceneManager::OnEnemyKilled(WPTYPE wptype)
 {
 	if (_isGameEnded) return;
+
+	// 무기 타입에 따른 점수 계산 로직 추가
+	int scoreToAdd = 0;
+
+	switch (wptype)
+	{
+	case WPTYPE::CROWBAR:
+		scoreToAdd = 200; // 근접 처치 시 점수
+		break;
+	case WPTYPE::RIFLE:
+		scoreToAdd = 100; // 총기 처치 시 점수
+		break;
+
+	case WPTYPE::FIST:
+		
+	default:
+		scoreToAdd = 50; //기본 점수
+		break;
+	}
 
 	_currentCombo++;
 	_comboTimer = COMBO_TIME_LIMIT;
@@ -230,6 +249,16 @@ void SceneManager::OnEnemyKilled()
 	float earnedScore = BASE_KILL_SCORE + ((_currentCombo - 1) * COMBO_BONUS_SCORE);
 	_totalScore += earnedScore;
 }
+
+//처형 처치시(새로 추가함)
+void SceneManager::OnEnemyExecuted()
+{
+	int scoreToAdd = 300; // 처형은 더 높은 점수 부여!
+
+	_currentCombo++;
+	_totalScore += (scoreToAdd * _currentCombo);
+}
+
 
 void SceneManager::ResetAllScore()
 {
