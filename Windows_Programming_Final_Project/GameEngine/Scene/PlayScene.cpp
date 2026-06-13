@@ -73,12 +73,18 @@ void PlayScene::Render(ID2D1RenderTarget* renderTarget, float alpha)
 	float comboTimer = GET_SINGLE(SceneManager)->GetComboTimer();
 	bool isGameEnded = GET_SINGLE(SceneManager)->GetIsGameEnded();
 
+	//추가: 현재 플레이 타임 가져오기
+	float currentPlayTime = GET_SINGLE(SceneManager)->GetPlayTime();
+
 	std::wstring scoreText;
 
 	if (!isGameEnded)
 	{
 		// [인게임 상태] 점수와 콤보 표시
 		scoreText = L"SCORE: " + std::to_wstring(currentScore);
+		scoreText += L"\nTIME: " + std::to_wstring((int)currentPlayTime) + L"s";
+
+
 		if (currentCombo > 0)
 		{
 			scoreText += L"\nCOMBO: " + std::to_wstring(currentCombo) + L" ( " + std::to_wstring((int)comboTimer) + L"s )";
@@ -86,8 +92,10 @@ void PlayScene::Render(ID2D1RenderTarget* renderTarget, float alpha)
 	}
 	else
 	{
-		// [게임 종료 상태] 최종 점수 표시
+		// [게임 종료 상태] 최종 점수 표시 + 시간을 표시한다
 		scoreText = L"=== STAGE CLEAR ===\n\nFINAL SCORE: " + std::to_wstring(currentScore);
+		scoreText += L"CLEAR TIME: " + std::to_wstring((int)currentPlayTime) + L"s\n";
+		scoreText += L"FINAL SCORE: " + std::to_wstring(currentScore);
 	}
 
 	// 3.폰트 설정을 따로 안 만들었을 때 사용하는 자체 폰트 생성 로직 (static 활용)

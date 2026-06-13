@@ -20,6 +20,8 @@ void SceneManager::Update()
 	if (!_isGameEnded)
 	{
 		
+		_playTime += dt;
+
 		if (_currentCombo > 0)
 		{
 
@@ -170,6 +172,9 @@ void SceneManager::ResetCurrentMap() // 여기서 점수 리셋 해줘야 함
 	_currentCombo = 0;
 	_comboTimer = 0.f;
 
+	//추가: 맵을 재시작하면 누적 플레이 시간도 이전 세이브 포인트로 돌린다
+	_playTime = _savedPlayTime;
+
 	_scene->Clear();
 	MapData loadedMapData = GET_SINGLE(DataManager)->GetCurrentMapData();
 
@@ -210,6 +215,9 @@ void SceneManager::ExecuteMapChange()
 	_comboTimer = 0.f;
 	_savedScore = _totalScore;
 
+	//추가: 맵을 무사히 클리어하고 넘어갈 때 현재까지의 시간을 저장합니다
+	_savedPlayTime = _playTime;
+
 	bool hasNextMap = GET_SINGLE(DataManager)->GoToNextMap(_nextMapName);
 
 	if (hasNextMap)
@@ -226,6 +234,9 @@ void SceneManager::ExecuteMapChange()
 		else
 		{
 			GET_SINGLE(DataManager)->EndGame();
+
+			//추가: 최종 게임 클리어 시 시간 점수를 계산하여 더합니다.
+			AddTimeScore();
 
 			_isGameEnded = true;
 		}
@@ -279,6 +290,24 @@ void SceneManager::ResetAllScore()
 	_savedScore = 0.f;
 	_currentCombo = 0;
 	_comboTimer = 0.f;
+
+	//시간 관련 변수도 모두 초기화 한다
+	_playTime = 0.0f;
+	_savedPlayTime = 0.0f;
+
 	_isGameEnded = false;
+}
+
+// [추가] 시간 점수를 계산하는 함수 구현
+void SceneManager::AddTimeScore()
+{
+	// 기획 예시: 기본 보너스 10000점에서 시작하여 1초당 50점씩 차감 (최소 0점 보장)
+	int baseTimeScore = 10000;
+	int timePenalty = static_cast<int>(_playTime * 50.0f);
+
+	// 점수가 음수가 되지 않도록 std::max 사용 (algorithm 헤더 인클루드 필요)
+	int finalTimeScore = std::max(0, baseTimeScore - timePenalty);
+
+	_totalScore += finalTimeScore;
 }
 
